@@ -15,7 +15,15 @@ final class TabBarViewController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        mainVC.title = "Трекеры"
+        statisticVC.title = "Статистика"
+        mainVC.tabBarItem.image = UIImage(systemName: "record.circle")
+        statisticVC.tabBarItem.image = UIImage(systemName: "hare.fill")
         setViewControllers([mainVC, statisticVC], animated: true)
+        
+        
+      
+        
         
     }
     

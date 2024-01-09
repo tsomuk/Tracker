@@ -11,18 +11,30 @@ class StatisticViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .ypBlack
+        setUI() 
     }
     
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func setUI() {
+        view.backgroundColor = .ypWhite
+        
+        
+        let image = UIImageView()
+        image.translatesAutoresizingMaskIntoConstraints = false
+        image.image = UIImage(named: "statHolder")
+        view.addSubview(image)
+        image.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        image.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        
+        image.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        image.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Анализировать пока нечего"
+        view.addSubview(label)
+        label.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 20).isActive = true
+        label.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     }
-    */
 
 }
