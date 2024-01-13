@@ -9,7 +9,7 @@ import UIKit
 
 final class TabBarViewController: UITabBarController {
 
-    private let mainVC = ViewController()
+    private let mainVC = TrackersViewController()
     private let statisticVC = StatisticViewController()
     
     
