@@ -7,12 +7,12 @@
 
 import Foundation
 
-struct TrackerCategoryStruct {
+struct TrackerCategory {
     let category : Category
     
     
     struct Category {
         let title: String
-        let tracker : [TrackerStruct]
+        let tracker : [Tracker]
     }
 }

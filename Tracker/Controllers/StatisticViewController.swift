@@ -17,17 +17,11 @@ class StatisticViewController: UIViewController {
     
     func setupUI() {
         view.backgroundColor = .ypWhite
+
         
-        // Title
-        let titleLabel = UILabel()
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.text = "Статистика"
-        titleLabel.font = .systemFont(ofSize: 34, weight: .bold)
-        view.addSubview(titleLabel)
-        titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 44).isActive = true
-        titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
+
         
-        // Vertical stack with image and label 
+        // Vertical stack with holder image and label 
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical

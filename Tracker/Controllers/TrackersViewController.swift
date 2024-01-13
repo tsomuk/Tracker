@@ -10,41 +10,24 @@ import UIKit
 class TrackersViewController: UIViewController {
     
     
-    var categories: [TrackerCategoryStruct] = []
+    var categories: [TrackerCategory] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
     }
     
-    
     func setupUI() {
         view.backgroundColor = .ypWhite
+
         
-        // Plus Button
-        let plusButton = UIButton()
-        plusButton.translatesAutoresizingMaskIntoConstraints = false
-        plusButton.setImage(UIImage(systemName: "plus"), for: .normal)
+        let plusButton = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(plusButtonTapped))
         plusButton.tintColor = .ypBlack
-        view.addSubview(plusButton)
-        plusButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 6).isActive = true
-        plusButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 1).isActive = true
+        navigationItem.leftBarButtonItem = plusButton
+
         
-        plusButton.heightAnchor.constraint(equalToConstant: 42).isActive = true
-        plusButton.widthAnchor.constraint(equalToConstant: 42).isActive = true
-        // Button functionality
-        plusButton.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
         
-        // Title
-        let titleLabel = UILabel()
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.text = "Трекеры"
-        titleLabel.font = .systemFont(ofSize: 34, weight: .bold)
-        view.addSubview(titleLabel)
-        titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 44).isActive = true
-        titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
-        
-        // Vertical Stack with image and lable
+        // Vertical Stack with holder image and lable
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
@@ -73,7 +56,21 @@ class TrackersViewController: UIViewController {
         
     }
     
-
+    //MARK: - Plus Button
+    
+//    let plusButton = UIButton()
+//    plusButton.translatesAutoresizingMaskIntoConstraints = false
+//    plusButton.setImage(UIImage(systemName: "plus"), for: .normal)
+//    plusButton.tintColor = .ypBlack
+//    view.addSubview(plusButton)
+//    plusButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 6).isActive = true
+//    plusButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 1).isActive = true
+//    
+//    plusButton.heightAnchor.constraint(equalToConstant: 42).isActive = true
+//    plusButton.widthAnchor.constraint(equalToConstant: 42).isActive = true
+//    plusButton.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
+//    
+//
     @objc func plusButtonTapped() {
         print("PlusButtonTapped")
     }
