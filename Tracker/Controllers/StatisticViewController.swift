@@ -18,9 +18,6 @@ class StatisticViewController: UIViewController {
     func setupUI() {
         view.backgroundColor = .ypWhite
 
-        
-
-        
         // Vertical stack with holder image and label 
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false

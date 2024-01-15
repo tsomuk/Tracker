@@ -20,12 +20,15 @@ class TrackersViewController: UIViewController {
     func setupUI() {
         view.backgroundColor = .ypWhite
 
-        
+        // Plus Button
         let plusButton = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(plusButtonTapped))
         plusButton.tintColor = .ypBlack
         navigationItem.leftBarButtonItem = plusButton
 
-        
+        // Search Controller
+        let searchController = UISearchController()
+        navigationItem.searchController = searchController
+        searchController.searchBar.placeholder = "Поиск"
         
         // Vertical Stack with holder image and lable
         let stackView = UIStackView()
@@ -56,21 +59,7 @@ class TrackersViewController: UIViewController {
         
     }
     
-    //MARK: - Plus Button
-    
-//    let plusButton = UIButton()
-//    plusButton.translatesAutoresizingMaskIntoConstraints = false
-//    plusButton.setImage(UIImage(systemName: "plus"), for: .normal)
-//    plusButton.tintColor = .ypBlack
-//    view.addSubview(plusButton)
-//    plusButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 6).isActive = true
-//    plusButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 1).isActive = true
-//    
-//    plusButton.heightAnchor.constraint(equalToConstant: 42).isActive = true
-//    plusButton.widthAnchor.constraint(equalToConstant: 42).isActive = true
-//    plusButton.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
-//    
-//
+
     @objc func plusButtonTapped() {
         print("PlusButtonTapped")
     }
