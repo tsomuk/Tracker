@@ -12,11 +12,16 @@ class StatisticViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        holderView()
     }
-    
     
     func setupUI() {
         view.backgroundColor = .ypWhite
+    }
+    
+    
+    func holderView() {
+        
 
         // Vertical stack with holder image and label 
         let stackView = UIStackView()
