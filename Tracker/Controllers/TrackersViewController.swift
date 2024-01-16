@@ -37,8 +37,7 @@ class TrackersViewController: UIViewController {
         
          // Data picker
         
-        let dataLabel = UILabel()
-                   
+        let dataLabel = UILabel()        
         dataLabel.translatesAutoresizingMaskIntoConstraints = false
         dataLabel.backgroundColor = .systemRed
         dataLabel.text = "16.01.24"
@@ -54,10 +53,7 @@ class TrackersViewController: UIViewController {
             dataLabel.widthAnchor.constraint(equalToConstant: 77),
             dataLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: -130),
             dataLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            
         ])
-        
-                
     }
     
     func holderView() {

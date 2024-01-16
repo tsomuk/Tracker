@@ -9,21 +9,28 @@ import UIKit
 
 class NewHabitViewController: UIViewController {
 
+    let textField = UITextField()
+    let cancelButton = UIButton()
+    let createButton = UIButton()
+    let tableList = ["Категория", "Расписание"]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Новая привычка"
         configureUI()
+        createtable()
     }
     
 
     func configureUI() {
         
         view.backgroundColor = .ypWhite
+        
         // Text Field
-        let textField = UITextField()
         textField.backgroundColor = .ypBackground
         textField.textColor = .ypGray
-        textField.placeholder = "   Введите название трекера"
+        textField.placeholder = "Введите название трекера"
+        textField.addPaddingToTextField()
         textField.layer.cornerRadius = 16
         textField.layer.masksToBounds = true
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -37,8 +44,6 @@ class NewHabitViewController: UIViewController {
         textField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
         // Cancel Button
-        
-        let cancelButton = UIButton()
         cancelButton.setTitle("Отменить", for: .normal)
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
         cancelButton.layer.cornerRadius = 16
@@ -57,14 +62,11 @@ class NewHabitViewController: UIViewController {
         cancelButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
         cancelButton.widthAnchor.constraint(equalToConstant: 166).isActive = true
         
-        
         cancelButton.addTarget(self, action: #selector(cancel), for: .touchUpInside)
         
        
         
         // Create Button
-        
-        let createButton = UIButton()
         createButton.setTitle("Создать", for: .normal)
         createButton.translatesAutoresizingMaskIntoConstraints = false
         createButton.layer.cornerRadius = 16
@@ -95,6 +97,39 @@ class NewHabitViewController: UIViewController {
     }
     
         
+    func createtable() {
+        let tableView = UITableView()
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.layer.cornerRadius = 16
+        view.addSubview(tableView)
+        
+        tableView.rowHeight = 75
+        tableView.backgroundColor = .ypBackground
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
+        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
+        tableView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 24).isActive = true
+        tableView.heightAnchor.constraint(equalToConstant: CGFloat(75 * tableList.count)).isActive = true
+        
     }
+}
+
+
+extension NewHabitViewController : UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return tableList.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
+        cell.textLabel?.text = tableList[indexPath.row]
+        cell.accessoryType = .disclosureIndicator
+        cell.backgroundColor = .ypBackground
+        return cell
+    }
+    
+    
+}
 
 
