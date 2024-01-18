@@ -21,7 +21,58 @@ class NewHabitViewController: UIViewController {
         createtable()
     }
     
+    func createtable() {
+        let tableView = UITableView()
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.layer.cornerRadius = 16
+        view.addSubview(tableView)
+        
+        tableView.rowHeight = 75
+        tableView.backgroundColor = .ypBackground
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
+        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
+        tableView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 24).isActive = true
+        tableView.heightAnchor.constraint(equalToConstant: CGFloat(75 * tableList.count)).isActive = true
+        
+    }
+}
 
+
+extension NewHabitViewController : UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return tableList.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
+        cell.textLabel?.text = tableList[indexPath.row]
+        cell.accessoryType = .disclosureIndicator
+        cell.backgroundColor = .ypBackground
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true) // Снимаем выделение ячейки
+        
+        let selectedItem = tableList[indexPath.row]
+        
+        if selectedItem == "Категория" {
+            let categotyVC = CategoryViewController()
+            navigationController?.pushViewController(categotyVC, animated: true)
+        }
+        
+        if selectedItem == "Расписание" {
+            let scheduleVC = ScheduleViewController()
+            navigationController?.pushViewController(scheduleVC, animated: true)
+        }
+    }
+}
+
+
+
+extension NewHabitViewController {
     func configureUI() {
         
         view.backgroundColor = .ypWhite
@@ -64,7 +115,7 @@ class NewHabitViewController: UIViewController {
         
         cancelButton.addTarget(self, action: #selector(cancel), for: .touchUpInside)
         
-       
+        
         
         // Create Button
         createButton.setTitle("Создать", for: .normal)
@@ -86,7 +137,7 @@ class NewHabitViewController: UIViewController {
         createButton.addTarget(self, action: #selector(create), for: .touchUpInside)
         
     }
-        
+    
     @objc func cancel() {
         print("cancel")
         dismiss(animated: true)
@@ -95,41 +146,5 @@ class NewHabitViewController: UIViewController {
     @objc func create() {
         print("create")
     }
-    
-        
-    func createtable() {
-        let tableView = UITableView()
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.layer.cornerRadius = 16
-        view.addSubview(tableView)
-        
-        tableView.rowHeight = 75
-        tableView.backgroundColor = .ypBackground
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
-        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
-        tableView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 24).isActive = true
-        tableView.heightAnchor.constraint(equalToConstant: CGFloat(75 * tableList.count)).isActive = true
-        
-    }
 }
-
-
-extension NewHabitViewController : UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tableList.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
-        cell.textLabel?.text = tableList[indexPath.row]
-        cell.accessoryType = .disclosureIndicator
-        cell.backgroundColor = .ypBackground
-        return cell
-    }
-    
-    
-}
-
 
