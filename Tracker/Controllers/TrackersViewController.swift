@@ -32,28 +32,18 @@ class TrackersViewController: UIViewController {
         navigationItem.searchController = searchController
         searchController.searchBar.placeholder = "Поиск"
         
-        
-        
-        
         // Data picker
         
-        let dataLabel = UILabel()
-        dataLabel.translatesAutoresizingMaskIntoConstraints = false
-        dataLabel.backgroundColor = .systemRed
-        dataLabel.text = "16.01.24"
-        dataLabel.textColor = .black
-        dataLabel.layer.cornerRadius = 8
-        dataLabel.layer.masksToBounds = true
-        dataLabel.textAlignment = .center
-        dataLabel.font = .systemFont(ofSize: 17, weight: .regular)
-        dataLabel.backgroundColor = .ypGray
-        view.addSubview(dataLabel)
-        NSLayoutConstraint.activate([
-            dataLabel.heightAnchor.constraint(equalToConstant: 34),
-            dataLabel.widthAnchor.constraint(equalToConstant: 77),
-            dataLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: -130),
-            dataLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-        ])
+        let datePicker = UIDatePicker()
+        datePicker.datePickerMode = .date
+        datePicker.locale = Locale(identifier: "ru_RU")
+        datePicker.preferredDatePickerStyle = .compact
+        
+        view.addSubview(datePicker)
+        datePicker.translatesAutoresizingMaskIntoConstraints = false
+        datePicker.widthAnchor.constraint(equalToConstant: 120).isActive = true
+        let datePickerItem = UIBarButtonItem(customView: datePicker)
+        navigationItem.rightBarButtonItem = datePickerItem
     }
     
     func holderView() {
