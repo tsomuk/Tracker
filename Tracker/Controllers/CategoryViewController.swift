@@ -72,13 +72,13 @@ class CategoryViewController: UIViewController {
         button.heightAnchor.constraint(equalToConstant: 60).isActive = true
         button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16).isActive = true
         
-        button.addTarget(self, action: #selector(dismissFunc), for: .touchUpInside)
+        button.addTarget(self, action: #selector(goToAddNewCategory), for: .touchUpInside)
     }
     
-    @objc func dismissFunc() {
-        print("готово")
-//        dismiss(animated: true)
-        navigationController?.popViewController(animated: true)
+    @objc func goToAddNewCategory() {
+        print("add new caterory")
+        let addNewCategory = AddNewCategoryViewController()
+        navigationController?.pushViewController(addNewCategory, animated: true)
     }
     
 }

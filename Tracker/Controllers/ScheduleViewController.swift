@@ -46,7 +46,6 @@ class ScheduleViewController: UIViewController {
     
     @objc func dismissFunc() {
         print("готово")
-//        dismiss(animated: true)
         navigationController?.popViewController(animated: true)
     }
     

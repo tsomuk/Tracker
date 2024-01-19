@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		11323F662B58F8ED0078EDC1 /* AddNewCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11323F652B58F8ED0078EDC1 /* AddNewCategoryViewController.swift */; };
 		11ABAA2A2B4A9855003F02BF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11ABAA292B4A9855003F02BF /* AppDelegate.swift */; };
 		11ABAA2C2B4A9855003F02BF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11ABAA2B2B4A9855003F02BF /* SceneDelegate.swift */; };
 		11ABAA2E2B4A9855003F02BF /* TrackersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11ABAA2D2B4A9855003F02BF /* TrackersViewController.swift */; };
@@ -27,6 +28,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		11323F652B58F8ED0078EDC1 /* AddNewCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewCategoryViewController.swift; sourceTree = "<group>"; };
 		11ABAA262B4A9855003F02BF /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		11ABAA292B4A9855003F02BF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		11ABAA2B2B4A9855003F02BF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 				11B105152B567C670058904F /* NewEventViewController.swift */,
 				11B105272B58558D0058904F /* ScheduleViewController.swift */,
 				11B105292B58568A0058904F /* CategoryViewController.swift */,
+				11323F652B58F8ED0078EDC1 /* AddNewCategoryViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -203,6 +206,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				11B104F22B55625C0058904F /* AddNewTrackerViewController.swift in Sources */,
+				11323F662B58F8ED0078EDC1 /* AddNewCategoryViewController.swift in Sources */,
 				11ABAA342B4A9855003F02BF /* Tracker.xcdatamodeld in Sources */,
 				11B105162B567C670058904F /* NewEventViewController.swift in Sources */,
 				11B1049A2B4FF7350058904F /* TrackerRecord.swift in Sources */,
