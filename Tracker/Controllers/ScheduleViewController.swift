@@ -35,11 +35,13 @@ class ScheduleViewController: UIViewController {
         
         view.addSubview(button)
         
-        button.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
-        button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
+        NSLayoutConstraint.activate([
+            button.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            button.heightAnchor.constraint(equalToConstant: 60),
+            button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
+        ])
         
-        button.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16).isActive = true
         
         button.addTarget(self, action: #selector(dismissFunc), for: .touchUpInside)
     }
@@ -63,9 +65,14 @@ class ScheduleViewController: UIViewController {
         tableView.allowsSelection = false
         tableView.layer.cornerRadius = 16
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
-        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
-        tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24).isActive = true
+        NSLayoutConstraint.activate([
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24)
+        ])
+        
+        
+        
     }
     
     

@@ -36,15 +36,13 @@ class NewEventViewController: UIViewController {
         textField.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(textField)
         
-        
-        textField.heightAnchor.constraint(equalToConstant: 75).isActive = true
-        
-        textField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
-        textField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
-        
-        
-        textField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24).isActive = true
-        textField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        NSLayoutConstraint.activate([
+            textField.heightAnchor.constraint(equalToConstant: 75),
+            textField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            textField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            textField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
+            textField.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        ])
         
         
         // Stack
@@ -53,10 +51,11 @@ class NewEventViewController: UIViewController {
         stackView.distribution = .fillEqually
         stackView.spacing = 8
         view.addSubview(stackView)
-        
-        stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-        stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        NSLayoutConstraint.activate([
+            stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+        ])
         
         
         // Cancel Button
@@ -115,10 +114,14 @@ class NewEventViewController: UIViewController {
         tableView.rowHeight = 75
         tableView.backgroundColor = .ypBackground
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
-        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
-        tableView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 24).isActive = true
-        tableView.heightAnchor.constraint(equalToConstant: CGFloat(75 * tableList.count)).isActive = true
+        
+        NSLayoutConstraint.activate([
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            tableView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 24),
+            tableView.heightAnchor.constraint(equalToConstant: CGFloat(75 * tableList.count))
+        ])
+        
         
     }
 }

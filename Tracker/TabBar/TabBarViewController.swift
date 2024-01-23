@@ -14,10 +14,9 @@ final class TabBarViewController: UITabBarController {
         configureTabs()
     }
     
-    
     private func configureTabs() {
         
-        let trackerVC = TrackersViewController()
+        let trackerVC = TrackerViewController()
         let statisticVC = StatisticViewController()
         
         trackerVC.title = "Трекеры"

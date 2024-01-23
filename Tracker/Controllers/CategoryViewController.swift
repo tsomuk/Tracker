@@ -46,12 +46,13 @@ class CategoryViewController: UIViewController {
         label.font = .systemFont(ofSize: 12, weight: .medium)
         stackView.addArrangedSubview(label)
         
-        stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
-        stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
-        stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        
-        image.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        image.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        NSLayoutConstraint.activate([
+            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            image.heightAnchor.constraint(equalToConstant: 80),
+            image.widthAnchor.constraint(equalToConstant: 80)
+        ])
     }
         
     func addButtom() {
@@ -66,11 +67,12 @@ class CategoryViewController: UIViewController {
         
         view.addSubview(button)
         
-        button.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
-        button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
-        
-        button.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16).isActive = true
+        NSLayoutConstraint.activate([
+            button.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            button.heightAnchor.constraint(equalToConstant: 60),
+            button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
+        ])
         
         button.addTarget(self, action: #selector(goToAddNewCategory), for: .touchUpInside)
     }

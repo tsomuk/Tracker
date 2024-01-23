@@ -34,14 +34,14 @@ class AddNewCategoryViewController: UIViewController {
         textField.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(textField)
         
-        textField.heightAnchor.constraint(equalToConstant: 75).isActive = true
-        textField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
-        textField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
-        
-        textField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24).isActive = true
-        textField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        
-        
+        NSLayoutConstraint.activate([
+            textField.heightAnchor.constraint(equalToConstant: 75),
+            textField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            textField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            textField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
+            textField.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        ])
+
         let button = UIButton()
         button.setTitle("Готово", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -53,11 +53,12 @@ class AddNewCategoryViewController: UIViewController {
         
         view.addSubview(button)
         
-        button.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
-        button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
-        
-        button.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16).isActive = true
+        NSLayoutConstraint.activate([
+            button.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            button.heightAnchor.constraint(equalToConstant: 60),
+            button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
+        ])
         
         button.addTarget(self, action: #selector(addNewCaterory), for: .touchUpInside)
         

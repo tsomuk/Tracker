@@ -31,7 +31,6 @@ class AddNewTrackerViewController: UIViewController {
         
         button.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
         button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
-        
         button.heightAnchor.constraint(equalToConstant: 60).isActive = true
         button.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
