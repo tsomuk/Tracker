@@ -7,46 +7,48 @@
 
 import UIKit
 
-class AddNewTrackerViewController: UIViewController {
+final class AddNewTrackerViewController: UIViewController {
 
+    private lazy var newHabitButton: UIButton = {
+        let newHabitButton = TrackerBigButton(title: "Привычка")
+        newHabitButton.addTarget(self, action: #selector(makeNewHabit), for: .touchUpInside)
+        return newHabitButton
+    }()
+    
+    private lazy var newEventButton: UIButton = {
+        let newEventButton = TrackerBigButton(title: "Нерегулярное событие")
+        newEventButton.addTarget(self, action: #selector(makeNewHabit), for: .touchUpInside)
+        return newEventButton
+    }()
+    
+    private lazy var vStack: UIStackView = {
+        let stack = UIStackView()
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.axis = .vertical
+        stack.spacing = 16
+        return stack
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupAppearance()
+    }
+    
+    private func setupAppearance() {
         title = "Создание трекера"
-        addButton()
         view.backgroundColor = .ypWhite
+        vStack.addArrangedSubview(newHabitButton)
+        vStack.addArrangedSubview(newEventButton)
+        view.addSubview(vStack)
+        NSLayoutConstraint.activate([
+            vStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            vStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            vStack.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            newHabitButton.heightAnchor.constraint(equalToConstant: 60),
+            newEventButton.heightAnchor.constraint(equalToConstant: 60)
+        ])
     }
-    
-    
-    func addButton(buttonTitle: String, action: Selector) -> UIButton {
-        let button = UIButton()
-        button.setTitle(buttonTitle, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 16
-        button.layer.masksToBounds = true
-        button.backgroundColor = .ypBlack
-        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        button.setTitleColor(.ypWhite, for: .normal)
-        
-        view.addSubview(button)
-        
-        button.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
-        button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
-        button.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        button.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        
-        button.addTarget(self, action: action, for: .touchUpInside)
-        return button
-    }
-    
-    func addButton() {
-        let newHabitButton = addButton(buttonTitle: "Привычка", action: #selector(makeNewHabit))
-        newHabitButton.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        
-        let newEventButton = addButton(buttonTitle: "Нерегулярное событие", action: #selector(makeNewEvent))
-        newEventButton.topAnchor.constraint(equalTo: newHabitButton.bottomAnchor, constant: 16).isActive = true
-    }
-    
-    
+      
     @objc func makeNewHabit() {
             print("Новая привычка")
             let newTrackerVC = NewHabitViewController()
@@ -62,11 +64,4 @@ class AddNewTrackerViewController: UIViewController {
             navController.modalPresentationStyle = .popover
             present(navController, animated: true, completion: nil)
         }
-    
-    
     }
-    
-    
-    
-
-

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TrackerCollectionViewCell: UICollectionViewCell {
+final class TrackerCollectionViewCell: UICollectionViewCell {
     
     lazy var bodyView: UIView = {
         let bodyView = UIView()
@@ -25,7 +25,6 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         emojiView.translatesAutoresizingMaskIntoConstraints = false
         return emojiView
     }()
-    
     
     lazy var emojiLabel: UILabel = {
         let emojiLabel = UILabel()
@@ -57,10 +56,6 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         plusButton.layer.cornerRadius = 17
         let buttonImage = UIImage(named: "plusButton")
         plusButton.setImage(buttonImage, for: .normal)
-        
-        
-        
-        
         return plusButton
     }()
     
@@ -89,8 +84,6 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         bodyView.backgroundColor = color
         plusButton.tintColor = color
     }
-    
-    
     
     func setupAppearance() {
         addSubview(bodyView)
@@ -126,7 +119,6 @@ class TrackerCollectionViewCell: UICollectionViewCell {
             plusButton.widthAnchor.constraint(equalToConstant: 34),
             plusButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
             plusButton.topAnchor.constraint(equalTo: bodyView.bottomAnchor, constant: 8)
-            
         ])
     }
 }

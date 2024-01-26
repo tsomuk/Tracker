@@ -4,61 +4,20 @@
 //
 //  Created by Nikita Tsomuk on 16/01/2024.
 //
+// title = "Новое нерегулярное событие"
 
 import UIKit
 
 class NewEventViewController: UIViewController {
-
-    let textField = UITextField()
-    let stackView = UIStackView()
-    let cancelButton = UIButton()
-    let createButton = UIButton()
     
-    let tableList = ["Категория"]
+    private let tableList = ["Категория"]
+    private let emojiList = ["🙂","😻","🌺","🐶","❤️","😇","😡","🥶","🤔","🙌","🍔","🥦","🏓","🥇","🎸","🏝","😪"]
+    private let colorList: [UIColor] = [.ypColor1,.ypColor2,.ypColor3,.ypColor4,.ypColor5,.ypColor6,.ypColor7,.ypColor8,.ypColor9,.ypColor10,.ypColor11,.ypColor12,.ypColor13,.ypColor14,.ypColor15,.ypColor16,.ypColor17,.ypColor18]
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        title = "Новое нерегулярное событие"
-        configureUI()
-        createtable()
-    }
+    private let textField = TrackerTextField(placeHolder: "Введите название трекера")
     
-    
-    func configureUI() {
-        
-        view.backgroundColor = .ypWhite
-               
-        textField.backgroundColor = .ypBackground
-        textField.placeholder = "Введите название трекера"
-        textField.addPaddingToTextField()
-        textField.layer.cornerRadius = 16
-        textField.layer.masksToBounds = true
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(textField)
-        
-        NSLayoutConstraint.activate([
-            textField.heightAnchor.constraint(equalToConstant: 75),
-            textField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            textField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            textField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
-            textField.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-        ])
-        
-        
-        // Stack
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .horizontal
-        stackView.distribution = .fillEqually
-        stackView.spacing = 8
-        view.addSubview(stackView)
-        NSLayoutConstraint.activate([
-            stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
-        ])
-        
-        
-        // Cancel Button
+    private lazy var cancelButton: UIButton = {
+        let cancelButton = UIButton()
         cancelButton.setTitle("Отменить", for: .normal)
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
         cancelButton.layer.cornerRadius = 16
@@ -68,16 +27,12 @@ class NewEventViewController: UIViewController {
         cancelButton.layer.borderColor = UIColor.ypRed.cgColor
         cancelButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         cancelButton.setTitleColor(.ypRed, for: .normal)
-        
-        stackView.addArrangedSubview(cancelButton)
-        
-        cancelButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        
         cancelButton.addTarget(self, action: #selector(cancel), for: .touchUpInside)
-        
-       
-        
-        // Create Button
+        return cancelButton
+    }()
+    
+    private lazy var createButton: UIButton = {
+        let createButton = UIButton()
         createButton.setTitle("Создать", for: .normal)
         createButton.translatesAutoresizingMaskIntoConstraints = false
         createButton.layer.cornerRadius = 16
@@ -85,15 +40,63 @@ class NewEventViewController: UIViewController {
         createButton.backgroundColor = .ypGray
         createButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         createButton.setTitleColor(.ypBlack, for: .normal)
-        
-        stackView.addArrangedSubview(createButton)
-    
-        createButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        
         createButton.addTarget(self, action: #selector(create), for: .touchUpInside)
-        
+        return createButton
+    }()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupAppearance()
     }
+    
+    private lazy var stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.distribution = .fillEqually
+        stackView.spacing = 8
+        return stackView
+    }()
+    
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.layer.cornerRadius = 16
+        tableView.rowHeight = 75
+        tableView.backgroundColor = .ypBackground
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        return tableView
+    }()
+    
+    func setupAppearance() {
         
+        view.backgroundColor = .ypWhite
+        title = "Новое нерегулярное событие"
+        stackView.addArrangedSubview(cancelButton)
+        stackView.addArrangedSubview(createButton)
+        view.addSubview(textField)
+        view.addSubview(stackView)
+        view.addSubview(tableView)
+        
+        NSLayoutConstraint.activate([
+            textField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
+            textField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            textField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            textField.heightAnchor.constraint(equalToConstant: 75),
+            
+            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            stackView.heightAnchor.constraint(equalToConstant: 60),
+            
+            tableView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 24),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            tableView.heightAnchor.constraint(equalToConstant: CGFloat(75 * tableList.count)),
+        ])
+    }
+    
     @objc func cancel() {
         print("cancel")
         dismiss(animated: true)
@@ -102,32 +105,10 @@ class NewEventViewController: UIViewController {
     @objc func create() {
         print("create")
     }
-
-    
-    func createtable() {
-        let tableView = UITableView()
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.layer.cornerRadius = 16
-        view.addSubview(tableView)
-        
-        tableView.rowHeight = 75
-        tableView.backgroundColor = .ypBackground
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            tableView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 24),
-            tableView.heightAnchor.constraint(equalToConstant: CGFloat(75 * tableList.count))
-        ])
-        
-        
-    }
 }
 
-
 extension NewEventViewController : UITableViewDelegate, UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tableList.count
     }
@@ -139,6 +120,7 @@ extension NewEventViewController : UITableViewDelegate, UITableViewDataSource {
         cell.backgroundColor = .ypBackground
         return cell
     }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let selectedItem = tableList[indexPath.row]

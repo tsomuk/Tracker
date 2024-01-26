@@ -7,29 +7,41 @@
 
 import UIKit
 
-class TrackerViewController: UIViewController {
-    
+final class TrackerViewController: UIViewController {
     
     var categories: [TrackerCategory] = []
     
-    private let trackerList = ["Выучить Swift", "Найти работу", "Выпить пива"]
-    private let daysList = ["5 дней", "3 дня", "28 дней"]
+    private let trackerList : [String] = ["Выучить Swift", "Найти работу", "Выпить пива"]
+//    private let trackerList : [String] = []
+    private let daysList = ["5 дней", "3 дня", "6 дней"]
     private let emojiList = ["🧑🏻‍💻", "💼", "🍺"]
     private let colorList : [UIColor] = [.ypColor3, .ypColor11, .ypColor18]
     
-
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        //        holderView()
-        
         setupAppearance()
-        activateConstraints()
-        
+        mainScreenContent()
     }
     
-    func setupAppearance() {
+    private func mainScreenContent() {
+        if trackerList.isEmpty {
+            addHolderView()
+        } else {
+            addCollectionView()
+        }
+    }
+    
+    private func addCollectionView() {
+        view.addSubview(collectionView)
+        NSLayoutConstraint.activate([
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+    }
+    
+    private func setupAppearance() {
         view.backgroundColor = .ypWhite
         
         // Plus Button
@@ -48,16 +60,11 @@ class TrackerViewController: UIViewController {
         datePicker.datePickerMode = .date
         datePicker.locale = Locale(identifier: "ru_RU")
         datePicker.preferredDatePickerStyle = .compact
-        
         view.addSubview(datePicker)
         datePicker.translatesAutoresizingMaskIntoConstraints = false
         datePicker.widthAnchor.constraint(equalToConstant: 120).isActive = true
         let datePickerItem = UIBarButtonItem(customView: datePicker)
         navigationItem.rightBarButtonItem = datePickerItem
-        
-      
-        
-        
     }
     
     // UICollection View
@@ -71,42 +78,38 @@ class TrackerViewController: UIViewController {
         collectionView.delegate = self
         collectionView.showsVerticalScrollIndicator = false
         collectionView.register(TrackerCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        collectionView.register(TrackerCollectionReusableView.self,
+                                forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+                                withReuseIdentifier: "header")
         return collectionView
     }()
     
     
-    private func activateConstraints() {
-        view.addSubview(collectionView)
-        NSLayoutConstraint.activate([
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-        ])
-    }
-    
-    
     // Vertical Stack with holder image and lable
-    func holderView() {
+    private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.spacing = 8
-        view.addSubview(stackView)
-        
+        return stackView
+    }()
+    
+    private lazy var image: UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
         image.image = UIImage(named: "trackerHolder")
+        return image
+    }()
+    
+    private let label = TrackerTextLabel(text: "Что будем отслеживать?", fontSize: 12, fontWeight: .medium)
+    
+
+    
+    private func addHolderView() {
         stackView.addArrangedSubview(image)
-        
-        
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Что будем отслеживать?"
-        label.font = .systemFont(ofSize: 12, weight: .medium)
         stackView.addArrangedSubview(label)
-        
+        view.addSubview(stackView)
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
@@ -138,6 +141,13 @@ extension TrackerViewController: UICollectionViewDataSource {
         cell.configureDayLabel(daysList[indexPath.item])
         return cell
     }
+    //header
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! TrackerCollectionReusableView
+        view.configureTitle("Полезные привычки")
+        return view
+    }
 }
 
 extension TrackerViewController: UICollectionViewDelegateFlowLayout {
@@ -151,9 +161,7 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
         return CGSize(width: width , height: height)
     }
     
-    
-    
-    //Offset between the cells
+    //Offsets
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 5
     }
@@ -165,5 +173,11 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)
     }
-    
-}
+    //header
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+            
+        let headerSize = CGSize(width: view.frame.width, height: 30)
+        return headerSize
+        }
+    }
+

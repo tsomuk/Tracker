@@ -16,18 +16,18 @@ final class TabBarViewController: UITabBarController {
     
     private func configureTabs() {
         
-        let trackerVC = TrackerViewController()
-        let statisticVC = StatisticViewController()
+        let trackerViewController = TrackerViewController()
+        let statisticViewController = StatisticViewController()
         
-        trackerVC.title = "Трекеры"
-        statisticVC.title = "Статистика"
+        trackerViewController.title = "Трекеры"
+        statisticViewController.title = "Статистика"
         
-        trackerVC.tabBarItem.image = UIImage(systemName: "record.circle")
-        statisticVC.tabBarItem.image = UIImage(systemName: "hare.fill")
+        trackerViewController.tabBarItem.image = UIImage(systemName: "record.circle")
+        statisticViewController.tabBarItem.image = UIImage(systemName: "hare.fill")
         
-        let trackerNC = UINavigationController(rootViewController: trackerVC)
+        let trackerNC = UINavigationController(rootViewController: trackerViewController)
         trackerNC.navigationBar.prefersLargeTitles = true
-        let statisticNC = UINavigationController(rootViewController: statisticVC)
+        let statisticNC = UINavigationController(rootViewController: statisticViewController)
         statisticNC.navigationBar.prefersLargeTitles = true
         
         setViewControllers([trackerNC, statisticNC], animated: true)

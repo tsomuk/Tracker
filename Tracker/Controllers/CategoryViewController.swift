@@ -9,72 +9,54 @@ import UIKit
 
 class CategoryViewController: UIViewController {
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        configureUI()
-        addButtom()
-    }
     
+    private let label = TrackerTextLabel(text: "Привычки и события можно \nобъединить по смыслу", fontSize: 12, fontWeight: .medium)
     
-    
-    func configureUI() {
-        
-        title = "Категория"
-        view.backgroundColor = .ypWhite
-        navigationItem.hidesBackButton = true
-        
-        
-        // Vertical Stack with holder image and lable
+    private let button = TrackerBigButton(title: "Добавить категорию")
+
+
+
+    private lazy var image: UIImageView = {
+    let image = UIImageView()
+    image.translatesAutoresizingMaskIntoConstraints = false
+    image.image = UIImage(named: "trackerHolder")
+    return image
+    }()
+
+    private lazy var stackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.spacing = 8
-        view.addSubview(stackView)
-        
-        let image = UIImageView()
-        image.translatesAutoresizingMaskIntoConstraints = false
-        image.image = UIImage(named: "trackerHolder")
+        return stackView
+    }()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupAppearance()
+    }
+    
+    func setupAppearance() {
+        title = "Категория"
+        view.backgroundColor = .ypWhite
+        navigationItem.hidesBackButton = true
         stackView.addArrangedSubview(image)
-        
-        
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Привычки и события можно объединить по смыслу"
-        label.numberOfLines = 0
-        label.font = .systemFont(ofSize: 12, weight: .medium)
         stackView.addArrangedSubview(label)
-        
+        view.addSubview(stackView)
+        view.addSubview(button)
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             image.heightAnchor.constraint(equalToConstant: 80),
-            image.widthAnchor.constraint(equalToConstant: 80)
-        ])
-    }
-        
-    func addButtom() {
-        let button = UIButton()
-        button.setTitle("Добавить категорию", for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 16
-        button.layer.masksToBounds = true
-        button.backgroundColor = .ypBlack
-        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        button.setTitleColor(.ypWhite, for: .normal)
-        
-        view.addSubview(button)
-        
-        NSLayoutConstraint.activate([
+            image.widthAnchor.constraint(equalToConstant: 80),
+            
             button.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             button.heightAnchor.constraint(equalToConstant: 60),
             button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
         ])
-        
-        button.addTarget(self, action: #selector(goToAddNewCategory), for: .touchUpInside)
     }
     
     @objc func goToAddNewCategory() {
@@ -82,8 +64,4 @@ class CategoryViewController: UIViewController {
         let addNewCategory = AddNewCategoryViewController()
         navigationController?.pushViewController(addNewCategory, animated: true)
     }
-    
 }
-
-
-
