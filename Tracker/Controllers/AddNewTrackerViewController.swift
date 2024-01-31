@@ -17,7 +17,7 @@ final class AddNewTrackerViewController: UIViewController {
     
     private lazy var newEventButton: UIButton = {
         let newEventButton = TrackerBigButton(title: "Нерегулярное событие")
-        newEventButton.addTarget(self, action: #selector(makeNewHabit), for: .touchUpInside)
+        newEventButton.addTarget(self, action: #selector(makeNewEvent), for: .touchUpInside)
         return newEventButton
     }()
     
@@ -50,18 +50,29 @@ final class AddNewTrackerViewController: UIViewController {
     }
       
     @objc func makeNewHabit() {
-            print("Новая привычка")
             let newTrackerVC = NewHabitViewController()
             let navController = UINavigationController(rootViewController: newTrackerVC)
-            navController.modalPresentationStyle = .popover
-            present(navController, animated: true, completion: nil)
+            present(navController, animated: true)
         }
     
     @objc func makeNewEvent() {
-            print("Новое нерегуляроное событие")
             let newTrackerVC = NewEventViewController()
             let navController = UINavigationController(rootViewController: newTrackerVC)
-            navController.modalPresentationStyle = .popover
-            present(navController, animated: true, completion: nil)
+            present(navController, animated: true)
         }
     }
+    
+    
+//    @objc func makeNewHabit() {
+//        let newTrackerVC = NewHabitViewController()
+//        present(newTrackerVC, animated: true)
+//    }
+    
+    
+//@objc func makeNewEvent() {
+//            let newEventVC = NewEventViewController()
+//            let navController = UINavigationController(rootViewController: newEventVC)
+//            navController.modalPresentationStyle = .popover
+//            present(navController, animated: true)
+//        }
+//    }

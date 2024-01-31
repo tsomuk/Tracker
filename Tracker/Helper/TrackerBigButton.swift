@@ -9,6 +9,7 @@ import UIKit
 
 final class TrackerBigButton: UIButton {
     
+//    init(title: String, action: Selector) {
     init(title: String) {
         super.init(frame: .zero)
         self.setTitle(title, for: .normal)

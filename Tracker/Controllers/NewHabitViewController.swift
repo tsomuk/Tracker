@@ -9,9 +9,32 @@ import UIKit
 
 final class NewHabitViewController: UIViewController {
 
+    
+    let trackerRepo = TrackerRepo.shared
+    
     private let tableList = ["Категория", "Расписание"]
+    private var selectedCategory: TrackerCategory?
     private let emojiList = ["🙂","😻","🌺","🐶","❤️","😇","😡","🥶","🤔","🙌","🍔","🥦","🏓","🥇","🎸","🏝","😪"]
-    private let colorList: [UIColor] = [.ypColor1,.ypColor2,.ypColor3,.ypColor4,.ypColor5,.ypColor6,.ypColor7,.ypColor8,.ypColor9,.ypColor10,.ypColor11,.ypColor12,.ypColor13,.ypColor14,.ypColor15,.ypColor16,.ypColor17,.ypColor18]
+    private let colorList: [UIColor] = [
+        .ypColor1,
+        .ypColor2,
+        .ypColor3,
+        .ypColor4,
+        .ypColor5,
+        .ypColor6,
+        .ypColor7,
+        .ypColor8,
+        .ypColor9,
+        .ypColor10,
+        .ypColor11,
+        .ypColor12,
+        .ypColor13,
+        .ypColor14,
+        .ypColor15,
+        .ypColor16,
+        .ypColor17,
+        .ypColor18
+    ]
     
     private let textField = TrackerTextField(placeHolder: "Введите название трекера")
     
@@ -46,10 +69,12 @@ final class NewHabitViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupAppearance()
+        textField.delegate = self
+        self.tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "cell")
     }
     
     private lazy var stackView: UIStackView = {
-        let stackView = UIStackView()
+        let stackView = UIStackView(arrangedSubviews: [cancelButton, createButton])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
@@ -58,22 +83,15 @@ final class NewHabitViewController: UIViewController {
     }()
     
     private lazy var tableView: UITableView = {
-        let tableView = UITableView()
+        let tableView = TrackerTable()
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.layer.cornerRadius = 16
-        tableView.rowHeight = 75
-        tableView.backgroundColor = .ypBackground
-        tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
     
     func setupAppearance() {
         title = "Новая привычка"
         view.backgroundColor = .ypWhite
-      
-        stackView.addArrangedSubview(cancelButton)
-        stackView.addArrangedSubview(createButton)
         view.addSubview(textField)
         view.addSubview(stackView)
         view.addSubview(tableView)
@@ -103,6 +121,9 @@ final class NewHabitViewController: UIViewController {
     }
     @objc func create() {
         print("create")
+        let newTracker = Tracker(id: UUID(), title: textField.text!, color: .ypColor12, emoji: "☠️", schedule: nil)
+        print("newTracker", newTracker)
+        trackerRepo.createNewTracker(tracker: newTracker)
     }
 }
 
@@ -112,10 +133,18 @@ extension NewHabitViewController : UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
-        cell.textLabel?.text = tableList[indexPath.row]
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
         cell.accessoryType = .disclosureIndicator
         cell.backgroundColor = .ypBackground
+        let item = "\(tableList[indexPath.row])"
+        cell.textLabel?.text = item
+        if item == "Категория" {
+            cell.detailTextLabel?.text = selectedCategory?.title.rawValue
+        }
+        if item == "Расписание" {
+            
+        }
+        
         return cell
     }
     
@@ -126,7 +155,9 @@ extension NewHabitViewController : UITableViewDelegate, UITableViewDataSource {
         
         if selectedItem == "Категория" {
             let categotyVC = CategoryViewController()
-            navigationController?.pushViewController(categotyVC, animated: true)
+            categotyVC.delegate = self
+            let navigatonVC = UINavigationController(rootViewController: categotyVC)
+            present(navigatonVC, animated: true)
         }
         
         if selectedItem == "Расписание" {
@@ -134,4 +165,31 @@ extension NewHabitViewController : UITableViewDelegate, UITableViewDataSource {
             navigationController?.pushViewController(scheduleVC, animated: true)
         }
     }
+}
+
+extension NewHabitViewController: UITextFieldDelegate {
+    
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        if textField.text != "" {
+            return true
+        } else {
+            textField.placeholder = "Название не может быть пустым"
+            return false
+        }
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.endEditing(true)
+        print(textField.text!)
+        return true
+    }
+}
+
+extension NewHabitViewController: CategoryViewControllerDelegate {
+    func categoryScreen(_ screen: CategoryViewController, didSelectedCategory category: TrackerCategory) {
+        selectedCategory = category
+        tableView.reloadData()
+    }
+    
+    
 }

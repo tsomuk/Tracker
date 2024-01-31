@@ -9,13 +9,7 @@ import UIKit
 
 final class TrackerViewController: UIViewController {
     
-    var categories: [TrackerCategory] = []
-    
-    private let trackerList : [String] = ["Выучить Swift", "Найти работу", "Выпить пива"]
-//    private let trackerList : [String] = []
-    private let daysList = ["5 дней", "3 дня", "6 дней"]
-    private let emojiList = ["🧑🏻‍💻", "💼", "🍺"]
-    private let colorList : [UIColor] = [.ypColor3, .ypColor11, .ypColor18]
+    private let trackerRepo = TrackerRepo()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,7 +18,7 @@ final class TrackerViewController: UIViewController {
     }
     
     private func mainScreenContent() {
-        if trackerList.isEmpty {
+        if trackerRepo.checkIsTrackerRepoEmpry() {
             addHolderView()
         } else {
             addCollectionView()
@@ -45,11 +39,13 @@ final class TrackerViewController: UIViewController {
         view.backgroundColor = .ypWhite
         
         // Plus Button
+        
         let plusButton = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(plusButtonTapped))
         plusButton.tintColor = .ypBlack
         navigationItem.leftBarButtonItem = plusButton
         
         // Search Controller
+        
         let searchController = UISearchController()
         navigationItem.searchController = searchController
         searchController.searchBar.placeholder = "Поиск"
@@ -68,6 +64,7 @@ final class TrackerViewController: UIViewController {
     }
     
     // UICollection View
+    
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -78,7 +75,7 @@ final class TrackerViewController: UIViewController {
         collectionView.delegate = self
         collectionView.showsVerticalScrollIndicator = false
         collectionView.register(TrackerCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
-        collectionView.register(TrackerCollectionReusableView.self,
+        collectionView.register(TrackerCollectionHeader.self,
                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                 withReuseIdentifier: "header")
         return collectionView
@@ -86,6 +83,7 @@ final class TrackerViewController: UIViewController {
     
     
     // Vertical Stack with holder image and lable
+    
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -104,8 +102,6 @@ final class TrackerViewController: UIViewController {
     
     private let label = TrackerTextLabel(text: "Что будем отслеживать?", fontSize: 12, fontWeight: .medium)
     
-
-    
     private func addHolderView() {
         stackView.addArrangedSubview(image)
         stackView.addArrangedSubview(label)
@@ -121,31 +117,52 @@ final class TrackerViewController: UIViewController {
     
     @objc func plusButtonTapped() {
         let addNewTrackerVC = AddNewTrackerViewController()
-        let navController = UINavigationController(rootViewController: addNewTrackerVC)
-        navController.modalPresentationStyle = .popover
-        present(navController, animated: true, completion: nil)
+        let addNavController = UINavigationController(rootViewController: addNewTrackerVC)
+        present(addNavController, animated: true)
     }
 }
 
+//@objc func plusButtonTapped() {
+//    let addNewTrackerVC = AddNewTrackerViewController()
+//    present(addNewTrackerVC, animated: true)
+//}
+
+
 extension TrackerViewController: UICollectionViewDataSource {
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        trackerList.count
+    
+    // Numbers of section
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        trackerRepo.getNumberOfCategories()
     }
+    
+    
+    // Numbers of items in section
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        trackerRepo.getNumberOfItemsInSection(section: section)
+    }
+    
+    
+    
+    
+    // Configuration cell
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? TrackerCollectionViewCell else { return UICollectionViewCell() }
-        cell.configurePrimaryColor(colorList[indexPath.item])
-        cell.configureEmojiLabel(emojiList[indexPath.item])
-        cell.configureLabel(trackerList[indexPath.item])
-        cell.configureDayLabel(daysList[indexPath.item])
+        let tracker = trackerRepo.getTrackerDetails(section: indexPath.section, item: indexPath.item)
+        let dayCounter = trackerRepo.getDaysCounter(section: 1, item: indexPath.item)
+        cell.configureCell(tracker: tracker, dayCount: dayCounter)
         return cell
     }
-    //header
+    
+    // Header
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! TrackerCollectionReusableView
-        view.configureTitle("Полезные привычки")
+        guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as? TrackerCollectionHeader else { return UICollectionReusableView() }
+        let title = trackerRepo.getTitleForSection(sectionNumber: indexPath.section)
+        view.configureTitle(title)
         return view
     }
 }
@@ -153,6 +170,7 @@ extension TrackerViewController: UICollectionViewDataSource {
 extension TrackerViewController: UICollectionViewDelegateFlowLayout {
     
     // Size of the cell
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let itemCount : CGFloat = 2
         let space: CGFloat = 9
@@ -161,7 +179,8 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
         return CGSize(width: width , height: height)
     }
     
-    //Offsets
+    // Offsets
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 5
     }
@@ -173,11 +192,13 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)
     }
-    //header
+    
+    // Header size
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-            
+        
         let headerSize = CGSize(width: view.frame.width, height: 30)
         return headerSize
-        }
     }
+}
 

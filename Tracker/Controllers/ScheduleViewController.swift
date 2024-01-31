@@ -11,7 +11,11 @@ class ScheduleViewController: UIViewController {
     
     private let daysOfWeek = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
     private var selectedDays: [Bool] = [false, false, false, false, false, false, false]
-    private let button = TrackerBigButton(title: "Готово")
+    private lazy var button: UIButton = {
+        let button = TrackerBigButton(title: "Готово")
+        button.addTarget(self, action: #selector(dismissFunc), for: .touchUpInside)
+        return button
+    }()
   
     private lazy var tableView: UITableView = {
         let tableView = UITableView()

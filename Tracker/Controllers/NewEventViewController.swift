@@ -47,6 +47,7 @@ class NewEventViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupAppearance()
+        textField.delegate = self
     }
     
     private lazy var stackView: UIStackView = {
@@ -59,13 +60,9 @@ class NewEventViewController: UIViewController {
     }()
     
     private lazy var tableView: UITableView = {
-        let tableView = UITableView()
+        let tableView = TrackerTable()
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.layer.cornerRadius = 16
-        tableView.rowHeight = 75
-        tableView.backgroundColor = .ypBackground
-        tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
     
@@ -113,6 +110,7 @@ extension NewEventViewController : UITableViewDelegate, UITableViewDataSource {
         return tableList.count
     }
     
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
         cell.textLabel?.text = tableList[indexPath.row]
@@ -126,7 +124,25 @@ extension NewEventViewController : UITableViewDelegate, UITableViewDataSource {
         let selectedItem = tableList[indexPath.row]
         if selectedItem == "Категория" {
             let categotyVC = CategoryViewController()
-            navigationController?.pushViewController(categotyVC, animated: true)
+            present(categotyVC, animated: true)
         }
+    }
+}
+
+extension NewEventViewController: UITextFieldDelegate {
+    
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        if textField.text != "" {
+            return true
+        } else {
+            textField.placeholder = "Название не может быть пустым"
+            return false
+        }
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.endEditing(true)
+        print(textField.text!)
+        return true
     }
 }

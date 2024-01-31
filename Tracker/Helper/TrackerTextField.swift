@@ -9,11 +9,10 @@ import UIKit
 
 final class TrackerTextField: UITextField {
     
-    
     init(placeHolder: String) {
         super.init(frame: .zero)
         self.backgroundColor = .ypBackground
-        self.textColor = .ypGray
+        self.textColor = .ypBlack
         self.placeholder = placeHolder
         self.addPaddingToTextField()
         self.layer.cornerRadius = 16
@@ -24,12 +23,4 @@ final class TrackerTextField: UITextField {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    
-    
-    
-    
-    
-    
 }
-

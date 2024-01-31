@@ -36,7 +36,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.font = .systemFont(ofSize: 12, weight: .medium)
-        titleLabel.textColor = .ypBlack
+        titleLabel.textColor = .white
         titleLabel.numberOfLines = 2
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         return titleLabel
@@ -68,22 +68,22 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configureLabel(_ text: String) {
-        titleLabel.text = text
+//    func configureCell(title: String, emoji: String, dayCount: String, color: UIColor){
+//        titleLabel.text = title
+//        emojiLabel.text = emoji
+//        dayCounter.text = dayCount
+//        bodyView.backgroundColor = color
+//        plusButton.tintColor = color
+//    }
+    
+    func configureCell(tracker: Tracker, dayCount: String){
+        titleLabel.text = tracker.title
+        emojiLabel.text = tracker.emoji
+        dayCounter.text = dayCount
+        bodyView.backgroundColor = tracker.color
+        plusButton.tintColor = tracker.color
     }
     
-    func configureEmojiLabel(_ text: String) {
-        emojiLabel.text = text
-    }
-    
-    func configureDayLabel(_ text: String) {
-        dayCounter.text = text
-    }
-    
-    func configurePrimaryColor(_ color: UIColor) {
-        bodyView.backgroundColor = color
-        plusButton.tintColor = color
-    }
     
     func setupAppearance() {
         addSubview(bodyView)

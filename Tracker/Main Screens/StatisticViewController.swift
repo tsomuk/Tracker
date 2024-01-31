@@ -26,9 +26,9 @@ final class StatisticViewController: UIViewController {
     }
     
     private func addStatisticView() {
-        
+        debugPrint("📊 Статистика выводится на экран")
     }
-    
+  
     private func setupAppearance() {
         view.backgroundColor = .ypWhite
     }
@@ -52,8 +52,7 @@ final class StatisticViewController: UIViewController {
         stackView.addArrangedSubview(label)
         return stackView
     }()
-    
-//   var button : UIButton = TrackerBigButton(fontSize: 18, fontWeight: .heavy, title: "Кнопка")
+
     
     private func addHolderView() {
         view.addSubview(stackView)

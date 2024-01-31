@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TrackerCollectionReusableView: UICollectionReusableView {
+class TrackerCollectionHeader: UICollectionReusableView {
     
     lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
@@ -32,7 +32,6 @@ class TrackerCollectionReusableView: UICollectionReusableView {
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 28)
             
         ])
-        
     }
     
     func configureTitle(_ text: String) {

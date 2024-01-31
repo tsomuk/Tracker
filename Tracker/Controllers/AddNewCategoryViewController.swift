@@ -10,7 +10,6 @@ import UIKit
 class AddNewCategoryViewController: UIViewController {
     
     private var textField = TrackerTextField(placeHolder: "Введите название трекера")
-    
     private var button = TrackerBigButton(title: "Готово")
     
     override func viewDidLoad() {
@@ -41,9 +40,8 @@ class AddNewCategoryViewController: UIViewController {
         ])
     }
     
-
     @objc func addNewCaterory() {
         print("Add new category")
-//        navigationController?.popViewController(animated: true)
+        navigationController?.popViewController(animated: true)
     }
 }
