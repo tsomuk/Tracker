@@ -7,10 +7,19 @@
 
 import UIKit
 
+protocol ScheduleViewControllerDelegate: AnyObject {
+    func selectScheduleScreen(_ screen: ScheduleViewController, didSelectedDays schedule: [String])
+}
+
+
 class ScheduleViewController: UIViewController {
     
+    weak var delegate: ScheduleViewControllerDelegate?
+    
     private let daysOfWeek = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
-    private var selectedDays: [Bool] = [false, false, false, false, false, false, false]
+    private var selectedDaysSwitches: [Bool] = [false, false, false, false, false, false, false]
+    private var selectedDays : [String] = []
+    
     private lazy var button: UIButton = {
         let button = TrackerBigButton(title: "Готово")
         button.addTarget(self, action: #selector(dismissFunc), for: .touchUpInside)
@@ -27,6 +36,7 @@ class ScheduleViewController: UIViewController {
         let tableCount : CGFloat = CGFloat(daysOfWeek.count)
         tableView.heightAnchor.constraint(equalToConstant: tableView.rowHeight * tableCount).isActive = true
         tableView.allowsSelection = false
+        tableView.isScrollEnabled = false
         tableView.layer.cornerRadius = 16
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
@@ -57,6 +67,7 @@ class ScheduleViewController: UIViewController {
     
     @objc func dismissFunc() {
         print("готово")
+        delegate?.selectScheduleScreen(self, didSelectedDays: selectedDays)
         navigationController?.popViewController(animated: true)
     }
 }
@@ -80,7 +91,30 @@ extension ScheduleViewController : UITableViewDelegate, UITableViewDataSource {
     
     @objc func switchChanged(_ sender: UISwitch) {
         let index = sender.tag
-        selectedDays[index] = sender.isOn
-        print("День \(daysOfWeek[index]) выбран: \(sender.isOn)")
+        selectedDaysSwitches[index] = sender.isOn
+        switch index {
+        case 0:
+            selectedDays.append("Пн")
+        case 1:
+            selectedDays.append("Вт")
+        case 2:
+            selectedDays.append("Ср")
+        case 3:
+            selectedDays.append("Чт")
+        case 4:
+            selectedDays.append("Пт")
+        case 5:
+            selectedDays.append("Сб")
+        case 6:
+            selectedDays.append("Вск")
+        default:
+            print("Error")
+        }
+        
+        
+        print("🌻", selectedDays)
+        
+        
+//        print("День \(daysOfWeek[index]) выбран: \(sender.isOn)")
     }
 }

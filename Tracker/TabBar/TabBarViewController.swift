@@ -32,5 +32,4 @@ final class TabBarViewController: UITabBarController {
         
         setViewControllers([trackerNavigationController, statisticNavigationController], animated: true)
     }
-    
 }

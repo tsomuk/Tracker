@@ -80,12 +80,11 @@ final class TrackerViewController: UIViewController {
                                 withReuseIdentifier: "header")
         return collectionView
     }()
-    
-    
+
     // Vertical Stack with holder image and lable
     
     private lazy var stackView: UIStackView = {
-        let stackView = UIStackView()
+        let stackView = UIStackView(arrangedSubviews: [image, label])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.alignment = .center
@@ -103,8 +102,6 @@ final class TrackerViewController: UIViewController {
     private let label = TrackerTextLabel(text: "Что будем отслеживать?", fontSize: 12, fontWeight: .medium)
     
     private func addHolderView() {
-        stackView.addArrangedSubview(image)
-        stackView.addArrangedSubview(label)
         view.addSubview(stackView)
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
@@ -122,12 +119,6 @@ final class TrackerViewController: UIViewController {
     }
 }
 
-//@objc func plusButtonTapped() {
-//    let addNewTrackerVC = AddNewTrackerViewController()
-//    present(addNewTrackerVC, animated: true)
-//}
-
-
 extension TrackerViewController: UICollectionViewDataSource {
     
     
@@ -143,9 +134,6 @@ extension TrackerViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         trackerRepo.getNumberOfItemsInSection(section: section)
     }
-    
-    
-    
     
     // Configuration cell
     

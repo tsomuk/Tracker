@@ -43,22 +43,21 @@ final class StatisticViewController: UIViewController {
     private let label = TrackerTextLabel(text: "Анализировать пока нечего", fontSize: 12, fontWeight: .medium)
     
     private lazy var stackView: UIStackView = {
-        let stackView = UIStackView()
+        let stackView = UIStackView(arrangedSubviews: [image,label])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.spacing = 8
-        stackView.addArrangedSubview(image)
-        stackView.addArrangedSubview(label)
         return stackView
     }()
-
     
     private func addHolderView() {
         view.addSubview(stackView)
-        stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        image.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        image.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        NSLayoutConstraint.activate([
+            stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            image.heightAnchor.constraint(equalToConstant: 80),
+            image.widthAnchor.constraint(equalToConstant: 80)
+        ])
     }
 }

@@ -22,7 +22,7 @@ final class AddNewTrackerViewController: UIViewController {
     }()
     
     private lazy var vStack: UIStackView = {
-        let stack = UIStackView()
+        let stack = UIStackView(arrangedSubviews: [newHabitButton,newEventButton])
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .vertical
         stack.spacing = 16
@@ -37,8 +37,6 @@ final class AddNewTrackerViewController: UIViewController {
     private func setupAppearance() {
         title = "Создание трекера"
         view.backgroundColor = .ypWhite
-        vStack.addArrangedSubview(newHabitButton)
-        vStack.addArrangedSubview(newEventButton)
         view.addSubview(vStack)
         NSLayoutConstraint.activate([
             vStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
@@ -61,18 +59,3 @@ final class AddNewTrackerViewController: UIViewController {
             present(navController, animated: true)
         }
     }
-    
-    
-//    @objc func makeNewHabit() {
-//        let newTrackerVC = NewHabitViewController()
-//        present(newTrackerVC, animated: true)
-//    }
-    
-    
-//@objc func makeNewEvent() {
-//            let newEventVC = NewEventViewController()
-//            let navController = UINavigationController(rootViewController: newEventVC)
-//            navController.modalPresentationStyle = .popover
-//            present(navController, animated: true)
-//        }
-//    }

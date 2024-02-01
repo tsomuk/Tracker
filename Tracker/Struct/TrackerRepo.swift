@@ -19,9 +19,9 @@ final class TrackerRepo {
     private let daysList = ["5 дней", "3 дня", "7 дней"]
     
     
-#warning("FIX Int -> UUID")
+
     
-     var categoriesList = [TrackerCategory(title: .usefull, tracker: [
+      var categoriesList = [TrackerCategory(title: .usefull, tracker: [
         Tracker(id: UUID(), title: "Выучить Swift", color: .ypColor3, emoji: "🧑🏻‍💻", schedule: nil, category: .usefull),
         Tracker(id: UUID(), title: "Отправить 10 резюме", color: .ypColor11, emoji: "💼", schedule: nil, category: .usefull),
         Tracker(id: UUID(), title: "Выпить пива", color: .ypColor18, emoji: "🍺", schedule: nil, category: .usefull)
@@ -60,7 +60,7 @@ final class TrackerRepo {
         }
     }
     
-#warning("Tracker Number -> UUID ??")
+
     
     func getTrackerDetails(section: Int, item: Int) -> Tracker {
         categoriesList[section].tracker[item]

@@ -7,6 +7,12 @@
 
 import UIKit
 
+extension UICollectionViewCell {
+    func addSubviewsInCell(_ views: UIView...) {
+        views.forEach({addSubview($0)})
+    }
+}
+
 final class TrackerCollectionViewCell: UICollectionViewCell {
     
     lazy var bodyView: UIView = {
@@ -68,14 +74,6 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-//    func configureCell(title: String, emoji: String, dayCount: String, color: UIColor){
-//        titleLabel.text = title
-//        emojiLabel.text = emoji
-//        dayCounter.text = dayCount
-//        bodyView.backgroundColor = color
-//        plusButton.tintColor = color
-//    }
-    
     func configureCell(tracker: Tracker, dayCount: String){
         titleLabel.text = tracker.title
         emojiLabel.text = tracker.emoji
@@ -84,14 +82,8 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         plusButton.tintColor = tracker.color
     }
     
-    
     func setupAppearance() {
-        addSubview(bodyView)
-        addSubview(emojiView)
-        addSubview(emojiLabel)
-        addSubview(titleLabel)
-        addSubview(dayCounter)
-        addSubview(plusButton)
+        addSubviewsInCell(bodyView,emojiView,emojiLabel,titleLabel,dayCounter,plusButton)
         NSLayoutConstraint.activate([
             
             bodyView.heightAnchor.constraint(equalToConstant: 90),

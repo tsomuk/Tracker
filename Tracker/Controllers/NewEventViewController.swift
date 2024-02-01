@@ -14,6 +14,9 @@ class NewEventViewController: UIViewController {
     private let emojiList = ["🙂","😻","🌺","🐶","❤️","😇","😡","🥶","🤔","🙌","🍔","🥦","🏓","🥇","🎸","🏝","😪"]
     private let colorList: [UIColor] = [.ypColor1,.ypColor2,.ypColor3,.ypColor4,.ypColor5,.ypColor6,.ypColor7,.ypColor8,.ypColor9,.ypColor10,.ypColor11,.ypColor12,.ypColor13,.ypColor14,.ypColor15,.ypColor16,.ypColor17,.ypColor18]
     
+    private var enteredTrackerName: String?
+    private var selectedCategory : TrackerCategory?
+    
     private let textField = TrackerTextField(placeHolder: "Введите название трекера")
     
     private lazy var cancelButton: UIButton = {
@@ -37,6 +40,7 @@ class NewEventViewController: UIViewController {
         createButton.translatesAutoresizingMaskIntoConstraints = false
         createButton.layer.cornerRadius = 16
         createButton.layer.masksToBounds = true
+        createButton.isEnabled = false
         createButton.backgroundColor = .ypGray
         createButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         createButton.setTitleColor(.ypBlack, for: .normal)
@@ -67,7 +71,7 @@ class NewEventViewController: UIViewController {
     }()
     
     func setupAppearance() {
-        
+
         view.backgroundColor = .ypWhite
         title = "Новое нерегулярное событие"
         stackView.addArrangedSubview(cancelButton)
@@ -94,6 +98,15 @@ class NewEventViewController: UIViewController {
         ])
     }
     
+    func checkCreateButtonValidation() {
+        if selectedCategory != nil && enteredTrackerName != nil {
+            createButton.isEnabled = true
+            createButton.backgroundColor = .ypBlack
+            createButton.setTitleColor(.ypWhite, for: .normal)
+        }
+    }
+
+    
     @objc func cancel() {
         print("cancel")
         dismiss(animated: true)
@@ -112,10 +125,11 @@ extension NewEventViewController : UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
         cell.textLabel?.text = tableList[indexPath.row]
         cell.accessoryType = .disclosureIndicator
         cell.backgroundColor = .ypBackground
+        cell.detailTextLabel?.text = selectedCategory?.title.rawValue
         return cell
     }
     
@@ -124,6 +138,7 @@ extension NewEventViewController : UITableViewDelegate, UITableViewDataSource {
         let selectedItem = tableList[indexPath.row]
         if selectedItem == "Категория" {
             let categotyVC = CategoryViewController()
+            categotyVC.delegate = self
             present(categotyVC, animated: true)
         }
     }
@@ -142,7 +157,17 @@ extension NewEventViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.endEditing(true)
+        enteredTrackerName = textField.text
+        checkCreateButtonValidation()
         print(textField.text!)
         return true
+    }
+}
+
+extension NewEventViewController: CategoryViewControllerDelegate {
+    func categoryScreen(_ screen: CategoryViewController, didSelectedCategory category: TrackerCategory) {
+        selectedCategory = category
+        tableView.reloadData()
+        checkCreateButtonValidation()
     }
 }

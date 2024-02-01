@@ -14,6 +14,7 @@ class TrackerTable: UITableView {
         self.layer.cornerRadius = 16
         self.rowHeight = 75
         self.isScrollEnabled = false
+        self.showsVerticalScrollIndicator = false
         self.backgroundColor = .ypBackground
         self.translatesAutoresizingMaskIntoConstraints = false
     }

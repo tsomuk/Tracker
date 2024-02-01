@@ -7,13 +7,20 @@
 
 import UIKit
 
+extension UIView {
+    func addSubviews(_ views: UIView...) {
+        views.forEach({addSubview($0)})
+    }
+}
+
 final class NewHabitViewController: UIViewController {
 
-    
     let trackerRepo = TrackerRepo.shared
     
     private let tableList = ["Категория", "Расписание"]
     private var selectedCategory: TrackerCategory?
+    private var selectedSchedule: [String]?
+    
     private let emojiList = ["🙂","😻","🌺","🐶","❤️","😇","😡","🥶","🤔","🙌","🍔","🥦","🏓","🥇","🎸","🏝","😪"]
     private let colorList: [UIColor] = [
         .ypColor1,
@@ -70,7 +77,6 @@ final class NewHabitViewController: UIViewController {
         super.viewDidLoad()
         setupAppearance()
         textField.delegate = self
-        self.tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "cell")
     }
     
     private lazy var stackView: UIStackView = {
@@ -92,9 +98,7 @@ final class NewHabitViewController: UIViewController {
     func setupAppearance() {
         title = "Новая привычка"
         view.backgroundColor = .ypWhite
-        view.addSubview(textField)
-        view.addSubview(stackView)
-        view.addSubview(tableView)
+        view.addSubviews(textField,stackView,tableView)
         
         NSLayoutConstraint.activate([
             textField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
@@ -142,7 +146,7 @@ extension NewHabitViewController : UITableViewDelegate, UITableViewDataSource {
             cell.detailTextLabel?.text = selectedCategory?.title.rawValue
         }
         if item == "Расписание" {
-            
+            cell.detailTextLabel?.text = selectedSchedule?.description
         }
         
         return cell
@@ -162,6 +166,7 @@ extension NewHabitViewController : UITableViewDelegate, UITableViewDataSource {
         
         if selectedItem == "Расписание" {
             let scheduleVC = ScheduleViewController()
+            scheduleVC.delegate = self
             navigationController?.pushViewController(scheduleVC, animated: true)
         }
     }
@@ -190,6 +195,11 @@ extension NewHabitViewController: CategoryViewControllerDelegate {
         selectedCategory = category
         tableView.reloadData()
     }
-    
-    
+}
+
+extension NewHabitViewController: ScheduleViewControllerDelegate {
+    func selectScheduleScreen(_ screen: ScheduleViewController, didSelectedDays schedule: [String]) {
+        selectedSchedule = schedule
+        tableView.reloadData()
+    }
 }
