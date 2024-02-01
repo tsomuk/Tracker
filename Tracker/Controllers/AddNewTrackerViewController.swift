@@ -47,15 +47,19 @@ final class AddNewTrackerViewController: UIViewController {
         ])
     }
       
-    @objc func makeNewHabit() {
+    @objc func makeNewHabit(sender: UIButton) {
+        sender.showAnimation {
             let newTrackerVC = NewHabitViewController()
             let navController = UINavigationController(rootViewController: newTrackerVC)
-            present(navController, animated: true)
-        }
-    
-    @objc func makeNewEvent() {
-            let newTrackerVC = NewEventViewController()
-            let navController = UINavigationController(rootViewController: newTrackerVC)
-            present(navController, animated: true)
+            self.present(navController, animated: true)
         }
     }
+    
+    @objc func makeNewEvent(sender: UIButton) {
+        sender.showAnimation {
+            let newTrackerVC = NewEventViewController()
+            let navController = UINavigationController(rootViewController: newTrackerVC)
+            self.present(navController, animated: true)
+        }
+    }
+}
