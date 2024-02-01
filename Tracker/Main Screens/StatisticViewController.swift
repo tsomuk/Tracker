@@ -9,7 +9,21 @@ import UIKit
 
 final class StatisticViewController: UIViewController {
     
-    private let statisticData : [String] = []
+    private let statisticData : [String] = ["22"]
+    
+    let label1 = CustomStaticView(title: "34", subtitle: "Лучший период")
+    let label2 = CustomStaticView(title: "2", subtitle: "Идеальные дни")
+    let label3 = CustomStaticView(title: "6", subtitle: "Трекеров завершено")
+    let label4 = CustomStaticView(title: "3", subtitle: "Среднее значение")
+    
+    private lazy var stack: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [label1,label2,label3,label4])
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.axis = .vertical
+        stack.spacing = 12
+        return stack
+    }()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,9 +40,20 @@ final class StatisticViewController: UIViewController {
     }
     
     private func addStatisticView() {
-        debugPrint("📊 Статистика выводится на экран")
+        view.addSubview(stack)
+        NSLayoutConstraint.activate([
+            stack.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20),
+            stack.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20),
+            stack.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            
+            label1.heightAnchor.constraint(equalToConstant: 90),
+            label2.heightAnchor.constraint(equalToConstant: 90),
+            label3.heightAnchor.constraint(equalToConstant: 90),
+            label4.heightAnchor.constraint(equalToConstant: 90)
+        ])
     }
-  
+    
+    
     private func setupAppearance() {
         view.backgroundColor = .ypWhite
     }
