@@ -166,11 +166,11 @@ extension NewHabitViewController : UITableViewDelegate, UITableViewDataSource {
             cell.detailTextLabel?.textColor = .ypGray
         }
         if item == "Расписание" {
-            var text = ""
+            var text : [String] = []
             for day in selectedSchedule {
-                text += day.rawValue + ", "
+                text.append(day.rawValue)
             }
-            cell.detailTextLabel?.text = text
+            cell.detailTextLabel?.text = text.joined(separator: ", ")
             cell.detailTextLabel?.textColor = .ypGray
         }
         
@@ -179,6 +179,7 @@ extension NewHabitViewController : UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true) // Снимаем выделение ячейки
+    
         let selectedItem = tableList[indexPath.row]
         
         if selectedItem == "Категория" {
