@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		110C30362B6903D1003B8AD9 /* TrackerTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110C30352B6903D1003B8AD9 /* TrackerTable.swift */; };
-		110C30392B690961003B8AD9 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110C30382B690961003B8AD9 /* TableViewCell.swift */; };
 		11323F662B58F8ED0078EDC1 /* AddNewCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11323F652B58F8ED0078EDC1 /* AddNewCategoryViewController.swift */; };
 		115AADD22B6C4CD30044FD34 /* CustomStatisticView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115AADD12B6C4CD30044FD34 /* CustomStatisticView.swift */; };
 		115AADD42B6C50900044FD34 /* ButtonAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115AADD32B6C50900044FD34 /* ButtonAnimation.swift */; };
@@ -40,7 +39,6 @@
 
 /* Begin PBXFileReference section */
 		110C30352B6903D1003B8AD9 /* TrackerTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerTable.swift; sourceTree = "<group>"; };
-		110C30382B690961003B8AD9 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		11323F652B58F8ED0078EDC1 /* AddNewCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewCategoryViewController.swift; sourceTree = "<group>"; };
 		115AADD12B6C4CD30044FD34 /* CustomStatisticView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomStatisticView.swift; sourceTree = "<group>"; };
 		115AADD32B6C50900044FD34 /* ButtonAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonAnimation.swift; sourceTree = "<group>"; };
@@ -91,12 +89,12 @@
 			path = TabBar;
 			sourceTree = "<group>";
 		};
-		110C30372B690935003B8AD9 /* TableView */ = {
+		110C30372B690935003B8AD9 /* TableViewCell */ = {
 			isa = PBXGroup;
 			children = (
-				110C30382B690961003B8AD9 /* TableViewCell.swift */,
+				116247562B7E4AAA004B095B /* WeekDaysSelectCell.swift */,
 			);
-			path = TableView;
+			path = TableViewCell;
 			sourceTree = "<group>";
 		};
 		1198B9622B6401DA000A8B51 /* Main Screens */ = {
@@ -129,7 +127,7 @@
 			children = (
 				11ABAA422B4AAB17003F02BF /* Application */,
 				11B104942B4FF6F60058904F /* Struct */,
-				110C30372B690935003B8AD9 /* TableView */,
+				110C30372B690935003B8AD9 /* TableViewCell */,
 				11031C9B2B604543005107F6 /* TabBar */,
 				11E256C42B5D4E37004ED9CE /* TrackerCollection */,
 				1198B9622B6401DA000A8B51 /* Main Screens */,
@@ -159,7 +157,6 @@
 				11B105172B567C800058904F /* NewHabitViewController.swift */,
 				11B105152B567C670058904F /* NewEventViewController.swift */,
 				11B105272B58558D0058904F /* ScheduleViewController.swift */,
-				116247562B7E4AAA004B095B /* WeekDaysSelectCell.swift */,
 				11B105292B58568A0058904F /* CategoryViewController.swift */,
 				11323F652B58F8ED0078EDC1 /* AddNewCategoryViewController.swift */,
 			);
@@ -281,7 +278,6 @@
 				1198B9662B640798000A8B51 /* TrackerTextLabel.swift in Sources */,
 				11E256C62B5D4E68004ED9CE /* TrackerCollectionViewCell.swift in Sources */,
 				1198B9642B6403EC000A8B51 /* TrackerTextField.swift in Sources */,
-				110C30392B690961003B8AD9 /* TableViewCell.swift in Sources */,
 				11ABAA2E2B4A9855003F02BF /* TrackerViewController.swift in Sources */,
 				11B105282B58558D0058904F /* ScheduleViewController.swift in Sources */,
 				11B6C7092B65030300453158 /* TrackerRepo.swift in Sources */,

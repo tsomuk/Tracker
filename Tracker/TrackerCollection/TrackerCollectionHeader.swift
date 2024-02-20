@@ -37,5 +37,4 @@ class TrackerCollectionHeader: UICollectionReusableView {
     func configureTitle(_ text: String) {
         titleLabel.text = text
     }
-    
 }

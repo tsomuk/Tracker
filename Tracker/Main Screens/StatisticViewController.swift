@@ -24,7 +24,6 @@ final class StatisticViewController: UIViewController {
         return stack
     }()
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupAppearance()
@@ -52,7 +51,6 @@ final class StatisticViewController: UIViewController {
             label4.heightAnchor.constraint(equalToConstant: 90)
         ])
     }
-    
     
     private func setupAppearance() {
         view.backgroundColor = .ypWhite

@@ -74,7 +74,6 @@ class NewEventViewController: UIViewController {
     }()
     
     func setupAppearance() {
-
         view.backgroundColor = .ypWhite
         title = "Новое нерегулярное событие"
         stackView.addArrangedSubview(cancelButton)
@@ -108,7 +107,6 @@ class NewEventViewController: UIViewController {
             createButton.setTitleColor(.ypWhite, for: .normal)
         }
     }
-
     
     @objc func cancel(_ sender: UIButton) {
         sender.showAnimation {
@@ -137,7 +135,6 @@ extension NewEventViewController : UITableViewDelegate, UITableViewDataSource {
         return tableList.count
     }
     
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
         cell.accessoryType = .disclosureIndicator
@@ -152,9 +149,10 @@ extension NewEventViewController : UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
         let selectedItem = tableList[indexPath.row]
         if selectedItem == "Категория" {
-            let categotyVC = CategoryViewController()
-            categotyVC.delegate = self
-            present(categotyVC, animated: true)
+            let categoryViewController = CategoryViewController()
+            categoryViewController.delegate = self
+            let navigatonVC = UINavigationController(rootViewController: categoryViewController)
+            present(navigatonVC, animated: true)
         }
     }
 }

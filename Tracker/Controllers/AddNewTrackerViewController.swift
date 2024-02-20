@@ -14,7 +14,7 @@ protocol DismissProtocol: AnyObject {
 final class AddNewTrackerViewController: UIViewController {
     
     var delegate: reloadCollectionProtocol?
-
+    
     private lazy var newHabitButton: UIButton = {
         let newHabitButton = TrackerBigButton(title: "Привычка")
         newHabitButton.addTarget(self, action: #selector(makeNewHabit), for: .touchUpInside)
@@ -52,7 +52,7 @@ final class AddNewTrackerViewController: UIViewController {
             newEventButton.heightAnchor.constraint(equalToConstant: 60)
         ])
     }
-      
+    
     @objc func makeNewHabit(sender: UIButton) {
         sender.showAnimation {
             let newHabitViewController = NewHabitViewController()
@@ -72,13 +72,10 @@ final class AddNewTrackerViewController: UIViewController {
     }
 }
 
-
 extension AddNewTrackerViewController: DismissProtocol {
     func dismissView() {
         dismiss(animated: true) {
             self.delegate?.reloadCollection()
         }
     }
-    
-    
 }

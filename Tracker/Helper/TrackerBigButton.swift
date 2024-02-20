@@ -9,7 +9,6 @@ import UIKit
 
 final class TrackerBigButton: UIButton {
     
-//    init(title: String, action: Selector) {
     init(title: String) {
         super.init(frame: .zero)
         self.setTitle(title, for: .normal)
@@ -19,7 +18,6 @@ final class TrackerBigButton: UIButton {
         self.backgroundColor = .ypBlack
         self.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         self.setTitleColor(.ypWhite, for: .normal)
-//        self.addTarget(self, action: action, for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) {

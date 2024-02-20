@@ -20,7 +20,7 @@ class AddNewCategoryViewController: UIViewController {
     private func setupAppearance() {
         view.backgroundColor = .ypWhite
         
-        title = "Новая категория"
+        title = "Новая НЕ РЕАЛИЗОВАНА категория "
         navigationItem.hidesBackButton = true
         
         view.addSubview(button)

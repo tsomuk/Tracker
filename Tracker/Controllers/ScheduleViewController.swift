@@ -21,14 +21,13 @@ protocol SelectedScheduleDelegate: AnyObject {
     func selectScheduleScreen(_ screen: ScheduleViewController, didSelectedDays schedule: [Weekday])
 }
 
-
 class ScheduleViewController: UIViewController {
     
     weak var delegate: SelectedScheduleDelegate?
     
     private let daysOfWeek : [Weekday] = [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
     private let daysOfWeekUI = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
-
+    
     private var selectedDays : [Weekday] = []
     
     private lazy var button: UIButton = {
@@ -36,7 +35,7 @@ class ScheduleViewController: UIViewController {
         button.addTarget(self, action: #selector(dismissFunc), for: .touchUpInside)
         return button
     }()
-  
+    
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.delegate = self

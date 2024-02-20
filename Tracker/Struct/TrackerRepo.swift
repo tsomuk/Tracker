@@ -9,21 +9,19 @@ import UIKit
 
 enum CategoryList: String {
     case usefull = "Полезные привычки"
-//    case sport = "Спорт"
 }
 
 final class TrackerRepo {
     
     static let shared = TrackerRepo()
     
-    private var daysList = ["5 дней"]
+    private var daysList: [String] = []
     
-      var categoriesList = [TrackerCategory(title: .usefull, tracker: [
-        Tracker(id: UUID(), title: "Выучить Swift", color: .ypColor2, emoji: "🧑🏻‍💻", schedule: nil, category: .usefull),
-//        Tracker(id: UUID(), title: "Отправить 10 резюме", color: .ypColor11, emoji: "💼", schedule: nil, category: .usefull),
-//        Tracker(id: UUID(), title: "Выпить пива", color: .ypColor18, emoji: "🍺", schedule: nil, category: .usefull)
+    var categoriesList = [TrackerCategory(title: .usefull, tracker: [
+        //        Tracker(id: UUID(), title: "Выучить Swift", color: .ypColor2, emoji: "🧑🏻‍💻", schedule: nil, category: .usefull),
+        //        Tracker(id: UUID(), title: "Отправить 10 резюме", color: .ypColor11, emoji: "💼", schedule: nil, category: .usefull),
+        //        Tracker(id: UUID(), title: "Выпить пива", color: .ypColor18, emoji: "🍺", schedule: nil, category: .usefull)
     ])]
-    
     
     func createNewTracker(tracker: Tracker) {
         var trackers: [Tracker] = []
@@ -36,21 +34,17 @@ final class TrackerRepo {
         daysList.append("0 дней")
     }
     
-    
-    
     func createNewCategory(newCategoty: TrackerCategory) {
         categoriesList.append(newCategoty)
     }
     
     func checkIsTrackerRepoEmpry() -> Bool {
-        if categoriesList.isEmpty {
-            return true
-        } else {
-            return false
-        }
+        categoriesList[0].tracker.isEmpty
     }
     
-
+    func checkIsCategoryRepoEmpty() -> Bool {
+        categoriesList.isEmpty
+    }
     
     func getTrackerDetails(section: Int, item: Int) -> Tracker {
         categoriesList[section].tracker[item]

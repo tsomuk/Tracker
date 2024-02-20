@@ -63,5 +63,4 @@ final class WeekDaysSelectCell: UITableViewCell {
             onOffSwitch.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15)
         ])
     }
-    
 }

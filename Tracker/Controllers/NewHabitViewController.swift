@@ -130,8 +130,6 @@ final class NewHabitViewController: UIViewController {
         }
     }
     
-    
-    
     @objc func cancel(_ sender: UIButton) {
         sender.showAnimation {
             self.dismiss(animated: true)
@@ -181,13 +179,12 @@ extension NewHabitViewController : UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true) // Снимаем выделение ячейки
-        
         let selectedItem = tableList[indexPath.row]
         
         if selectedItem == "Категория" {
-            let categotyVC = CategoryViewController()
-            categotyVC.delegate = self
-            let navigatonVC = UINavigationController(rootViewController: categotyVC)
+            let categoryViewController = CategoryViewController()
+            categoryViewController.delegate = self
+            let navigatonVC = UINavigationController(rootViewController: categoryViewController)
             present(navigatonVC, animated: true)
         }
         

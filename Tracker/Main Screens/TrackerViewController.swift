@@ -84,7 +84,7 @@ final class TrackerViewController: UIViewController {
                                 withReuseIdentifier: "header")
         return collectionView
     }()
-
+    
     // Vertical Stack with holder image and lable
     
     private lazy var stackView: UIStackView = {
@@ -126,13 +126,11 @@ final class TrackerViewController: UIViewController {
 
 extension TrackerViewController: UICollectionViewDataSource {
     
-    
     // Numbers of section
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         trackerRepo.getNumberOfCategories()
     }
-    
     
     // Numbers of items in section
     
@@ -195,11 +193,9 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-
 extension TrackerViewController: reloadCollectionProtocol {
     func reloadCollection() {
+        mainScreenContent()
         collectionView.reloadData()
     }
-    
-    
 }
