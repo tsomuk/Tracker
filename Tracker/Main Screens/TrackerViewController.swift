@@ -7,9 +7,13 @@
 
 import UIKit
 
+protocol reloadCollectionProtocol: AnyObject {
+    func reloadCollection()
+}
+
 final class TrackerViewController: UIViewController {
     
-    private let trackerRepo = TrackerRepo()
+    private let trackerRepo = TrackerRepo.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -113,8 +117,9 @@ final class TrackerViewController: UIViewController {
     }
     
     @objc func plusButtonTapped() {
-        let addNewTrackerVC = AddNewTrackerViewController()
-        let addNavController = UINavigationController(rootViewController: addNewTrackerVC)
+        let addNewTrackerViewController = AddNewTrackerViewController()
+        addNewTrackerViewController.delegate = self
+        let addNavController = UINavigationController(rootViewController: addNewTrackerViewController)
         present(addNavController, animated: true)
     }
 }
@@ -190,3 +195,11 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
+
+extension TrackerViewController: reloadCollectionProtocol {
+    func reloadCollection() {
+        collectionView.reloadData()
+    }
+    
+    
+}

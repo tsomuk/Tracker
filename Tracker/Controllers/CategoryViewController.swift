@@ -17,10 +17,7 @@ class CategoryViewController: UIViewController {
     var trackerRepo = TrackerRepo.shared
     weak var delegate: CategoryViewControllerDelegate?
     
-//    private var categoryList: [String] = []
-//    private var categoryList: [String] = ["Спорт", "Полезные привычки"]
-    
-    
+
     private let label = TrackerTextLabel(text: "Привычки и события можно \nобъединить по смыслу", fontSize: 12, fontWeight: .medium)
     
     private lazy var button: UIButton = {

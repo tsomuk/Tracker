@@ -14,12 +14,14 @@ extension UIView {
 }
 
 final class NewHabitViewController: UIViewController {
-
-    let trackerRepo = TrackerRepo.shared
+    
+    private let trackerRepo = TrackerRepo.shared
+    private var enteredEventName: String?
+    var delegate: DismissProtocol?
     
     private let tableList = ["Категория", "Расписание"]
     private var selectedCategory: TrackerCategory?
-    private var selectedSchedule: [String]?
+    private var selectedSchedule: [Weekday] = []
     
     private let emojiList = ["🙂","😻","🌺","🐶","❤️","😇","😡","🥶","🤔","🙌","🍔","🥦","🏓","🥇","🎸","🏝","😪"]
     private let colorList: [UIColor] = [
@@ -66,6 +68,7 @@ final class NewHabitViewController: UIViewController {
         createButton.translatesAutoresizingMaskIntoConstraints = false
         createButton.layer.cornerRadius = 16
         createButton.layer.masksToBounds = true
+        createButton.isEnabled = false
         createButton.backgroundColor = .ypGray
         createButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         createButton.setTitleColor(.ypBlack, for: .normal)
@@ -118,16 +121,33 @@ final class NewHabitViewController: UIViewController {
         ])
     }
     
-    @objc func cancel() {
-        print("cancel")
-        dismiss(animated: true)
+    func checkCreateButtonValidation() {
         
+        if selectedCategory != nil && enteredEventName != nil && selectedSchedule.count > 0 {
+            createButton.isEnabled = true
+            createButton.backgroundColor = .ypBlack
+            createButton.setTitleColor(.ypWhite, for: .normal)
+        }
     }
-    @objc func create() {
-        print("create")
-        let newTracker = Tracker(id: UUID(), title: textField.text!, color: .ypColor12, emoji: "☠️", schedule: nil)
-        print("newTracker", newTracker)
+    
+    
+    
+    @objc func cancel(_ sender: UIButton) {
+        sender.showAnimation {
+            self.dismiss(animated: true)
+        }
+    }
+    
+    @objc func create(_ sender: UIButton) {
+        let newTracker = Tracker(id: UUID(),
+                                 title: enteredEventName ?? "",
+                                 color: .ypColor3,
+                                 emoji: "🍺",
+                                 schedule: Tracker.Schedule(schedule: selectedSchedule))
+        
         trackerRepo.createNewTracker(tracker: newTracker)
+        dismiss(animated: true)
+        self.delegate?.dismissView()
     }
 }
 
@@ -137,6 +157,7 @@ extension NewHabitViewController : UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
         cell.accessoryType = .disclosureIndicator
         cell.backgroundColor = .ypBackground
@@ -144,9 +165,15 @@ extension NewHabitViewController : UITableViewDelegate, UITableViewDataSource {
         cell.textLabel?.text = item
         if item == "Категория" {
             cell.detailTextLabel?.text = selectedCategory?.title.rawValue
+            cell.detailTextLabel?.textColor = .ypGray
         }
         if item == "Расписание" {
-            cell.detailTextLabel?.text = selectedSchedule?.description
+            var text = ""
+            for day in selectedSchedule {
+                text += day.rawValue + ", "
+            }
+            cell.detailTextLabel?.text = text
+            cell.detailTextLabel?.textColor = .ypGray
         }
         
         return cell
@@ -185,7 +212,8 @@ extension NewHabitViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.endEditing(true)
-        print(textField.text!)
+        enteredEventName = textField.text
+        checkCreateButtonValidation()
         return true
     }
 }
@@ -193,13 +221,15 @@ extension NewHabitViewController: UITextFieldDelegate {
 extension NewHabitViewController: CategoryViewControllerDelegate {
     func categoryScreen(_ screen: CategoryViewController, didSelectedCategory category: TrackerCategory) {
         selectedCategory = category
+        checkCreateButtonValidation()
         tableView.reloadData()
     }
 }
 
-extension NewHabitViewController: ScheduleViewControllerDelegate {
-    func selectScheduleScreen(_ screen: ScheduleViewController, didSelectedDays schedule: [String]) {
+extension NewHabitViewController: SelectedScheduleDelegate {
+    func selectScheduleScreen(_ screen: ScheduleViewController, didSelectedDays schedule: [Weekday]) {
         selectedSchedule = schedule
+        checkCreateButtonValidation()
         tableView.reloadData()
     }
 }

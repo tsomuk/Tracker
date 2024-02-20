@@ -18,6 +18,6 @@ struct Tracker {
     //    let daysCount: String
     
     struct Schedule {
-        
+        var schedule: [Weekday]?
     }
 }

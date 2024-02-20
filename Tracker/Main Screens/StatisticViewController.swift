@@ -11,10 +11,10 @@ final class StatisticViewController: UIViewController {
     
     private let statisticData : [String] = ["22"]
     
-    let label1 = CustomStaticView(title: "34", subtitle: "Лучший период")
-    let label2 = CustomStaticView(title: "2", subtitle: "Идеальные дни")
-    let label3 = CustomStaticView(title: "6", subtitle: "Трекеров завершено")
-    let label4 = CustomStaticView(title: "3", subtitle: "Среднее значение")
+    let label1 = CustomStatisticView(title: "34", subtitle: "Лучший период")
+    let label2 = CustomStatisticView(title: "2", subtitle: "Идеальные дни")
+    let label3 = CustomStatisticView(title: "6", subtitle: "Трекеров завершено")
+    let label4 = CustomStatisticView(title: "3", subtitle: "Среднее значение")
     
     private lazy var stack: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [label1,label2,label3,label4])

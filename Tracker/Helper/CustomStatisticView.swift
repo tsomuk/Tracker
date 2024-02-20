@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CustomStaticView: UIView {
+class CustomStatisticView: UIView {
     
     init(title: String, subtitle: String) {
         super.init(frame: .zero)
@@ -25,7 +25,7 @@ class CustomStaticView: UIView {
         let title = UILabel()
         title.translatesAutoresizingMaskIntoConstraints = false
         title.font = .systemFont(ofSize: 34, weight: .bold)
-        title.textColor = .white
+        title.textColor = .ypBlack
         return title
     }()
     
@@ -33,7 +33,7 @@ class CustomStaticView: UIView {
         let title = UILabel()
         title.translatesAutoresizingMaskIntoConstraints = false
         title.font = .systemFont(ofSize: 12, weight: .bold)
-        title.textColor = .white
+        title.textColor = .ypBlack
         return title
     }()
     

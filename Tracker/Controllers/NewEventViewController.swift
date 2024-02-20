@@ -10,12 +10,15 @@ import UIKit
 
 class NewEventViewController: UIViewController {
     
+    var delegate: DismissProtocol?
+    
     private let tableList = ["Категория"]
     private let emojiList = ["🙂","😻","🌺","🐶","❤️","😇","😡","🥶","🤔","🙌","🍔","🥦","🏓","🥇","🎸","🏝","😪"]
     private let colorList: [UIColor] = [.ypColor1,.ypColor2,.ypColor3,.ypColor4,.ypColor5,.ypColor6,.ypColor7,.ypColor8,.ypColor9,.ypColor10,.ypColor11,.ypColor12,.ypColor13,.ypColor14,.ypColor15,.ypColor16,.ypColor17,.ypColor18]
     
     private var enteredTrackerName: String?
     private var selectedCategory : TrackerCategory?
+    let trackerRepo = TrackerRepo.shared
     
     private let textField = TrackerTextField(placeHolder: "Введите название трекера")
     
@@ -107,13 +110,24 @@ class NewEventViewController: UIViewController {
     }
 
     
-    @objc func cancel() {
-        print("cancel")
-        dismiss(animated: true)
-        
+    @objc func cancel(_ sender: UIButton) {
+        sender.showAnimation {
+            self.dismiss(animated: true)
+        }
     }
-    @objc func create() {
-        print("create")
+    
+    @objc func create(_ sender: UIButton) {
+        sender.showAnimation {
+            let newTracker = Tracker(id: UUID(),
+                                     title: self.enteredTrackerName ?? "",
+                                     color: .ypColor5,
+                                     emoji: "☠️",
+                                     schedule: nil)
+            
+            self.trackerRepo.createNewTracker(tracker: newTracker)
+            self.dismiss(animated: true)
+            self.delegate?.dismissView()
+        }
     }
 }
 
@@ -126,10 +140,11 @@ extension NewEventViewController : UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
-        cell.textLabel?.text = tableList[indexPath.row]
         cell.accessoryType = .disclosureIndicator
         cell.backgroundColor = .ypBackground
+        cell.textLabel?.text = tableList[indexPath.row]
         cell.detailTextLabel?.text = selectedCategory?.title.rawValue
+        cell.detailTextLabel?.textColor = .ypGray
         return cell
     }
     
@@ -159,7 +174,6 @@ extension NewEventViewController: UITextFieldDelegate {
         textField.endEditing(true)
         enteredTrackerName = textField.text
         checkCreateButtonValidation()
-        print(textField.text!)
         return true
     }
 }
