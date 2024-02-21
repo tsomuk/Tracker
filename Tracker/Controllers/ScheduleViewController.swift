@@ -21,7 +21,7 @@ protocol SelectedScheduleDelegate: AnyObject {
     func selectScheduleScreen(_ screen: ScheduleViewController, didSelectedDays schedule: [Weekday])
 }
 
-class ScheduleViewController: UIViewController {
+final class ScheduleViewController: UIViewController {
     
     weak var delegate: SelectedScheduleDelegate?
     
@@ -75,7 +75,7 @@ class ScheduleViewController: UIViewController {
         ])
     }
     
-    @objc func dismissFunc(_ sender: UIButton) {
+    @objc private func dismissFunc(_ sender: UIButton) {
         sender.showAnimation {
             self.delegate?.selectScheduleScreen(self, didSelectedDays: self.selectedDays)
             self.navigationController?.popViewController(animated: true)

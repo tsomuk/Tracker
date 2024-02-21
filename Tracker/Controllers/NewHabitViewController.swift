@@ -17,7 +17,7 @@ final class NewHabitViewController: UIViewController {
     
     private let trackerRepo = TrackerRepo.shared
     private var enteredEventName: String?
-    var delegate: DismissProtocol?
+    weak  var delegate: DismissProtocol?
     
     private let tableList = ["Категория", "Расписание"]
     private var selectedCategory: TrackerCategory?
@@ -130,18 +130,19 @@ final class NewHabitViewController: UIViewController {
         }
     }
     
-    @objc func cancel(_ sender: UIButton) {
+    @objc private func cancel(_ sender: UIButton) {
         sender.showAnimation {
             self.dismiss(animated: true)
         }
     }
     
-    @objc func create(_ sender: UIButton) {
+    @objc private func create(_ sender: UIButton) {
         let newTracker = Tracker(id: UUID(),
                                  title: enteredEventName ?? "",
                                  color: .ypColor3,
                                  emoji: "🍺",
-                                 schedule: Tracker.Schedule(schedule: selectedSchedule))
+                                 schedule: Tracker.Schedule(schedule: selectedSchedule),
+                                 category: .usefull)
         
         trackerRepo.createNewTracker(tracker: newTracker)
         dismiss(animated: true)

@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol reloadCollectionProtocol: AnyObject {
+protocol ReloadCollectionProtocol: AnyObject {
     func reloadCollection()
 }
 
@@ -30,6 +30,8 @@ final class TrackerViewController: UIViewController {
         datePicker.addTarget(self, action: #selector(pickerChanged), for: .valueChanged)
         return datePicker
     }()
+    
+    let currentDate = Calendar.current
     
     // UICollection View
     private lazy var collectionView: UICollectionView = {
@@ -68,15 +70,12 @@ final class TrackerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupAppearance()
-        mainScreenContent()
+        mainScreenContent(Date())
     }
     
-    private func mainScreenContent() {
-        if trackerRepo.checkIsTrackerRepoEmpry() {
-            addHolderView()
-        } else {
-            addCollectionView()
-        }
+    private func mainScreenContent(_ date: Date) {
+        trackerRepo.checkIsTrackerRepoEmpry() ? addHolderView() : addCollectionView()
+        showTrackersInDate(date)
     }
     
     private func addCollectionView() {
@@ -127,10 +126,16 @@ final class TrackerViewController: UIViewController {
     }
     
     @objc private func pickerChanged() {
-//        let calendar = Calendar.current
-//        let dataPicker = datePicker.date
-//        let weekday = calendar.component(.weekday, from: dataPicker)
+        mainScreenContent(datePicker.date)
     }
+    
+    private func showTrackersInDate(_ date: Date) {
+        trackerRepo.removeAllVisibleCategory()
+        let weekday = currentDate.component(.weekday, from: date)
+        trackerRepo.appendTrackeInVisibleTrackers(weekday: weekday)
+        collectionView.reloadData()
+    }
+    
 }
 
 extension TrackerViewController: UICollectionViewDataSource {
@@ -225,9 +230,8 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension TrackerViewController: reloadCollectionProtocol {
+extension TrackerViewController: ReloadCollectionProtocol {
     func reloadCollection() {
-        mainScreenContent()
-        collectionView.reloadData()
+        mainScreenContent(datePicker.date)
     }
 }

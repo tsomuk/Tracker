@@ -14,14 +14,55 @@ enum CategoryList: String {
 final class TrackerRepo {
     
     static let shared = TrackerRepo()
+    private init() {}
 
-    private var visibleCategoty: [TrackerCategory] = []
+    var visibleCategoty: [TrackerCategory] = []
     
     var categoriesList = [TrackerCategory(title: .usefull, tracker: [
 //                Tracker(id: UUID(), title: "Выучить Swift", color: .ypColor2, emoji: "🧑🏻‍💻", schedule: nil, category: .usefull),
 //                Tracker(id: UUID(), title: "Отправить 10 резюме", color: .ypColor11, emoji: "💼", schedule: nil, category: .usefull),
 //                Tracker(id: UUID(), title: "Выпить пива", color: .ypColor18, emoji: "🍺", schedule: nil, category: .usefull)
     ])]
+    
+    func appendTrackeInVisibleTrackers(weekday: Int) {
+        var weekDayCase: Weekday = .monday
+        
+        switch weekday {
+        case 1:
+            weekDayCase = .sunday
+        case 2:
+            weekDayCase = .monday
+        case 3:
+            weekDayCase = .tuesday
+        case 4:
+            weekDayCase = .wednesday
+        case 5:
+            weekDayCase = .thursday
+        case 6:
+            weekDayCase = .friday
+        case 7:
+            weekDayCase = .saturday
+        default:
+            break
+        }
+        
+        var trackers = [Tracker]()
+        
+        for tracker in categoriesList.first!.tracker {
+            for day in tracker.schedule!.schedule! {
+                if day == weekDayCase {
+                    trackers.append(tracker)
+                }
+            }
+        }
+        
+        let category = TrackerCategory(title: .usefull, tracker: trackers)
+        visibleCategoty.append(category)
+    }
+    
+    func removeAllVisibleCategory() {
+        visibleCategoty.removeAll()
+    }
     
     func createNewTracker(tracker: Tracker) {
         var trackers: [Tracker] = []
@@ -38,27 +79,26 @@ final class TrackerRepo {
     }
     
     func checkIsTrackerRepoEmpry() -> Bool {
-        categoriesList[0].tracker.isEmpty
+        visibleCategoty.isEmpty
     }
     
     func checkIsCategoryRepoEmpty() -> Bool {
-        categoriesList.isEmpty
+        visibleCategoty.isEmpty
     }
     
     func getTrackerDetails(section: Int, item: Int) -> Tracker {
-        categoriesList[section].tracker[item]
+        visibleCategoty[section].tracker[item]
     }
     
     func getNumberOfCategories() -> Int {
-        categoriesList.count
+        visibleCategoty.count
     }
     
     func getNumberOfItemsInSection(section: Int) -> Int {
-        categoriesList[section].tracker.count
+        visibleCategoty[section].tracker.count
     }
     
     func getTitleForSection(sectionNumber: Int) -> String {
-        categoriesList[sectionNumber].title.rawValue
+        visibleCategoty[sectionNumber].title.rawValue
     }
 }
-

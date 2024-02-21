@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CustomStatisticView: UIView {
+final class CustomStatisticView: UIView {
     
     init(title: String, subtitle: String) {
         super.init(frame: .zero)

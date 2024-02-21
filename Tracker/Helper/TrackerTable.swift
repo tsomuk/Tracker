@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TrackerTable: UITableView {
+final class TrackerTable: UITableView {
     
     init() {
         super.init(frame: .zero, style: .plain)

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TrackerCollectionHeader: UICollectionReusableView {
+final class TrackerCollectionHeader: UICollectionReusableView {
     
     lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()

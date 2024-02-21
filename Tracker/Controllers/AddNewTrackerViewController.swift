@@ -13,7 +13,7 @@ protocol DismissProtocol: AnyObject {
 
 final class AddNewTrackerViewController: UIViewController {
     
-    var delegate: reloadCollectionProtocol?
+    weak var delegate: ReloadCollectionProtocol?
     
     private lazy var newHabitButton: UIButton = {
         let newHabitButton = TrackerBigButton(title: "Привычка")
@@ -53,7 +53,7 @@ final class AddNewTrackerViewController: UIViewController {
         ])
     }
     
-    @objc func makeNewHabit(sender: UIButton) {
+    @objc private func makeNewHabit(sender: UIButton) {
         sender.showAnimation {
             let newHabitViewController = NewHabitViewController()
             newHabitViewController.delegate = self
@@ -62,7 +62,7 @@ final class AddNewTrackerViewController: UIViewController {
         }
     }
     
-    @objc func makeNewEvent(sender: UIButton) {
+    @objc private func makeNewEvent(sender: UIButton) {
         sender.showAnimation {
             let newEventViewController = NewEventViewController()
             newEventViewController.delegate = self

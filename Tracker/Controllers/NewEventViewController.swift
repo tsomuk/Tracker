@@ -8,9 +8,9 @@
 
 import UIKit
 
-class NewEventViewController: UIViewController {
+final class NewEventViewController: UIViewController {
     
-    var delegate: DismissProtocol?
+    weak var delegate: DismissProtocol?
     
     private let tableList = ["Категория"]
     private let emojiList = ["🙂","😻","🌺","🐶","❤️","😇","😡","🥶","🤔","🙌","🍔","🥦","🏓","🥇","🎸","🏝","😪"]
@@ -108,19 +108,20 @@ class NewEventViewController: UIViewController {
         }
     }
     
-    @objc func cancel(_ sender: UIButton) {
+    @objc private func cancel(_ sender: UIButton) {
         sender.showAnimation {
             self.dismiss(animated: true)
         }
     }
     
-    @objc func create(_ sender: UIButton) {
+    @objc private func create(_ sender: UIButton) {
         sender.showAnimation {
             let newTracker = Tracker(id: UUID(),
                                      title: self.enteredTrackerName ?? "",
                                      color: .ypColor5,
                                      emoji: "☠️",
-                                     schedule: nil)
+                                     schedule: nil,
+                                     category: .usefull)
             
             self.trackerRepo.createNewTracker(tracker: newTracker)
             self.dismiss(animated: true)

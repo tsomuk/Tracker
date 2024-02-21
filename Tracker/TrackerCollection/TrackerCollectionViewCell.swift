@@ -12,13 +12,6 @@ protocol TrackerDoneDelegate: AnyObject {
     func uncompleteTracker(id: UUID, indexPath: IndexPath)
 }
 
-
-extension UICollectionViewCell {
-    func addSubviewsInCell(_ views: UIView...) {
-        views.forEach({addSubview($0)})
-    }
-}
-
 final class TrackerCollectionViewCell: UICollectionViewCell {
     
     lazy var bodyView: UIView = {

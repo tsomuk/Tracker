@@ -35,6 +35,7 @@
 		11B1052A2B58568A0058904F /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B105292B58568A0058904F /* CategoryViewController.swift */; };
 		11B6C7092B65030300453158 /* TrackerRepo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B6C7082B65030300453158 /* TrackerRepo.swift */; };
 		11E256C62B5D4E68004ED9CE /* TrackerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E256C52B5D4E68004ED9CE /* TrackerCollectionViewCell.swift */; };
+		11F3C7642B867F4800F77FF3 /* CollectionCellHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F3C7632B867F4800F77FF3 /* CollectionCellHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +69,7 @@
 		11B105292B58568A0058904F /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
 		11B6C7082B65030300453158 /* TrackerRepo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRepo.swift; sourceTree = "<group>"; };
 		11E256C52B5D4E68004ED9CE /* TrackerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCollectionViewCell.swift; sourceTree = "<group>"; };
+		11F3C7632B867F4800F77FF3 /* CollectionCellHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionCellHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -184,6 +186,7 @@
 				110C30352B6903D1003B8AD9 /* TrackerTable.swift */,
 				115AADD12B6C4CD30044FD34 /* CustomStatisticView.swift */,
 				115AADD32B6C50900044FD34 /* ButtonAnimation.swift */,
+				11F3C7632B867F4800F77FF3 /* CollectionCellHelper.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -269,6 +272,7 @@
 			files = (
 				110C30362B6903D1003B8AD9 /* TrackerTable.swift in Sources */,
 				11B104F22B55625C0058904F /* AddNewTrackerViewController.swift in Sources */,
+				11F3C7642B867F4800F77FF3 /* CollectionCellHelper.swift in Sources */,
 				11323F662B58F8ED0078EDC1 /* AddNewCategoryViewController.swift in Sources */,
 				116247572B7E4AAA004B095B /* WeekDaysSelectCell.swift in Sources */,
 				11ABAA342B4A9855003F02BF /* Tracker.xcdatamodeld in Sources */,

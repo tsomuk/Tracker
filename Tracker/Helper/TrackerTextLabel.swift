@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TrackerTextLabel: UILabel {
+final class TrackerTextLabel: UILabel {
     init(text: String,fontSize: CGFloat, fontWeight: UIFont.Weight) {
         super.init(frame: .zero)
         self.translatesAutoresizingMaskIntoConstraints = false

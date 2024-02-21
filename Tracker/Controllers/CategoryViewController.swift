@@ -11,7 +11,7 @@ protocol CategoryViewControllerDelegate: AnyObject {
     func categoryScreen(_ screen: CategoryViewController, didSelectedCategory category: TrackerCategory)
 }
 
-class CategoryViewController: UIViewController {
+final class CategoryViewController: UIViewController {
     
     var trackerRepo = TrackerRepo.shared
     weak var delegate: CategoryViewControllerDelegate?
@@ -100,7 +100,7 @@ class CategoryViewController: UIViewController {
         ])
     }
     
-    @objc func goToAddNewCategory(_ sender: UIButton) {
+    @objc private func goToAddNewCategory(_ sender: UIButton) {
         sender.showAnimation {
             let addNewCategory = AddNewCategoryViewController()
             self.navigationController?.pushViewController(addNewCategory, animated: true)

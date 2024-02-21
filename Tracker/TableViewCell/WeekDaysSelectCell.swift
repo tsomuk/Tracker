@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol WeekDaySender {
+protocol WeekDaySender: AnyObject {
     func weekDayAppend(_ weekDay: Weekday)
     func weekDayRemove(_ weekDay: Weekday)
 }
@@ -15,7 +15,7 @@ protocol WeekDaySender {
 final class WeekDaysSelectCell: UITableViewCell {
     
     var weekDay: Weekday?
-    var delegate: WeekDaySender?
+    weak var delegate: WeekDaySender?
     
     private lazy var weekDaytitle: UILabel = {
         let weekDaytitle = UILabel()
@@ -46,7 +46,7 @@ final class WeekDaysSelectCell: UITableViewCell {
         self.weekDay = weekDay
     }
     
-    @objc func onOffAction(_ sender: UISwitch) {
+    @objc private func onOffAction(_ sender: UISwitch) {
         guard let weekDay = weekDay else { return }
         sender.isOn ? delegate?.weekDayAppend(weekDay) : delegate?.weekDayRemove(weekDay)
     }
