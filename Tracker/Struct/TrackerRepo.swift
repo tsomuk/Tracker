@@ -14,15 +14,13 @@ enum CategoryList: String {
 final class TrackerRepo {
     
     static let shared = TrackerRepo()
-    
 
     private var visibleCategoty: [TrackerCategory] = []
-//    var categoriesList: [TrackerCategory] = []
     
     var categoriesList = [TrackerCategory(title: .usefull, tracker: [
-                Tracker(id: UUID(), title: "Выучить Swift", color: .ypColor2, emoji: "🧑🏻‍💻", schedule: nil, category: .usefull),
-        //        Tracker(id: UUID(), title: "Отправить 10 резюме", color: .ypColor11, emoji: "💼", schedule: nil, category: .usefull),
-        //        Tracker(id: UUID(), title: "Выпить пива", color: .ypColor18, emoji: "🍺", schedule: nil, category: .usefull)
+//                Tracker(id: UUID(), title: "Выучить Swift", color: .ypColor2, emoji: "🧑🏻‍💻", schedule: nil, category: .usefull),
+//                Tracker(id: UUID(), title: "Отправить 10 резюме", color: .ypColor11, emoji: "💼", schedule: nil, category: .usefull),
+//                Tracker(id: UUID(), title: "Выпить пива", color: .ypColor18, emoji: "🍺", schedule: nil, category: .usefull)
     ])]
     
     func createNewTracker(tracker: Tracker) {

@@ -127,9 +127,9 @@ final class TrackerViewController: UIViewController {
     }
     
     @objc private func pickerChanged() {
-        let calendar = Calendar.current
-        let dataPicker = datePicker.date
-        let weekday = calendar.component(.weekday, from: dataPicker)
+//        let calendar = Calendar.current
+//        let dataPicker = datePicker.date
+//        let weekday = calendar.component(.weekday, from: dataPicker)
     }
 }
 
