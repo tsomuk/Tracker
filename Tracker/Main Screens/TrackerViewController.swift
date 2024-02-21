@@ -15,57 +15,19 @@ final class TrackerViewController: UIViewController {
     
     private let trackerRepo = TrackerRepo.shared
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupAppearance()
-        mainScreenContent()
-    }
+    private let label = TrackerTextLabel(text: "Что будем отслеживать?", fontSize: 12, fontWeight: .medium)
     
-    private func mainScreenContent() {
-        if trackerRepo.checkIsTrackerRepoEmpry() {
-            addHolderView()
-        } else {
-            addCollectionView()
-        }
-    }
-    
-    private func addCollectionView() {
-        view.addSubview(collectionView)
-        NSLayoutConstraint.activate([
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-        ])
-    }
-    
-    private func setupAppearance() {
-        view.backgroundColor = .ypWhite
-        
-        // Plus Button
-        
-        let plusButton = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(plusButtonTapped))
-        plusButton.tintColor = .ypBlack
-        navigationItem.leftBarButtonItem = plusButton
-        
-        // Search Controller
-        
-        let searchController = UISearchController()
-        navigationItem.searchController = searchController
-        searchController.searchBar.placeholder = "Поиск"
-        
-        // Data picker
-        
+    // Data picker
+    private lazy var datePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
         datePicker.locale = Locale(identifier: "ru_RU")
         datePicker.preferredDatePickerStyle = .compact
-        view.addSubview(datePicker)
         datePicker.translatesAutoresizingMaskIntoConstraints = false
         datePicker.widthAnchor.constraint(equalToConstant: 120).isActive = true
-        let datePickerItem = UIBarButtonItem(customView: datePicker)
-        navigationItem.rightBarButtonItem = datePickerItem
-    }
+        datePicker.addTarget(self, action: #selector(pickerChanged), for: .valueChanged)
+        return datePicker
+    }()
     
     // UICollection View
     
@@ -103,7 +65,48 @@ final class TrackerViewController: UIViewController {
         return image
     }()
     
-    private let label = TrackerTextLabel(text: "Что будем отслеживать?", fontSize: 12, fontWeight: .medium)
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupAppearance()
+        mainScreenContent()
+    }
+    
+    private func mainScreenContent() {
+        if trackerRepo.checkIsTrackerRepoEmpry() {
+            addHolderView()
+        } else {
+            addCollectionView()
+        }
+    }
+    
+    private func addCollectionView() {
+        view.addSubview(collectionView)
+        NSLayoutConstraint.activate([
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+    }
+    
+    private func setupAppearance() {
+        view.backgroundColor = .ypWhite
+        
+        // Plus Button
+        let plusButton = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(plusButtonTapped))
+        plusButton.tintColor = .ypBlack
+        navigationItem.leftBarButtonItem = plusButton
+        
+        // Search Controller
+        let searchController = UISearchController()
+        navigationItem.searchController = searchController
+        searchController.searchBar.placeholder = "Поиск"
+        
+        // Data picker
+        view.addSubview(datePicker)
+        let datePickerItem = UIBarButtonItem(customView: datePicker)
+        navigationItem.rightBarButtonItem = datePickerItem
+    }
     
     private func addHolderView() {
         view.addSubview(stackView)
@@ -116,30 +119,33 @@ final class TrackerViewController: UIViewController {
         ])
     }
     
-    @objc func plusButtonTapped() {
+    @objc private func plusButtonTapped() {
         let addNewTrackerViewController = AddNewTrackerViewController()
         addNewTrackerViewController.delegate = self
         let addNavController = UINavigationController(rootViewController: addNewTrackerViewController)
         present(addNavController, animated: true)
+    }
+    
+    @objc private func pickerChanged() {
+        let calendar = Calendar.current
+        let dataPicker = datePicker.date
+        let weekday = calendar.component(.weekday, from: dataPicker)
     }
 }
 
 extension TrackerViewController: UICollectionViewDataSource {
     
     // Numbers of section
-    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         trackerRepo.getNumberOfCategories()
     }
     
     // Numbers of items in section
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         trackerRepo.getNumberOfItemsInSection(section: section)
     }
     
     // Configuration cell
-    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? TrackerCollectionViewCell else { return UICollectionViewCell() }
         let tracker = trackerRepo.getTrackerDetails(section: indexPath.section, item: indexPath.item)
@@ -149,7 +155,6 @@ extension TrackerViewController: UICollectionViewDataSource {
     }
     
     // Header
-    
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as? TrackerCollectionHeader else { return UICollectionReusableView() }
         let title = trackerRepo.getTitleForSection(sectionNumber: indexPath.section)
@@ -161,7 +166,6 @@ extension TrackerViewController: UICollectionViewDataSource {
 extension TrackerViewController: UICollectionViewDelegateFlowLayout {
     
     // Size of the cell
-    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let itemCount : CGFloat = 2
         let space: CGFloat = 9
@@ -171,7 +175,6 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
     }
     
     // Offsets
-    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 5
     }
@@ -185,7 +188,6 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
     }
     
     // Header size
-    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         
         let headerSize = CGSize(width: view.frame.width, height: 30)

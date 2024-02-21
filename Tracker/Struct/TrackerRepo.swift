@@ -16,6 +16,7 @@ final class TrackerRepo {
     static let shared = TrackerRepo()
     
     private var daysList: [String] = []
+    private var visibleCategoty: [TrackerCategory] = []
     
     var categoriesList = [TrackerCategory(title: .usefull, tracker: [
         //        Tracker(id: UUID(), title: "Выучить Swift", color: .ypColor2, emoji: "🧑🏻‍💻", schedule: nil, category: .usefull),
