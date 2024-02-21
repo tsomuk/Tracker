@@ -7,6 +7,12 @@
 
 import UIKit
 
+protocol TrackerDoneDelegate: AnyObject {
+    func completeTracker(id: UUID, indexPath: IndexPath)
+    func uncompleteTracker(id: UUID, indexPath: IndexPath)
+}
+
+
 extension UICollectionViewCell {
     func addSubviewsInCell(_ views: UIView...) {
         views.forEach({addSubview($0)})
@@ -48,20 +54,19 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         return titleLabel
     }()
     
-    lazy var dayCounter: UILabel = {
-        let dayCounter = UILabel()
-        dayCounter.font = .systemFont(ofSize: 12, weight: .medium)
-        dayCounter.textColor = .ypBlack
-        dayCounter.translatesAutoresizingMaskIntoConstraints = false
-        return dayCounter
+    lazy var dayCounterLabel: UILabel = {
+        let dayCounterLabel = UILabel()
+        dayCounterLabel.font = .systemFont(ofSize: 12, weight: .medium)
+        dayCounterLabel.textColor = .ypBlack
+        dayCounterLabel.translatesAutoresizingMaskIntoConstraints = false
+        return dayCounterLabel
     }()
     
     lazy var plusButton: UIButton = {
         let plusButton = UIButton()
         plusButton.translatesAutoresizingMaskIntoConstraints = false
         plusButton.layer.cornerRadius = 17
-        let buttonImage = UIImage(named: "plusButton")
-        plusButton.setImage(buttonImage, for: .normal)
+        plusButton.addTarget(self, action: #selector(trackerDoneTapped), for: .touchUpInside)
         return plusButton
     }()
     
@@ -74,16 +79,46 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configureCell(tracker: Tracker, dayCount: String){
+    weak var delegate: TrackerDoneDelegate?
+    private var isCompletedToday: Bool  = false
+    private var trackerID: UUID?
+    private var indexPath: IndexPath?
+    private var completedDays: Int? = 7
+    
+    func configureCell(tracker: Tracker, isCompletedToday: Bool, completedDays: Int, indexPath: IndexPath){
+        self.indexPath = indexPath
+        self.trackerID = tracker.id
+        self.isCompletedToday = isCompletedToday
         titleLabel.text = tracker.title
         emojiLabel.text = tracker.emoji
-        dayCounter.text = dayCount
+        dayCounterLabel.text = "\(completedDays) дней"
+        
+        
         bodyView.backgroundColor = tracker.color
         plusButton.tintColor = tracker.color
+        let image = isCompletedToday ? UIImage(named: "doneButton") : UIImage(named: "plusButton")
+        plusButton.setImage(image, for: .normal)
+        
+    }
+    
+    @objc private func trackerDoneTapped() {
+        guard let trackerID = trackerID,
+        let indexPath = indexPath else {
+            assertionFailure("no trackerID")
+            return
+        }
+        
+        if isCompletedToday {
+            delegate?.uncompleteTracker(id: trackerID, indexPath: indexPath)
+        } else {
+            delegate?.completeTracker(id: trackerID, indexPath: indexPath)
+        }
+        
+        
     }
     
     func setupAppearance() {
-        addSubviewsInCell(bodyView,emojiView,emojiLabel,titleLabel,dayCounter,plusButton)
+        addSubviewsInCell(bodyView,emojiView,emojiLabel,titleLabel,dayCounterLabel,plusButton)
         NSLayoutConstraint.activate([
             
             bodyView.heightAnchor.constraint(equalToConstant: 90),
@@ -103,9 +138,9 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
             titleLabel.bottomAnchor.constraint(equalTo: bodyView.bottomAnchor, constant: -12),
             
-            dayCounter.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
-            dayCounter.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
-            dayCounter.topAnchor.constraint(equalTo: bodyView.bottomAnchor, constant: 16),
+            dayCounterLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
+            dayCounterLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
+            dayCounterLabel.topAnchor.constraint(equalTo: bodyView.bottomAnchor, constant: 16),
             
             plusButton.heightAnchor.constraint(equalToConstant: 34),
             plusButton.widthAnchor.constraint(equalToConstant: 34),

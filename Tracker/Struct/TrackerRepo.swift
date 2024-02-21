@@ -15,11 +15,12 @@ final class TrackerRepo {
     
     static let shared = TrackerRepo()
     
-    private var daysList: [String] = []
+
     private var visibleCategoty: [TrackerCategory] = []
+//    var categoriesList: [TrackerCategory] = []
     
     var categoriesList = [TrackerCategory(title: .usefull, tracker: [
-        //        Tracker(id: UUID(), title: "Выучить Swift", color: .ypColor2, emoji: "🧑🏻‍💻", schedule: nil, category: .usefull),
+                Tracker(id: UUID(), title: "Выучить Swift", color: .ypColor2, emoji: "🧑🏻‍💻", schedule: nil, category: .usefull),
         //        Tracker(id: UUID(), title: "Отправить 10 резюме", color: .ypColor11, emoji: "💼", schedule: nil, category: .usefull),
         //        Tracker(id: UUID(), title: "Выпить пива", color: .ypColor18, emoji: "🍺", schedule: nil, category: .usefull)
     ])]
@@ -32,7 +33,6 @@ final class TrackerRepo {
         }
         trackers.append(tracker)
         categoriesList = [TrackerCategory(title: .usefull, tracker: trackers)]
-        daysList.append("0 дней")
     }
     
     func createNewCategory(newCategoty: TrackerCategory) {
@@ -49,10 +49,6 @@ final class TrackerRepo {
     
     func getTrackerDetails(section: Int, item: Int) -> Tracker {
         categoriesList[section].tracker[item]
-    }
-    
-    func getDaysCounter(section: Int = 1, item: Int) -> String {
-        daysList[item]
     }
     
     func getNumberOfCategories() -> Int {

@@ -15,6 +15,8 @@ final class TrackerViewController: UIViewController {
     
     private let trackerRepo = TrackerRepo.shared
     
+    private var completedTrackers: [TrackerRecord] = []
+    
     private let label = TrackerTextLabel(text: "Что будем отслеживать?", fontSize: 12, fontWeight: .medium)
     
     // Data picker
@@ -30,7 +32,6 @@ final class TrackerViewController: UIViewController {
     }()
     
     // UICollection View
-    
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -48,7 +49,6 @@ final class TrackerViewController: UIViewController {
     }()
     
     // Vertical Stack with holder image and lable
-    
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [image, label])
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -145,21 +145,51 @@ extension TrackerViewController: UICollectionViewDataSource {
         trackerRepo.getNumberOfItemsInSection(section: section)
     }
     
-    // Configuration cell
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? TrackerCollectionViewCell else { return UICollectionViewCell() }
-        let tracker = trackerRepo.getTrackerDetails(section: indexPath.section, item: indexPath.item)
-        let dayCounter = trackerRepo.getDaysCounter(section: 1, item: indexPath.item)
-        cell.configureCell(tracker: tracker, dayCount: dayCounter)
-        return cell
-    }
-    
     // Header
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as? TrackerCollectionHeader else { return UICollectionReusableView() }
         let title = trackerRepo.getTitleForSection(sectionNumber: indexPath.section)
         view.configureTitle(title)
         return view
+    }
+    
+    // Configuration cell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? TrackerCollectionViewCell else { return UICollectionViewCell() }
+        let tracker = trackerRepo.getTrackerDetails(section: indexPath.section, item: indexPath.item)
+        cell.delegate = self
+        let isCompletedToday = checkIsTrackerCompletedToday(id: tracker.id)
+        let completedDays = completedTrackers.filter { $0.id == tracker.id }.count
+        cell.configureCell(tracker: tracker,
+                           isCompletedToday: isCompletedToday, 
+                           completedDays: completedDays,
+                           indexPath: indexPath
+        )
+        return cell
+    }
+    
+    private func checkIsTrackerCompletedToday(id: UUID) -> Bool {
+        completedTrackers.contains { trackerRecord in
+            let isSameDay = Calendar.current.isDate(trackerRecord.date, inSameDayAs: datePicker.date)
+            return trackerRecord.id == id && isSameDay
+        }
+    }
+   
+}
+
+extension TrackerViewController: TrackerDoneDelegate{
+    func completeTracker(id: UUID, indexPath: IndexPath) {
+        let trackerRecord = TrackerRecord(id: id, date: datePicker.date)
+        completedTrackers.append(trackerRecord)
+        collectionView.reloadItems(at: [indexPath])
+    }
+    
+    func uncompleteTracker(id: UUID, indexPath: IndexPath) {
+        completedTrackers.removeAll { trackerRecord in
+            let isSameDay = Calendar.current.isDate(trackerRecord.date, inSameDayAs: datePicker.date)
+            return trackerRecord.id == id && isSameDay
+        }
+        collectionView.reloadItems(at: [indexPath])
     }
 }
 
