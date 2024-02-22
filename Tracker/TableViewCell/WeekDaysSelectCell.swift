@@ -25,6 +25,7 @@ final class WeekDaysSelectCell: UITableViewCell {
     
     private lazy var onOffSwitch: UISwitch = {
         let onOffSwitch = UISwitch()
+        onOffSwitch.onTintColor = .ypBlue
         onOffSwitch.translatesAutoresizingMaskIntoConstraints = false
         onOffSwitch.addTarget(self, action: #selector(onOffAction), for: .valueChanged)
         return onOffSwitch

@@ -141,8 +141,7 @@ final class NewHabitViewController: UIViewController {
                                  title: enteredEventName ?? "",
                                  color: .ypColor3,
                                  emoji: "🍺",
-                                 schedule: Tracker.Schedule(schedule: selectedSchedule),
-                                 category: .usefull)
+                                 schedule: Tracker.Schedule(schedule: selectedSchedule))
         
         trackerRepo.createNewTracker(tracker: newTracker)
         dismiss(animated: true)

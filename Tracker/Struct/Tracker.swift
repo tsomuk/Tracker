@@ -13,7 +13,7 @@ struct Tracker {
     let color: UIColor
     let emoji: String
     let schedule: Schedule?
-    var category: CategoryList? = nil
+
     
     struct Schedule {
         var schedule: [Weekday]?

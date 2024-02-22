@@ -132,7 +132,7 @@ final class TrackerViewController: UIViewController {
     private func showTrackersInDate(_ date: Date) {
         trackerRepo.removeAllVisibleCategory()
         let weekday = currentDate.component(.weekday, from: date)
-        trackerRepo.appendTrackeInVisibleTrackers(weekday: weekday)
+        trackerRepo.appendTrackerInVisibleTrackers(weekday: weekday)
         collectionView.reloadData()
     }
     

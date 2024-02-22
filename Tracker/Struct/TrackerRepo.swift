@@ -24,7 +24,7 @@ final class TrackerRepo {
 //                Tracker(id: UUID(), title: "Выпить пива", color: .ypColor18, emoji: "🍺", schedule: nil, category: .usefull)
     ])]
     
-    func appendTrackeInVisibleTrackers(weekday: Int) {
+    func appendTrackerInVisibleTrackers(weekday: Int) {
         var weekDayCase: Weekday = .monday
         
         switch weekday {

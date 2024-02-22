@@ -4,7 +4,6 @@
 //
 //  Created by Nikita Tsomuk on 16/01/2024.
 //
-// title = "Новое нерегулярное событие"
 
 import UIKit
 
@@ -120,8 +119,7 @@ final class NewEventViewController: UIViewController {
                                      title: self.enteredTrackerName ?? "",
                                      color: .ypColor5,
                                      emoji: "☠️",
-                                     schedule: nil,
-                                     category: .usefull)
+                                     schedule: nil)
             
             self.trackerRepo.createNewTracker(tracker: newTracker)
             self.dismiss(animated: true)
