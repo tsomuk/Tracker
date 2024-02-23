@@ -129,7 +129,7 @@ extension CategoryViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
-        cell.textLabel?.text = trackerRepo.categoriesList[indexPath.row].title.rawValue
+        cell.textLabel?.text = trackerRepo.categories[indexPath.row].title.rawValue
         cell.selectionStyle = .none
         cell.backgroundColor = .ypBackground
         return cell
@@ -137,7 +137,7 @@ extension CategoryViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
-        delegate?.categoryScreen(self, didSelectedCategory: trackerRepo.categoriesList[indexPath.row])
+        delegate?.categoryScreen(self, didSelectedCategory: trackerRepo.categories[indexPath.row])
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             self.dismiss(animated: true)
         }

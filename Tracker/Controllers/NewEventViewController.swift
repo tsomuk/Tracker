@@ -15,7 +15,7 @@ final class NewEventViewController: UIViewController {
     private let emojiList = ["🙂","😻","🌺","🐶","❤️","😇","😡","🥶","🤔","🙌","🍔","🥦","🏓","🥇","🎸","🏝","😪"]
     private let colorList: [UIColor] = [.ypColor1,.ypColor2,.ypColor3,.ypColor4,.ypColor5,.ypColor6,.ypColor7,.ypColor8,.ypColor9,.ypColor10,.ypColor11,.ypColor12,.ypColor13,.ypColor14,.ypColor15,.ypColor16,.ypColor17,.ypColor18]
     
-    private var enteredTrackerName: String?
+    private var enteredTrackerName = ""
     private var selectedCategory : TrackerCategory?
     let trackerRepo = TrackerRepo.shared
     
@@ -100,7 +100,7 @@ final class NewEventViewController: UIViewController {
     }
     
     func checkCreateButtonValidation() {
-        if selectedCategory != nil && enteredTrackerName != nil {
+        if selectedCategory != nil && enteredTrackerName.isEmpty {
             createButton.isEnabled = true
             createButton.backgroundColor = .ypBlack
             createButton.setTitleColor(.ypWhite, for: .normal)
@@ -116,10 +116,16 @@ final class NewEventViewController: UIViewController {
     @objc private func create(_ sender: UIButton) {
         sender.showAnimation {
             let newTracker = Tracker(id: UUID(),
-                                     title: self.enteredTrackerName ?? "",
+                                     title: self.enteredTrackerName,
                                      color: .ypColor5,
                                      emoji: "☠️",
-                                     schedule: [Weekday.monday, Weekday.tuesday, Weekday.wednesday, Weekday.thursday, Weekday.friday, Weekday.saturday, Weekday.sunday])
+                                     schedule: [Weekday.monday, 
+                                                Weekday.tuesday,
+                                                Weekday.wednesday,
+                                                Weekday.thursday,
+                                                Weekday.friday,
+                                                Weekday.saturday,
+                                                Weekday.sunday])
             
             self.trackerRepo.createNewTracker(tracker: newTracker)
             self.dismiss(animated: true)
@@ -169,7 +175,7 @@ extension NewEventViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.endEditing(true)
-        enteredTrackerName = textField.text
+        enteredTrackerName = textField.text ?? ""
         checkCreateButtonValidation()
         return true
     }

@@ -138,7 +138,7 @@ final class NewHabitViewController: UIViewController {
     
     @objc private func create(_ sender: UIButton) {
         let newTracker = Tracker(id: UUID(),
-                                 title: enteredEventName ?? "",
+                                 title: enteredEventName,
                                  color: .ypColor3,
                                  emoji: "🍺",
                                  schedule: selectedSchedule)

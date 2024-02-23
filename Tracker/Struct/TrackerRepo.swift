@@ -18,7 +18,7 @@ final class TrackerRepo {
     
     var visibleCategory: [TrackerCategory] = []
     
-    var categoriesList : [TrackerCategory] = [TrackerCategory(title: .usefull, tracker: [
+    var categories : [TrackerCategory] = [TrackerCategory(title: .usefull, tracker: [
 //        Tracker(id: UUID(),
 //                title: "Выучить Swift",
 //                color: .ypColor2,
@@ -61,7 +61,7 @@ final class TrackerRepo {
         
         var trackers = [Tracker]()
         
-        for tracker in categoriesList.first!.tracker {
+        for tracker in categories.first!.tracker {
             for day in tracker.schedule {
                 if day == weekDayCase {
                     trackers.append(tracker)
@@ -79,30 +79,35 @@ final class TrackerRepo {
     
     func createNewTracker(tracker: Tracker) {
         var trackers: [Tracker] = []
-        guard let list = categoriesList.first else {return}
+        guard let list = categories.first else {return}
         for tracker in list.tracker{
             trackers.append(tracker)
         }
         trackers.append(tracker)
-        categoriesList = [TrackerCategory(title: .usefull, tracker: trackers)]
+        categories = [TrackerCategory(title: .usefull, tracker: trackers)]
     }
     
     func createNewCategory(newCategoty: TrackerCategory) {
-        categoriesList.append(newCategoty)
+        categories.append(newCategoty)
     }
     
     func checkIsCategoryEmpty() -> Bool {
-        categoriesList.isEmpty
+        categories.isEmpty
     }
     
-    
     func checkIsTrackerRepoEmpty() -> Bool {
-        visibleCategory.isEmpty
-//        categoriesList[0].tracker.isEmpty
+        categories[0].tracker.isEmpty
     }
     
     func checkIsVisibleEmpty() -> Bool {
-        visibleCategory.isEmpty
+        if visibleCategory.isEmpty {
+            return true
+        }
+        if visibleCategory[0].tracker.isEmpty {
+            return true
+        } else {
+            return false
+        }
     }
     
     func getTrackerDetails(section: Int, item: Int) -> Tracker {

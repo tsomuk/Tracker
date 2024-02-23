@@ -30,7 +30,6 @@ final class TrackerCollectionHeader: UICollectionReusableView {
         addSubview(titleLabel)
         NSLayoutConstraint.activate([
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 28)
-            
         ])
     }
     

@@ -92,6 +92,7 @@ final class TrackerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupNavBar()
         setupAppearance()
         mainScreenContent(Date())
     }
@@ -99,23 +100,11 @@ final class TrackerViewController: UIViewController {
     // MARK: - Private methods
     
     private func mainScreenContent(_ date: Date) {
-        trackerRepo.checkIsTrackerRepoEmpty() ? addEmptyHolderView() : addCollectionView()
         showTrackersInDate(date)
+        reloadHolders()
     }
     
-    private func addCollectionView() {
-        view.addSubview(collectionView)
-        NSLayoutConstraint.activate([
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-        ])
-    }
-    
-    private func setupAppearance() {
-        view.backgroundColor = .ypWhite
-        
+    private func setupNavBar() {
         // Plus Button
         let plusButton = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(plusButtonTapped))
         plusButton.tintColor = .ypBlack
@@ -132,28 +121,52 @@ final class TrackerViewController: UIViewController {
         navigationItem.rightBarButtonItem = datePickerItem
     }
     
-    private func addEmptyHolderView() {
-        view.addSubview(stackViewEmptyHolder)
+    
+    private func setupAppearance() {
+        view.backgroundColor = .ypWhite
+        view.addSubviews(collectionView, stackViewEmptyHolder, stackViewFilteredHolder)
+        
         NSLayoutConstraint.activate([
             stackViewEmptyHolder.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             stackViewEmptyHolder.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             stackViewEmptyHolder.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             imageEmpty.heightAnchor.constraint(equalToConstant: 80),
-            imageEmpty.widthAnchor.constraint(equalToConstant: 80)
-        ])
-    }
-    
-    private func addFilteredHolderView() {
-        view.addSubview(stackViewFilteredHolder)
-        NSLayoutConstraint.activate([
+            imageEmpty.widthAnchor.constraint(equalToConstant: 80),
+            
             stackViewFilteredHolder.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             stackViewFilteredHolder.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             stackViewFilteredHolder.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             imageFiltered.heightAnchor.constraint(equalToConstant: 80),
-            imageFiltered.widthAnchor.constraint(equalToConstant: 80)
+            imageFiltered.widthAnchor.constraint(equalToConstant: 80),
+            
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
     
+    private func reloadHolders() {
+        
+        let allTrackersEmpty = trackerRepo.checkIsTrackerRepoEmpty()
+        let visibleTrackersEmpty = trackerRepo.checkIsVisibleEmpty()
+        
+        if allTrackersEmpty {
+            collectionView.isHidden = true
+            stackViewEmptyHolder.isHidden = false
+            stackViewFilteredHolder.isHidden = true
+        }
+        if !allTrackersEmpty && visibleTrackersEmpty {
+            collectionView.isHidden = true
+            stackViewEmptyHolder.isHidden = true
+            stackViewFilteredHolder.isHidden = false
+        } 
+        if !allTrackersEmpty && !visibleTrackersEmpty {
+            collectionView.isHidden = false
+            stackViewEmptyHolder.isHidden = true
+            stackViewFilteredHolder.isHidden = true
+        }
+    }
     
     @objc private func plusButtonTapped() {
         let addNewTrackerViewController = AddNewTrackerViewController()
@@ -179,7 +192,6 @@ final class TrackerViewController: UIViewController {
             return trackerRecord.id == id && isSameDay
         }
     }
-    
 }
 
 // MARK: - Collection View extensions
@@ -269,11 +281,9 @@ extension TrackerViewController: ReloadCollectionProtocol {
 
 extension TrackerViewController: TrackerDoneDelegate{
     func completeTracker(id: UUID, indexPath: IndexPath) {
-        
-            let trackerRecord = TrackerRecord(id: id, date: datePicker.date)
-            completedTrackers.append(trackerRecord)
-            collectionView.reloadItems(at: [indexPath])
-        
+        let trackerRecord = TrackerRecord(id: id, date: datePicker.date)
+        completedTrackers.append(trackerRecord)
+        collectionView.reloadItems(at: [indexPath])
     }
     
     func uncompleteTracker(id: UUID, indexPath: IndexPath) {

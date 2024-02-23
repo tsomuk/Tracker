@@ -86,14 +86,11 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         emojiLabel.text = tracker.emoji
         dayCounterLabel.text = "\(completedDays) дней"
         
-        
         bodyView.backgroundColor = tracker.color
         plusButton.tintColor = tracker.color
+        
         let image = isCompletedToday ? UIImage(named: "doneButton") : UIImage(named: "plusButton")
         plusButton.setImage(image, for: .normal)
-        
-        
-        
     }
     
     @objc private func trackerDoneTapped() {
@@ -108,8 +105,6 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         } else {
             delegate?.completeTracker(id: trackerID, indexPath: indexPath)
         }
-        
-        
     }
     
     func setupAppearance() {
