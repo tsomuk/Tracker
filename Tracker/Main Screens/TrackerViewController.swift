@@ -13,11 +13,14 @@ protocol ReloadCollectionProtocol: AnyObject {
 
 final class TrackerViewController: UIViewController {
     
+    // MARK: -  Properties & Constants
+    
     private let trackerRepo = TrackerRepo.shared
     
     private var completedTrackers: [TrackerRecord] = []
     
-    private let label = TrackerTextLabel(text: "Что будем отслеживать?", fontSize: 12, fontWeight: .medium)
+    private let labelEmptyHolder = TrackerTextLabel(text: "Что будем отслеживать?", fontSize: 12, fontWeight: .medium)
+    private let labelFilterHolder = TrackerTextLabel(text: "Ничего не найдено", fontSize: 12, fontWeight: .medium)
     
     // Data picker
     private lazy var datePicker: UIDatePicker = {
@@ -50,9 +53,9 @@ final class TrackerViewController: UIViewController {
         return collectionView
     }()
     
-    // Vertical Stack with holder image and lable
-    private lazy var stackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [image, label])
+    // Vertical Stack with holder image and lable for the empty app
+    private lazy var stackViewEmptyHolder: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [imageEmpty, labelEmptyHolder])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.alignment = .center
@@ -60,12 +63,32 @@ final class TrackerViewController: UIViewController {
         return stackView
     }()
     
-    private lazy var image: UIImageView = {
+    private lazy var imageEmpty: UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
         image.image = UIImage(named: "trackerHolder")
         return image
     }()
+    
+    // Vertical Stack with holder image and lable for filtered case
+    private lazy var stackViewFilteredHolder: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [imageFiltered, labelFilterHolder])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        stackView.spacing = 8
+        return stackView
+    }()
+    
+    private lazy var imageFiltered: UIImageView = {
+        let image = UIImageView()
+        image.translatesAutoresizingMaskIntoConstraints = false
+        image.image = UIImage(named: "filteredHolder")
+        return image
+    }()
+    
+    
+    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,8 +96,10 @@ final class TrackerViewController: UIViewController {
         mainScreenContent(Date())
     }
     
+    // MARK: - Private methods
+    
     private func mainScreenContent(_ date: Date) {
-        trackerRepo.checkIsTrackerRepoEmpry() ? addHolderView() : addCollectionView()
+        trackerRepo.checkIsTrackerRepoEmpty() ? addEmptyHolderView() : addCollectionView()
         showTrackersInDate(date)
     }
     
@@ -107,16 +132,28 @@ final class TrackerViewController: UIViewController {
         navigationItem.rightBarButtonItem = datePickerItem
     }
     
-    private func addHolderView() {
-        view.addSubview(stackView)
+    private func addEmptyHolderView() {
+        view.addSubview(stackViewEmptyHolder)
         NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            image.heightAnchor.constraint(equalToConstant: 80),
-            image.widthAnchor.constraint(equalToConstant: 80)
+            stackViewEmptyHolder.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            stackViewEmptyHolder.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            stackViewEmptyHolder.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            imageEmpty.heightAnchor.constraint(equalToConstant: 80),
+            imageEmpty.widthAnchor.constraint(equalToConstant: 80)
         ])
     }
+    
+    private func addFilteredHolderView() {
+        view.addSubview(stackViewFilteredHolder)
+        NSLayoutConstraint.activate([
+            stackViewFilteredHolder.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            stackViewFilteredHolder.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            stackViewFilteredHolder.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            imageFiltered.heightAnchor.constraint(equalToConstant: 80),
+            imageFiltered.widthAnchor.constraint(equalToConstant: 80)
+        ])
+    }
+    
     
     @objc private func plusButtonTapped() {
         let addNewTrackerViewController = AddNewTrackerViewController()
@@ -136,7 +173,16 @@ final class TrackerViewController: UIViewController {
         collectionView.reloadData()
     }
     
+    private func checkIsTrackerCompletedToday(id: UUID) -> Bool {
+        completedTrackers.contains { trackerRecord in
+            let isSameDay = Calendar.current.isDate(trackerRecord.date, inSameDayAs: datePicker.date)
+            return trackerRecord.id == id && isSameDay
+        }
+    }
+    
 }
+
+// MARK: - Collection View extensions
 
 extension TrackerViewController: UICollectionViewDataSource {
     
@@ -170,31 +216,14 @@ extension TrackerViewController: UICollectionViewDataSource {
                            completedDays: completedDays,
                            indexPath: indexPath
         )
+        
+        if datePicker.date > Date() {
+            cell.plusButton.isHidden = true
+        }  else {
+            cell.plusButton.isHidden = false
+        }
+        
         return cell
-    }
-    
-    private func checkIsTrackerCompletedToday(id: UUID) -> Bool {
-        completedTrackers.contains { trackerRecord in
-            let isSameDay = Calendar.current.isDate(trackerRecord.date, inSameDayAs: datePicker.date)
-            return trackerRecord.id == id && isSameDay
-        }
-    }
-   
-}
-
-extension TrackerViewController: TrackerDoneDelegate{
-    func completeTracker(id: UUID, indexPath: IndexPath) {
-        let trackerRecord = TrackerRecord(id: id, date: datePicker.date)
-        completedTrackers.append(trackerRecord)
-        collectionView.reloadItems(at: [indexPath])
-    }
-    
-    func uncompleteTracker(id: UUID, indexPath: IndexPath) {
-        completedTrackers.removeAll { trackerRecord in
-            let isSameDay = Calendar.current.isDate(trackerRecord.date, inSameDayAs: datePicker.date)
-            return trackerRecord.id == id && isSameDay
-        }
-        collectionView.reloadItems(at: [indexPath])
     }
 }
 
@@ -233,5 +262,25 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
 extension TrackerViewController: ReloadCollectionProtocol {
     func reloadCollection() {
         mainScreenContent(datePicker.date)
+    }
+}
+
+// MARK: - Delegates
+
+extension TrackerViewController: TrackerDoneDelegate{
+    func completeTracker(id: UUID, indexPath: IndexPath) {
+        
+            let trackerRecord = TrackerRecord(id: id, date: datePicker.date)
+            completedTrackers.append(trackerRecord)
+            collectionView.reloadItems(at: [indexPath])
+        
+    }
+    
+    func uncompleteTracker(id: UUID, indexPath: IndexPath) {
+        completedTrackers.removeAll { trackerRecord in
+            let isSameDay = Calendar.current.isDate(trackerRecord.date, inSameDayAs: datePicker.date)
+            return trackerRecord.id == id && isSameDay
+        }
+        collectionView.reloadItems(at: [indexPath])
     }
 }

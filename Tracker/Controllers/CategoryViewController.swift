@@ -31,8 +31,8 @@ final class CategoryViewController: UIViewController {
         return image
     }()
     
-    private lazy var stackView = {
-        let stackView = UIStackView()
+    private lazy var holderStackView = {
+        let stackView = UIStackView(arrangedSubviews: [image,label])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.alignment = .center
@@ -54,10 +54,12 @@ final class CategoryViewController: UIViewController {
     }
     
     private func mainScreenContent() {
-        if trackerRepo.checkIsCategoryRepoEmpty() {
-            addHolderView()
+        if trackerRepo.checkIsCategoryEmpty() {
+            tableView.isHidden = true
+            holderStackView.isHidden = false
         } else {
-            addTableView()
+            tableView.isHidden = false
+            holderStackView.isHidden = true
         }
     }
     
@@ -66,7 +68,24 @@ final class CategoryViewController: UIViewController {
         view.backgroundColor = .ypWhite
         navigationItem.hidesBackButton = true
         view.addSubview(button)
+        view.addSubview(holderStackView)
+        view.addSubview(tableView)
+        let numbersOfRows = trackerRepo.getNumberOfCategories()
+        
         NSLayoutConstraint.activate([
+            
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
+            tableView.heightAnchor.constraint(equalToConstant: CGFloat(75 * numbersOfRows)),
+            
+            holderStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            holderStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            holderStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            
+            image.heightAnchor.constraint(equalToConstant: 80),
+            image.widthAnchor.constraint(equalToConstant: 80),
+            
             button.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             button.heightAnchor.constraint(equalToConstant: 60),
@@ -74,31 +93,22 @@ final class CategoryViewController: UIViewController {
         ])
     }
     
-    private func addTableView() {
-        view.addSubview(tableView)
-        let numbersOfRows = trackerRepo.getNumberOfCategories()
-        NSLayoutConstraint.activate([
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
-            tableView.heightAnchor.constraint(equalToConstant: CGFloat(75 * numbersOfRows))
-        ])
-    }
-    
-    private func addHolderView() {
-        stackView.addArrangedSubview(image)
-        stackView.addArrangedSubview(label)
-        view.addSubview(stackView)
-        NSLayoutConstraint.activate([
-            
-            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            
-            image.heightAnchor.constraint(equalToConstant: 80),
-            image.widthAnchor.constraint(equalToConstant: 80)
-        ])
-    }
+//    private func addTableView() {
+//        
+//        
+//        NSLayoutConstraint.activate([
+//            
+//        ])
+//    }
+//    
+//    private func addHolderView() {
+//        
+//        
+//        NSLayoutConstraint.activate([
+//            
+//            
+//        ])
+//    }
     
     @objc private func goToAddNewCategory(_ sender: UIButton) {
         sender.showAnimation {

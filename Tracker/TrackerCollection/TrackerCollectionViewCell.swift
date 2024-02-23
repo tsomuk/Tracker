@@ -92,6 +92,8 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         let image = isCompletedToday ? UIImage(named: "doneButton") : UIImage(named: "plusButton")
         plusButton.setImage(image, for: .normal)
         
+        
+        
     }
     
     @objc private func trackerDoneTapped() {

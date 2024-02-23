@@ -16,7 +16,7 @@ extension UIView {
 final class NewHabitViewController: UIViewController {
     
     private let trackerRepo = TrackerRepo.shared
-    private var enteredEventName: String?
+    private var enteredEventName = ""
     weak  var delegate: DismissProtocol?
     
     private let tableList = ["Категория", "Расписание"]
@@ -123,7 +123,7 @@ final class NewHabitViewController: UIViewController {
     
     func checkCreateButtonValidation() {
         
-        if selectedCategory != nil && enteredEventName != nil && selectedSchedule.count > 0 {
+        if selectedCategory != nil && !enteredEventName.isEmpty && !selectedSchedule.isEmpty {
             createButton.isEnabled = true
             createButton.backgroundColor = .ypBlack
             createButton.setTitleColor(.ypWhite, for: .normal)
@@ -141,7 +141,7 @@ final class NewHabitViewController: UIViewController {
                                  title: enteredEventName ?? "",
                                  color: .ypColor3,
                                  emoji: "🍺",
-                                 schedule: Tracker.Schedule(schedule: selectedSchedule))
+                                 schedule: selectedSchedule)
         
         trackerRepo.createNewTracker(tracker: newTracker)
         dismiss(animated: true)
@@ -210,10 +210,16 @@ extension NewHabitViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.endEditing(true)
-        enteredEventName = textField.text
+        enteredEventName = textField.text ?? ""
         checkCreateButtonValidation()
         return true
     }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        checkCreateButtonValidation()
+        return true
+    }
+    
 }
 
 extension NewHabitViewController: CategoryViewControllerDelegate {
