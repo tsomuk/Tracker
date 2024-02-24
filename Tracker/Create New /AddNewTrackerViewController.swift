@@ -55,7 +55,7 @@ final class AddNewTrackerViewController: UIViewController {
     
     @objc private func makeNewHabit(sender: UIButton) {
         sender.showAnimation {
-            let newHabitViewController = NewHabitViewController()
+            let newHabitViewController = NewTrackerViewController()
             newHabitViewController.delegate = self
             let navController = UINavigationController(rootViewController: newHabitViewController)
             self.present(navController, animated: true)

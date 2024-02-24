@@ -13,7 +13,7 @@ extension UIView {
     }
 }
 
-final class NewHabitViewController: UIViewController {
+final class NewTrackerViewController: UIViewController {
     
     private let trackerRepo = TrackerRepo.shared
     private var enteredEventName = ""
@@ -149,7 +149,7 @@ final class NewHabitViewController: UIViewController {
     }
 }
 
-extension NewHabitViewController : UITableViewDelegate, UITableViewDataSource {
+extension NewTrackerViewController : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tableList.count
     }
@@ -197,7 +197,7 @@ extension NewHabitViewController : UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-extension NewHabitViewController: UITextFieldDelegate {
+extension NewTrackerViewController: UITextFieldDelegate {
     
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         if textField.text != "" {
@@ -222,7 +222,7 @@ extension NewHabitViewController: UITextFieldDelegate {
     
 }
 
-extension NewHabitViewController: CategoryViewControllerDelegate {
+extension NewTrackerViewController: CategoryViewControllerDelegate {
     func categoryScreen(_ screen: CategoryViewController, didSelectedCategory category: TrackerCategory) {
         selectedCategory = category
         checkCreateButtonValidation()
@@ -230,7 +230,7 @@ extension NewHabitViewController: CategoryViewControllerDelegate {
     }
 }
 
-extension NewHabitViewController: SelectedScheduleDelegate {
+extension NewTrackerViewController: SelectedScheduleDelegate {
     func selectScheduleScreen(_ screen: ScheduleViewController, didSelectedDays schedule: [Weekday]) {
         selectedSchedule = schedule
         checkCreateButtonValidation()

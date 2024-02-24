@@ -12,7 +12,7 @@ protocol WeekDaySender: AnyObject {
     func weekDayRemove(_ weekDay: Weekday)
 }
 
-final class WeekDaysSelectCell: UITableViewCell {
+final class WeekDaysTableCell: UITableViewCell {
     
     var weekDay: Weekday?
     weak var delegate: WeekDaySender?
