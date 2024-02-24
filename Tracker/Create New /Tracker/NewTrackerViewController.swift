@@ -7,12 +7,6 @@
 
 import UIKit
 
-extension UIView {
-    func addSubviews(_ views: UIView...) {
-        views.forEach({addSubview($0)})
-    }
-}
-
 final class NewTrackerViewController: UIViewController {
     
     private let trackerRepo = TrackerRepo.shared
@@ -23,7 +17,12 @@ final class NewTrackerViewController: UIViewController {
     private var selectedCategory: TrackerCategory?
     private var selectedSchedule: [Weekday] = []
     
-    private let emojiList = ["🙂","😻","🌺","🐶","❤️","😇","😡","🥶","🤔","🙌","🍔","🥦","🏓","🥇","🎸","🏝","😪"]
+    // Parameters for the CollectionView
+    let itemsInRow: CGFloat = 6
+    let space: CGFloat = 5
+    let outerMargin: CGFloat = 18
+    
+    private let emojiList = ["🙂","😻","🌺","🐶","❤️","😱","😇","😡","🥶","🤔","🙌","🍔","🥦","🏓","🥇","🎸","🏝","😪"]
     private let colorList: [UIColor] = [
         .ypColor1,
         .ypColor2,
@@ -82,14 +81,7 @@ final class NewTrackerViewController: UIViewController {
         textField.delegate = self
     }
     
-    private lazy var stackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [cancelButton, createButton])
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .horizontal
-        stackView.distribution = .fillEqually
-        stackView.spacing = 8
-        return stackView
-    }()
+    
     
     private lazy var tableView: UITableView = {
         let tableView = TrackerTable()
@@ -98,10 +90,36 @@ final class NewTrackerViewController: UIViewController {
         return tableView
     }()
     
+    // UICollection View
+    private lazy var emojiColorCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.backgroundColor = .ypWhite
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.register(EmojiColorCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        collectionView.register(EmojiColorCollectionHeader.self,
+                                forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+                                withReuseIdentifier: "header")
+        return collectionView
+    }()
+    
+    private lazy var stackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [cancelButton, createButton])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.distribution = .fillEqually
+        stackView.spacing = 8
+        return stackView
+    }()
+
     func setupAppearance() {
         title = "Новая привычка"
         view.backgroundColor = .ypWhite
-        view.addSubviews(textField,stackView,tableView)
+        view.addSubviewsinView(textField, tableView, emojiColorCollectionView, stackView)
         
         NSLayoutConstraint.activate([
             textField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
@@ -109,15 +127,20 @@ final class NewTrackerViewController: UIViewController {
             textField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             textField.heightAnchor.constraint(equalToConstant: 75),
             
-            stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            stackView.heightAnchor.constraint(equalToConstant: 60),
-            
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             tableView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 24),
             tableView.heightAnchor.constraint(equalToConstant: CGFloat(75 * tableList.count)),
+            
+            emojiColorCollectionView.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 50),
+            emojiColorCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 1),
+            emojiColorCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -1),
+            emojiColorCollectionView.bottomAnchor.constraint(equalTo: stackView.topAnchor, constant: -16),
+            
+            stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            stackView.heightAnchor.constraint(equalToConstant: 60)
         ])
     }
     
@@ -237,3 +260,78 @@ extension NewTrackerViewController: SelectedScheduleDelegate {
         tableView.reloadData()
     }
 }
+
+extension NewTrackerViewController: UICollectionViewDataSource {
+    
+    // Numbers of section
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        2
+    }
+    // Numbers of items in section
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        colorList.count
+    }
+    // Header
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as? EmojiColorCollectionHeader else { return UICollectionReusableView() }
+        if indexPath.section == 0 {
+            let headerTitle = "Emoji"
+            view.configureTitle(headerTitle)
+        } else {
+            let headerTitle = "Цвет"
+            view.configureTitle(headerTitle)
+        }
+  
+        
+        return view
+    }
+    
+    // Configuration cell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? EmojiColorCollectionViewCell else { return UICollectionViewCell() }
+        if indexPath.section == 0 {
+            cell.configureCell(emoji: emojiList[indexPath.item], color: UIColor.clear)
+        } else {
+            cell.configureCell(emoji: "", color: colorList[indexPath.item])
+        }
+            
+        
+        
+        return cell
+    }
+}
+
+
+extension NewTrackerViewController: UICollectionViewDelegateFlowLayout {
+    
+
+    
+    // Size of the cell
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width : CGFloat = (collectionView.bounds.width - space * (itemsInRow - 1) - outerMargin * 2) / itemsInRow
+        let height : CGFloat = width
+        return CGSize(width: width , height: height)
+    }
+    // Offsets
+
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return space
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return space
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 23, left: outerMargin, bottom: 23, right: outerMargin)
+    }
+    
+    // Header size
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        
+        let headerSize = CGSize(width: view.frame.width, height: 30)
+        return headerSize
+    }
+}
+

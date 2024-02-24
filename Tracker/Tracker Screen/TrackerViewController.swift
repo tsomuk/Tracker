@@ -124,7 +124,7 @@ final class TrackerViewController: UIViewController {
     
     private func setupAppearance() {
         view.backgroundColor = .ypWhite
-        view.addSubviews(collectionView, stackViewEmptyHolder, stackViewFilteredHolder)
+        view.addSubviewsinView(collectionView, stackViewEmptyHolder, stackViewFilteredHolder)
         
         NSLayoutConstraint.activate([
             stackViewEmptyHolder.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
