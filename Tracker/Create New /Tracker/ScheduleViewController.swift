@@ -41,7 +41,7 @@ final class ScheduleViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         view.addSubview(tableView)
-        tableView.register(WeekDaysSelectCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(WeekDaysTableCell.self, forCellReuseIdentifier: "cell")
         tableView.rowHeight = 75
         let tableCount : CGFloat = CGFloat(daysOfWeekUI.count)
         tableView.heightAnchor.constraint(equalToConstant: tableView.rowHeight * tableCount).isActive = true
@@ -89,7 +89,7 @@ extension ScheduleViewController : UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? WeekDaysSelectCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? WeekDaysTableCell else {
             return UITableViewCell()
         }
         cell.configureCell(daysOfWeekUI[indexPath.row], daysOfWeek[indexPath.row])

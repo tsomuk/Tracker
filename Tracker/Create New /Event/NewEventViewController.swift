@@ -100,7 +100,7 @@ final class NewEventViewController: UIViewController {
     }
     
     func checkCreateButtonValidation() {
-        if selectedCategory != nil && enteredTrackerName.isEmpty {
+        if selectedCategory != nil && !enteredTrackerName.isEmpty {
             createButton.isEnabled = true
             createButton.backgroundColor = .ypBlack
             createButton.setTitleColor(.ypWhite, for: .normal)
