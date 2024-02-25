@@ -9,8 +9,6 @@ import UIKit
 
 final class EmojiColorCollectionHeader: UICollectionReusableView {
     
-    
-    
     lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.font = .systemFont(ofSize: 18, weight: . bold)

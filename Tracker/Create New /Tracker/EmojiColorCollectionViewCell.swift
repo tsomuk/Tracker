@@ -37,6 +37,10 @@ final class EmojiColorCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+           super.prepareForReuse()
+           layer.borderWidth = 0
+       }
     
     
     func configureCell(emoji: String, color: UIColor){
@@ -45,8 +49,10 @@ final class EmojiColorCollectionViewCell: UICollectionViewCell {
     }
     
     
+    
+    
     func setupAppearance() {
-        addSubviewsInCell(colorView, emojiView)
+        addSubviews(colorView, emojiView)
         NSLayoutConstraint.activate([
             emojiView.heightAnchor.constraint(equalToConstant: 40),
             emojiView.widthAnchor.constraint(equalToConstant: 40),

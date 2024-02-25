@@ -13,13 +13,13 @@ final class NewTrackerViewController: UIViewController {
     
     private let trackerRepo = TrackerRepo.shared
     private var enteredEventName = ""
-    weak  var delegate: DismissProtocol?
+    weak var delegate: DismissProtocol?
     
     private let tableList = ["Категория", "Расписание"]
     private var selectedCategory: TrackerCategory?
     private var selectedSchedule: [Weekday] = []
-    private var selectedColor: UIColor?
-    private var selectedEmoji: String?
+    private var selectedColor: (color: UIColor?, item: IndexPath?)
+    private var selectedEmoji: (emoji: String?, item: IndexPath?)
     
     // Parameters for the CollectionView
     let itemsInRow: CGFloat = 6
@@ -126,7 +126,7 @@ final class NewTrackerViewController: UIViewController {
     func setupAppearance() {
         title = "Новая привычка"
         view.backgroundColor = .ypWhite
-        view.addSubviewsinView(textField, tableView, emojiColorCollectionView, stackView)
+        view.addSubviews(textField, tableView, emojiColorCollectionView, stackView)
         
         NSLayoutConstraint.activate([
             textField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
@@ -156,8 +156,8 @@ final class NewTrackerViewController: UIViewController {
         if selectedCategory != nil &&
             !enteredEventName.isEmpty &&
             !selectedSchedule.isEmpty &&
-            selectedColor != nil &&
-            selectedEmoji != nil
+            selectedColor.color != nil &&
+            selectedEmoji.emoji != nil
         {
             createButton.isEnabled = true
             createButton.backgroundColor = .ypBlack
@@ -174,8 +174,8 @@ final class NewTrackerViewController: UIViewController {
     @objc private func create(_ sender: UIButton) {
         let newTracker = Tracker(id: UUID(),
                                  title: enteredEventName,
-                                 color: selectedColor ?? .cyan,
-                                 emoji: selectedEmoji ?? "⚠️",
+                                 color: selectedColor.color ?? .cyan,
+                                 emoji: selectedEmoji.emoji ?? "⚠️",
                                  schedule: selectedSchedule)
         
         trackerRepo.createNewTracker(tracker: newTracker)
@@ -237,7 +237,6 @@ extension NewTrackerViewController : UITableViewDelegate, UITableViewDataSource 
 // MARK: -  UITextFieldDelegate
 
 extension NewTrackerViewController: UITextFieldDelegate {
-    
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         if textField.text != "" {
             return true
@@ -258,7 +257,6 @@ extension NewTrackerViewController: UITextFieldDelegate {
         checkCreateButtonValidation()
         return true
     }
-    
 }
 
 // MARK: -  CategoryViewControllerDelegate & SelectedScheduleDelegate
@@ -294,15 +292,15 @@ extension NewTrackerViewController: UICollectionViewDataSource {
     // Header
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as? EmojiColorCollectionHeader else { return UICollectionReusableView() }
-        if indexPath.section == 0 {
-            let headerTitle = "Emoji"
-            view.configureTitle(headerTitle)
-        } else {
-            let headerTitle = "Цвет"
-            view.configureTitle(headerTitle)
+        let sectionNumber = indexPath.section
+        switch sectionNumber {
+        case 0:
+            view.configureTitle("Emoji")
+        case 1:
+            view.configureTitle("Цвет")
+        default:
+            view.configureTitle("Error")
         }
-        
-        
         return view
     }
     
@@ -314,9 +312,6 @@ extension NewTrackerViewController: UICollectionViewDataSource {
         } else {
             cell.configureCell(emoji: "", color: colorList[indexPath.item])
         }
-        
-        
-        
         return cell
     }
 }
@@ -353,34 +348,42 @@ extension NewTrackerViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-
-
 extension NewTrackerViewController: UICollectionViewDelegate {
     
-    //Select & Deselect Items
+    //SELECT Items
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let cell = collectionView.cellForItem(at: indexPath) as? EmojiColorCollectionViewCell
-        if indexPath.section == 0 {
-            cell?.backgroundColor = .ypBlack
-            cell?.layer.cornerRadius = 16
-            selectedEmoji = emojiList[indexPath.item]
-        } else {
-            cell?.layer.borderWidth = 2
-            cell?.layer.cornerRadius = 12
-            cell?.layer.borderColor = colorList[indexPath.item].cgColor
-            selectedColor = colorList[indexPath.item]
-            //            cell?.layer.borderColor?.alpha = 0.3
+        guard let cell = collectionView.cellForItem(at: indexPath) as? EmojiColorCollectionViewCell else { return }
+        let sectionNumber = indexPath.section
+        switch sectionNumber {
+        case 0:
+            // Очиска прошлого выбора, если он есть
+            if selectedEmoji.item != nil {
+                let prevItem = selectedEmoji.item!
+                let prevCell = collectionView.cellForItem(at: prevItem)
+                prevCell?.backgroundColor = .clear
+            }
+            // Выбор нового элемента
+            cell.backgroundColor = .ypLightGray
+            cell.layer.cornerRadius = 16
+            selectedEmoji.emoji = emojiList[indexPath.item]
+            selectedEmoji.item = indexPath
             
+        case 1:
+            // Очиска прошлого выбора, если он есть
+            if selectedColor.item != nil {
+                let prevItem = selectedColor.item!
+                let prevCell = collectionView.cellForItem(at: prevItem)
+                prevCell?.layer.borderWidth = 0
+            }
+            // Выбор нового элемента
+            cell.layer.borderWidth = 4
+            cell.layer.cornerRadius = 12
+            cell.layer.borderColor = colorList[indexPath.item].withAlphaComponent(0.4).cgColor
+            selectedColor.color = colorList[indexPath.item]
+            selectedColor.item = indexPath
+        default:
+            return
         }
         checkCreateButtonValidation()
     }
-    
-//        func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-//            let cell = collectionView.cellForItem(at: indexPath) as? EmojiColorCollectionViewCell
-//            if indexPath.section == 0 {
-//                cell?.backgroundColor = .clear
-//            } else {
-//                cell?.layer.borderWidth = 0
-//            }
-//        }
 }

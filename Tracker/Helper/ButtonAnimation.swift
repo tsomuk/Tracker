@@ -8,7 +8,7 @@
 
 import UIKit
 
-public extension UIView {
+extension UIView {
     func showAnimation(_ completionBlock: @escaping () -> Void) {
         isUserInteractionEnabled = false
         UIView.animate(withDuration: 0.1,

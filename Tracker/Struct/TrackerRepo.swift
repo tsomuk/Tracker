@@ -103,11 +103,7 @@ final class TrackerRepo {
         if visibleCategory.isEmpty {
             return true
         }
-        if visibleCategory[0].tracker.isEmpty {
-            return true
-        } else {
-            return false
-        }
+        return visibleCategory[0].tracker.isEmpty
     }
     
     func getTrackerDetails(section: Int, item: Int) -> Tracker {

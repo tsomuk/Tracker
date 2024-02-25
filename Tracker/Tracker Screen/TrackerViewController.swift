@@ -124,7 +124,7 @@ final class TrackerViewController: UIViewController {
     
     private func setupAppearance() {
         view.backgroundColor = .ypWhite
-        view.addSubviewsinView(collectionView, stackViewEmptyHolder, stackViewFilteredHolder)
+        view.addSubviews(collectionView, stackViewEmptyHolder, stackViewFilteredHolder)
         
         NSLayoutConstraint.activate([
             stackViewEmptyHolder.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
@@ -151,21 +151,9 @@ final class TrackerViewController: UIViewController {
         let allTrackersEmpty = trackerRepo.checkIsTrackerRepoEmpty()
         let visibleTrackersEmpty = trackerRepo.checkIsVisibleEmpty()
         
-        if allTrackersEmpty {
-            collectionView.isHidden = true
-            stackViewEmptyHolder.isHidden = false
-            stackViewFilteredHolder.isHidden = true
-        }
-        if !allTrackersEmpty && visibleTrackersEmpty {
-            collectionView.isHidden = true
-            stackViewEmptyHolder.isHidden = true
-            stackViewFilteredHolder.isHidden = false
-        } 
-        if !allTrackersEmpty && !visibleTrackersEmpty {
-            collectionView.isHidden = false
-            stackViewEmptyHolder.isHidden = true
-            stackViewFilteredHolder.isHidden = true
-        }
+        stackViewEmptyHolder.isHidden = !allTrackersEmpty
+        collectionView.isHidden = allTrackersEmpty && visibleTrackersEmpty
+        stackViewFilteredHolder.isHidden = allTrackersEmpty ? true : !visibleTrackersEmpty
     }
     
     @objc private func plusButtonTapped() {
