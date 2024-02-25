@@ -46,11 +46,15 @@ final class EmojiColorCollectionViewCell: UICollectionViewCell {
     
     
     func setupAppearance() {
-        addSubviewsInCell(emojiView,colorView)
+        addSubviewsInCell(colorView, emojiView)
         NSLayoutConstraint.activate([
             emojiView.heightAnchor.constraint(equalToConstant: 40),
             emojiView.widthAnchor.constraint(equalToConstant: 40),
+            emojiView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            emojiView.centerXAnchor.constraint(equalTo: centerXAnchor),
             
+            colorView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            colorView.centerXAnchor.constraint(equalTo: centerXAnchor),
             colorView.heightAnchor.constraint(equalToConstant: 40),
             colorView.widthAnchor.constraint(equalToConstant: 40)
         ])

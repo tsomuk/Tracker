@@ -189,8 +189,8 @@
 			isa = PBXGroup;
 			children = (
 				11B104F12B55625C0058904F /* AddNewTrackerViewController.swift */,
-				11A610A32B8A257800988D35 /* Event */,
 				11A610A22B8A256C00988D35 /* Tracker */,
+				11A610A32B8A257800988D35 /* Event */,
 				11A610A42B8A259500988D35 /* Category */,
 			);
 			path = "Create New ";

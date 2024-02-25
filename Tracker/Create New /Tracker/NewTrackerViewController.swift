@@ -9,6 +9,8 @@ import UIKit
 
 final class NewTrackerViewController: UIViewController {
     
+    // MARK: -  Properties & Constants
+    
     private let trackerRepo = TrackerRepo.shared
     private var enteredEventName = ""
     weak  var delegate: DismissProtocol?
@@ -16,13 +18,15 @@ final class NewTrackerViewController: UIViewController {
     private let tableList = ["Категория", "Расписание"]
     private var selectedCategory: TrackerCategory?
     private var selectedSchedule: [Weekday] = []
+    private var selectedColor: UIColor?
+    private var selectedEmoji: String?
     
     // Parameters for the CollectionView
     let itemsInRow: CGFloat = 6
     let space: CGFloat = 5
     let outerMargin: CGFloat = 18
     
-    private let emojiList = ["🙂","😻","🌺","🐶","❤️","😱","😇","😡","🥶","🤔","🙌","🍔","🥦","🏓","🥇","🎸","🏝","😪"]
+    private let emojiList = ["🙂","😻","🌺","🐶","❤️","😱","😇","😡","🥶","🤔","🍺","🍔","🥦","🏓","🥇","🎸","🏝","😪"]
     private let colorList: [UIColor] = [
         .ypColor1,
         .ypColor2,
@@ -75,14 +79,6 @@ final class NewTrackerViewController: UIViewController {
         return createButton
     }()
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupAppearance()
-        textField.delegate = self
-    }
-    
-    
-    
     private lazy var tableView: UITableView = {
         let tableView = TrackerTable()
         tableView.delegate = self
@@ -97,6 +93,7 @@ final class NewTrackerViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = .ypWhite
+//        collectionView.allowsMultipleSelection = false
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.showsVerticalScrollIndicator = false
@@ -115,7 +112,17 @@ final class NewTrackerViewController: UIViewController {
         stackView.spacing = 8
         return stackView
     }()
-
+    
+    // MARK: -  LifeCycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupAppearance()
+        textField.delegate = self
+    }
+    
+    // MARK: -  Private methods
+    
     func setupAppearance() {
         title = "Новая привычка"
         view.backgroundColor = .ypWhite
@@ -146,7 +153,12 @@ final class NewTrackerViewController: UIViewController {
     
     func checkCreateButtonValidation() {
         
-        if selectedCategory != nil && !enteredEventName.isEmpty && !selectedSchedule.isEmpty {
+        if selectedCategory != nil &&
+            !enteredEventName.isEmpty &&
+            !selectedSchedule.isEmpty &&
+            selectedColor != nil &&
+            selectedEmoji != nil
+        {
             createButton.isEnabled = true
             createButton.backgroundColor = .ypBlack
             createButton.setTitleColor(.ypWhite, for: .normal)
@@ -162,8 +174,8 @@ final class NewTrackerViewController: UIViewController {
     @objc private func create(_ sender: UIButton) {
         let newTracker = Tracker(id: UUID(),
                                  title: enteredEventName,
-                                 color: .ypColor3,
-                                 emoji: "🍺",
+                                 color: selectedColor ?? .cyan,
+                                 emoji: selectedEmoji ?? "⚠️",
                                  schedule: selectedSchedule)
         
         trackerRepo.createNewTracker(tracker: newTracker)
@@ -171,6 +183,8 @@ final class NewTrackerViewController: UIViewController {
         self.delegate?.dismissView()
     }
 }
+
+// MARK: -  UITableView Extension
 
 extension NewTrackerViewController : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -202,7 +216,7 @@ extension NewTrackerViewController : UITableViewDelegate, UITableViewDataSource 
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true) // Снимаем выделение ячейки
-    
+        
         let selectedItem = tableList[indexPath.row]
         
         if selectedItem == "Категория" {
@@ -219,6 +233,8 @@ extension NewTrackerViewController : UITableViewDelegate, UITableViewDataSource 
         }
     }
 }
+
+// MARK: -  UITextFieldDelegate
 
 extension NewTrackerViewController: UITextFieldDelegate {
     
@@ -245,6 +261,8 @@ extension NewTrackerViewController: UITextFieldDelegate {
     
 }
 
+// MARK: -  CategoryViewControllerDelegate & SelectedScheduleDelegate
+
 extension NewTrackerViewController: CategoryViewControllerDelegate {
     func categoryScreen(_ screen: CategoryViewController, didSelectedCategory category: TrackerCategory) {
         selectedCategory = category
@@ -260,6 +278,8 @@ extension NewTrackerViewController: SelectedScheduleDelegate {
         tableView.reloadData()
     }
 }
+
+// MARK: -  UICollectionView Extension
 
 extension NewTrackerViewController: UICollectionViewDataSource {
     
@@ -281,7 +301,7 @@ extension NewTrackerViewController: UICollectionViewDataSource {
             let headerTitle = "Цвет"
             view.configureTitle(headerTitle)
         }
-  
+        
         
         return view
     }
@@ -294,7 +314,7 @@ extension NewTrackerViewController: UICollectionViewDataSource {
         } else {
             cell.configureCell(emoji: "", color: colorList[indexPath.item])
         }
-            
+        
         
         
         return cell
@@ -304,16 +324,14 @@ extension NewTrackerViewController: UICollectionViewDataSource {
 
 extension NewTrackerViewController: UICollectionViewDelegateFlowLayout {
     
-
-    
     // Size of the cell
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width : CGFloat = (collectionView.bounds.width - space * (itemsInRow - 1) - outerMargin * 2) / itemsInRow
         let height : CGFloat = width
         return CGSize(width: width , height: height)
     }
+    
     // Offsets
-
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return space
@@ -335,3 +353,34 @@ extension NewTrackerViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
+
+
+extension NewTrackerViewController: UICollectionViewDelegate {
+    
+    //Select & Deselect Items
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath) as? EmojiColorCollectionViewCell
+        if indexPath.section == 0 {
+            cell?.backgroundColor = .ypBlack
+            cell?.layer.cornerRadius = 16
+            selectedEmoji = emojiList[indexPath.item]
+        } else {
+            cell?.layer.borderWidth = 2
+            cell?.layer.cornerRadius = 12
+            cell?.layer.borderColor = colorList[indexPath.item].cgColor
+            selectedColor = colorList[indexPath.item]
+            //            cell?.layer.borderColor?.alpha = 0.3
+            
+        }
+        checkCreateButtonValidation()
+    }
+    
+//        func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+//            let cell = collectionView.cellForItem(at: indexPath) as? EmojiColorCollectionViewCell
+//            if indexPath.section == 0 {
+//                cell?.backgroundColor = .clear
+//            } else {
+//                cell?.layer.borderWidth = 0
+//            }
+//        }
+}
