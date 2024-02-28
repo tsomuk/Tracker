@@ -18,24 +18,7 @@ final class TrackerRepo {
     
     var visibleCategory: [TrackerCategory] = []
     
-    var categories : [TrackerCategory] = [TrackerCategory(title: .usefull, tracker: [
-//        Tracker(id: UUID(),
-//                title: "Выучить Swift",
-//                color: .ypColor2,
-//                emoji: "🧑🏻‍💻",
-//                schedule: [Weekday.monday, Weekday.thursday]
-//               ),
-//        Tracker(id: UUID(),
-//                title: "Отправить 10 резюме",
-//                color: .ypColor11,
-//                emoji: "💼",
-//                schedule: [Weekday.monday, Weekday.wednesday, Weekday.friday]),
-//        Tracker(id: UUID(),
-//                title: "Выпить пива",
-//                color: .ypColor18,
-//                emoji: "🍺",
-//                schedule: [Weekday.monday, Weekday.thursday])
-    ])]
+    var categories : [TrackerCategory] = [TrackerCategory(title: .usefull, trackers: [])]
     
     func appendTrackerInVisibleTrackers(weekday: Int) {
         var weekDayCase: Weekday = .monday
@@ -61,7 +44,7 @@ final class TrackerRepo {
         
         var trackers = [Tracker]()
         
-        for tracker in categories.first!.tracker {
+        for tracker in categories.first!.trackers {
             for day in tracker.schedule {
                 if day == weekDayCase {
                     trackers.append(tracker)
@@ -69,7 +52,7 @@ final class TrackerRepo {
             }
         }
         
-        let category = TrackerCategory(title: .usefull, tracker: trackers)
+        let category = TrackerCategory(title: .usefull, trackers: trackers)
         visibleCategory.append(category)
     }
     
@@ -80,11 +63,11 @@ final class TrackerRepo {
     func createNewTracker(tracker: Tracker) {
         var trackers: [Tracker] = []
         guard let list = categories.first else {return}
-        for tracker in list.tracker{
+        for tracker in list.trackers{
             trackers.append(tracker)
         }
         trackers.append(tracker)
-        categories = [TrackerCategory(title: .usefull, tracker: trackers)]
+        categories = [TrackerCategory(title: .usefull, trackers: trackers)]
     }
     
     func createNewCategory(newCategoty: TrackerCategory) {
@@ -96,18 +79,18 @@ final class TrackerRepo {
     }
     
     func checkIsTrackerRepoEmpty() -> Bool {
-        categories[0].tracker.isEmpty
+        categories[0].trackers.isEmpty
     }
     
     func checkIsVisibleEmpty() -> Bool {
         if visibleCategory.isEmpty {
             return true
         }
-        return visibleCategory[0].tracker.isEmpty
+        return visibleCategory[0].trackers.isEmpty
     }
     
     func getTrackerDetails(section: Int, item: Int) -> Tracker {
-        visibleCategory[section].tracker[item]
+        visibleCategory[section].trackers[item]
     }
     
     func getNumberOfCategories() -> Int {
@@ -115,7 +98,7 @@ final class TrackerRepo {
     }
     
     func getNumberOfItemsInSection(section: Int) -> Int {
-        visibleCategory[section].tracker.count
+        visibleCategory[section].trackers.count
     }
     
     func getTitleForSection(sectionNumber: Int) -> String {

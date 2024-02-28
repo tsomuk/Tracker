@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 protocol ReloadCollectionProtocol: AnyObject {
     func reloadCollection()

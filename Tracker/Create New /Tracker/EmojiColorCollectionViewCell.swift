@@ -27,7 +27,6 @@ final class EmojiColorCollectionViewCell: UICollectionViewCell {
         return colorView
     }()
     
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupAppearance()
@@ -37,19 +36,21 @@ final class EmojiColorCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func prepareForReuse() {
-           super.prepareForReuse()
-           layer.borderWidth = 0
-       }
-    
-    
     func configureCell(emoji: String, color: UIColor){
         emojiView.text = emoji
         colorView.backgroundColor = color
     }
     
+    func configSelectedEmojiCell() {
+        backgroundColor = .ypLightGray
+        layer.cornerRadius = 16
+    }
     
-    
+    func configSelectedColorCell(with color: UIColor) {
+        layer.borderWidth = 4
+        layer.cornerRadius = 12
+        layer.borderColor = color.withAlphaComponent(0.4).cgColor
+    }
     
     func setupAppearance() {
         addSubviews(colorView, emojiView)

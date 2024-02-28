@@ -36,6 +36,7 @@
 		11B105282B58558D0058904F /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B105272B58558D0058904F /* ScheduleViewController.swift */; };
 		11B1052A2B58568A0058904F /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B105292B58568A0058904F /* CategoryViewController.swift */; };
 		11B6C7092B65030300453158 /* TrackerRepo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B6C7082B65030300453158 /* TrackerRepo.swift */; };
+		11D1C7EA2B8BC8790085928B /* TrackerSmallButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D1C7E92B8BC8790085928B /* TrackerSmallButton.swift */; };
 		11E256C62B5D4E68004ED9CE /* TrackerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E256C52B5D4E68004ED9CE /* TrackerCollectionViewCell.swift */; };
 		11F3C7642B867F4800F77FF3 /* AddSubviewsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F3C7632B867F4800F77FF3 /* AddSubviewsHelper.swift */; };
 /* End PBXBuildFile section */
@@ -72,6 +73,7 @@
 		11B105272B58558D0058904F /* ScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
 		11B105292B58568A0058904F /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
 		11B6C7082B65030300453158 /* TrackerRepo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRepo.swift; sourceTree = "<group>"; };
+		11D1C7E92B8BC8790085928B /* TrackerSmallButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerSmallButton.swift; sourceTree = "<group>"; };
 		11E256C52B5D4E68004ED9CE /* TrackerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCollectionViewCell.swift; sourceTree = "<group>"; };
 		11F3C7632B867F4800F77FF3 /* AddSubviewsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSubviewsHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -212,6 +214,7 @@
 			children = (
 				11B1051A2B570CA20058904F /* TextFieldExtension.swift */,
 				1198B9602B62CAF1000A8B51 /* TrackerBigButton.swift */,
+				11D1C7E92B8BC8790085928B /* TrackerSmallButton.swift */,
 				1198B9632B6403EC000A8B51 /* TrackerTextField.swift */,
 				1198B9652B640798000A8B51 /* TrackerTextLabel.swift */,
 				110C30352B6903D1003B8AD9 /* TrackerTable.swift */,
@@ -294,6 +297,7 @@
 			files = (
 				110C30362B6903D1003B8AD9 /* TrackerTable.swift in Sources */,
 				11B104F22B55625C0058904F /* AddNewTrackerViewController.swift in Sources */,
+				11D1C7EA2B8BC8790085928B /* TrackerSmallButton.swift in Sources */,
 				11F3C7642B867F4800F77FF3 /* AddSubviewsHelper.swift in Sources */,
 				11323F662B58F8ED0078EDC1 /* AddNewCategoryViewController.swift in Sources */,
 				116247572B7E4AAA004B095B /* WeekDaysTableCell.swift in Sources */,

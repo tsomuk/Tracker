@@ -26,58 +26,49 @@ final class NewTrackerViewController: UIViewController {
     let space: CGFloat = 5
     let outerMargin: CGFloat = 18
     
-    private let emojiList = ["🙂","😻","🌺","🐶","❤️","😱","😇","😡","🥶","🤔","🍺","🍔","🥦","🏓","🥇","🎸","🏝","😪"]
+    private let emojiList = ["🙂","😻","🌺","🐶","❤️","😱"
+                            ,"😇","😡","🥶","🤔","🍺","🍔",
+                             "🥦","🏓","🥇","🎸","🏝","😪"]
+    
     private let colorList: [UIColor] = [
-        .ypColor1,
-        .ypColor2,
-        .ypColor3,
-        .ypColor4,
-        .ypColor5,
-        .ypColor6,
-        .ypColor7,
-        .ypColor8,
-        .ypColor9,
-        .ypColor10,
-        .ypColor11,
-        .ypColor12,
-        .ypColor13,
-        .ypColor14,
-        .ypColor15,
-        .ypColor16,
-        .ypColor17,
-        .ypColor18
-    ]
+        .ypColor1, .ypColor2, .ypColor3, .ypColor4, .ypColor5,.ypColor6,
+        .ypColor7, .ypColor8, .ypColor9, .ypColor10, .ypColor11, .ypColor12,
+        .ypColor13, .ypColor14, .ypColor15, .ypColor16, .ypColor17, .ypColor18]
     
     private let textField = TrackerTextField(placeHolder: "Введите название трекера")
     
+    private lazy var limitLabel: UILabel = {
+        let limitLabel = TrackerTextLabel(text: "Ограничение 38 символов", fontSize: 17, fontWeight: .regular)
+        limitLabel.textColor = .ypRed
+        limitLabel.isHidden = true
+        return limitLabel
+    }()
+    
+    private lazy var textFieldStack: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [textField, limitLabel])
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.axis = .vertical
+        stack.spacing = 8
+        return stack
+    }()
+    
     private lazy var cancelButton: UIButton = {
-        let cancelButton = UIButton()
-        cancelButton.setTitle("Отменить", for: .normal)
-        cancelButton.translatesAutoresizingMaskIntoConstraints = false
-        cancelButton.layer.cornerRadius = 16
-        cancelButton.layer.masksToBounds = true
-        cancelButton.backgroundColor = .clear
+        let cancelButton = TrackerSmallButton(title: "Отменить", backgroundColor: .clear)
         cancelButton.layer.borderWidth = 1
         cancelButton.layer.borderColor = UIColor.ypRed.cgColor
-        cancelButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         cancelButton.setTitleColor(.ypRed, for: .normal)
         cancelButton.addTarget(self, action: #selector(cancel), for: .touchUpInside)
         return cancelButton
     }()
     
     private lazy var createButton: UIButton = {
-        let createButton = UIButton()
-        createButton.setTitle("Создать", for: .normal)
-        createButton.translatesAutoresizingMaskIntoConstraints = false
-        createButton.layer.cornerRadius = 16
-        createButton.layer.masksToBounds = true
+        let createButton = TrackerSmallButton(title: "Создать", backgroundColor: .ypGray)
         createButton.isEnabled = false
-        createButton.backgroundColor = .ypGray
-        createButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         createButton.setTitleColor(.ypBlack, for: .normal)
         createButton.addTarget(self, action: #selector(create), for: .touchUpInside)
         return createButton
     }()
+    
     
     private lazy var tableView: UITableView = {
         let tableView = TrackerTable()
@@ -93,7 +84,6 @@ final class NewTrackerViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = .ypWhite
-//        collectionView.allowsMultipleSelection = false
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.showsVerticalScrollIndicator = false
@@ -126,17 +116,17 @@ final class NewTrackerViewController: UIViewController {
     func setupAppearance() {
         title = "Новая привычка"
         view.backgroundColor = .ypWhite
-        view.addSubviews(textField, tableView, emojiColorCollectionView, stackView)
+        view.addSubviews(textFieldStack, tableView, emojiColorCollectionView, stackView)
         
         NSLayoutConstraint.activate([
-            textField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
-            textField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            textField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            textFieldStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
+            textFieldStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            textFieldStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             textField.heightAnchor.constraint(equalToConstant: 75),
             
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            tableView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 24),
+            tableView.topAnchor.constraint(equalTo: textFieldStack.bottomAnchor, constant: 24),
             tableView.heightAnchor.constraint(equalToConstant: CGFloat(75 * tableList.count)),
             
             emojiColorCollectionView.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 50),
@@ -152,18 +142,25 @@ final class NewTrackerViewController: UIViewController {
     }
     
     func checkCreateButtonValidation() {
-        
         if selectedCategory != nil &&
-            !enteredEventName.isEmpty &&
-            !selectedSchedule.isEmpty &&
             selectedColor.color != nil &&
-            selectedEmoji.emoji != nil
+            selectedEmoji.emoji != nil &&
+            enteredEventName.count > 0 &&
+            enteredEventName.count <= 38
         {
             createButton.isEnabled = true
             createButton.backgroundColor = .ypBlack
             createButton.setTitleColor(.ypWhite, for: .normal)
+        } else {
+            createButton.isEnabled = false
+            createButton.backgroundColor = .ypGray
+            createButton.setTitleColor(.ypBlack, for: .normal)
         }
+            
     }
+    
+    
+    
     
     @objc private func cancel(_ sender: UIButton) {
         sender.showAnimation {
@@ -237,6 +234,28 @@ extension NewTrackerViewController : UITableViewDelegate, UITableViewDataSource 
 // MARK: -  UITextFieldDelegate
 
 extension NewTrackerViewController: UITextFieldDelegate {
+ func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard let text = textField.text else { return false }
+        enteredEventName = text
+        checkCreateButtonValidation()
+        if text.count >= 38 {
+            limitLabel.isHidden = false
+            return false
+        } else {
+            limitLabel.isHidden = true
+            return true
+        }
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        guard let text = textField.text, !text.isEmpty else {
+            return false
+        }
+
+        return text.count > 38 ? false : true
+    }
+
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         if textField.text != "" {
             return true
@@ -244,18 +263,6 @@ extension NewTrackerViewController: UITextFieldDelegate {
             textField.placeholder = "Название не может быть пустым"
             return false
         }
-    }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.endEditing(true)
-        enteredEventName = textField.text ?? ""
-        checkCreateButtonValidation()
-        return true
-    }
-    
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        checkCreateButtonValidation()
-        return true
     }
 }
 
@@ -299,7 +306,7 @@ extension NewTrackerViewController: UICollectionViewDataSource {
         case 1:
             view.configureTitle("Цвет")
         default:
-            view.configureTitle("Error")
+            assertionFailure("Invalid section number")
         }
         return view
     }
@@ -307,15 +314,19 @@ extension NewTrackerViewController: UICollectionViewDataSource {
     // Configuration cell
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? EmojiColorCollectionViewCell else { return UICollectionViewCell() }
-        if indexPath.section == 0 {
+        
+        let sectionNumber = indexPath.section
+        switch sectionNumber {
+        case 0:
             cell.configureCell(emoji: emojiList[indexPath.item], color: UIColor.clear)
-        } else {
+        case 1:
             cell.configureCell(emoji: "", color: colorList[indexPath.item])
+        default:
+            assertionFailure("Invalid section number")
         }
         return cell
     }
 }
-
 
 extension NewTrackerViewController: UICollectionViewDelegateFlowLayout {
     
@@ -356,33 +367,29 @@ extension NewTrackerViewController: UICollectionViewDelegate {
         let sectionNumber = indexPath.section
         switch sectionNumber {
         case 0:
-            // Очиска прошлого выбора, если он есть
+            // Remove previous selection if exists
             if selectedEmoji.item != nil {
                 let prevItem = selectedEmoji.item!
                 let prevCell = collectionView.cellForItem(at: prevItem)
                 prevCell?.backgroundColor = .clear
             }
-            // Выбор нового элемента
-            cell.backgroundColor = .ypLightGray
-            cell.layer.cornerRadius = 16
+            // New selection
+            cell.configSelectedEmojiCell()
             selectedEmoji.emoji = emojiList[indexPath.item]
             selectedEmoji.item = indexPath
-            
         case 1:
-            // Очиска прошлого выбора, если он есть
+            // Remove previous selection if exists
             if selectedColor.item != nil {
                 let prevItem = selectedColor.item!
                 let prevCell = collectionView.cellForItem(at: prevItem)
                 prevCell?.layer.borderWidth = 0
             }
-            // Выбор нового элемента
-            cell.layer.borderWidth = 4
-            cell.layer.cornerRadius = 12
-            cell.layer.borderColor = colorList[indexPath.item].withAlphaComponent(0.4).cgColor
+            // New selection
+            cell.configSelectedColorCell(with: colorList[indexPath.item])
             selectedColor.color = colorList[indexPath.item]
             selectedColor.item = indexPath
         default:
-            return
+            assertionFailure("Invalid section number")
         }
         checkCreateButtonValidation()
     }
