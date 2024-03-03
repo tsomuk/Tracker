@@ -160,7 +160,7 @@ final class NewEventViewController: UIViewController {
                                      title: self.enteredTrackerName,
                                      color: selectedColor.color ?? .ypBlack,
                                      emoji: selectedEmoji.emoji ?? "",
-                                     schedule: [1,2,3,4,5,6,7])
+                                     schedule: [1, 2, 3, 4, 5, 6, 7])
             
             self.trackerRepo.createNewTracker(tracker: newTracker)
             self.dismiss(animated: true)
@@ -180,7 +180,7 @@ extension NewEventViewController : UITableViewDelegate, UITableViewDataSource {
         cell.accessoryType = .disclosureIndicator
         cell.backgroundColor = .ypBackground
         cell.textLabel?.text = tableList[indexPath.row]
-        cell.detailTextLabel?.text = selectedCategory?.title.rawValue
+        cell.detailTextLabel?.text = selectedCategory?.title
         cell.detailTextLabel?.textColor = .ypGray
         return cell
     }

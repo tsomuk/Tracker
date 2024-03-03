@@ -25,7 +25,7 @@ final class ScheduleViewController: UIViewController {
     
     weak var delegate: SelectedScheduleDelegate?
     
-    private let daysOfWeek : [Int] = [1,2,3,4,5,6,7]
+    private let daysOfWeek: [Int] = [1, 2, 3, 4, 5, 6, 7]
     private let daysOfWeekUI = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
     
     private var selectedDays : [Int] = []

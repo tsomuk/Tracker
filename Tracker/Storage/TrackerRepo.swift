@@ -7,10 +7,6 @@
 
 import UIKit
 
-enum CategoryList: String {
-    case usefull = "Полезные привычки"
-}
-
 final class TrackerRepo {
     
     static let shared = TrackerRepo()
@@ -18,7 +14,7 @@ final class TrackerRepo {
     
     var visibleCategory: [TrackerCategory] = []
     
-    var categories : [TrackerCategory] = [TrackerCategory(title: .usefull, trackers: [])]
+    var categories : [TrackerCategory] = [TrackerCategory(title: "Полезные привычки", trackers: [])]
     
     func appendTrackerInVisibleTrackers(weekday: Int) {
               
@@ -32,7 +28,7 @@ final class TrackerRepo {
             }
         }
         
-        let category = TrackerCategory(title: .usefull, trackers: trackers)
+        let category = TrackerCategory(title: "Полезные привычки", trackers: trackers)
         visibleCategory.append(category)
     }
     
@@ -47,7 +43,7 @@ final class TrackerRepo {
             trackers.append(tracker)
         }
         trackers.append(tracker)
-        categories = [TrackerCategory(title: .usefull, trackers: trackers)]
+        categories = [TrackerCategory(title: "Полезные привычки", trackers: trackers)]
     }
     
     func createNewCategory(newCategoty: TrackerCategory) {
@@ -82,6 +78,6 @@ final class TrackerRepo {
     }
     
     func getTitleForSection(sectionNumber: Int) -> String {
-        visibleCategory[sectionNumber].title.rawValue
+        visibleCategory[sectionNumber].title
     }
 }

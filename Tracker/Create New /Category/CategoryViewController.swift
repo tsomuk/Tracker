@@ -54,13 +54,8 @@ final class CategoryViewController: UIViewController {
     }
     
     private func mainScreenContent() {
-        if trackerRepo.checkIsCategoryEmpty() {
-            tableView.isHidden = true
-            holderStackView.isHidden = false
-        } else {
             tableView.isHidden = false
             holderStackView.isHidden = true
-        }
     }
     
     private func setupAppearance() {
@@ -70,14 +65,13 @@ final class CategoryViewController: UIViewController {
         view.addSubview(button)
         view.addSubview(holderStackView)
         view.addSubview(tableView)
-        let numbersOfRows = trackerRepo.getNumberOfCategories()
         
         NSLayoutConstraint.activate([
             
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
-            tableView.heightAnchor.constraint(equalToConstant: CGFloat(75 * numbersOfRows)),
+            tableView.heightAnchor.constraint(equalToConstant: CGFloat(75)),
             
             holderStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             holderStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
@@ -93,23 +87,6 @@ final class CategoryViewController: UIViewController {
         ])
     }
     
-//    private func addTableView() {
-//        
-//        
-//        NSLayoutConstraint.activate([
-//            
-//        ])
-//    }
-//    
-//    private func addHolderView() {
-//        
-//        
-//        NSLayoutConstraint.activate([
-//            
-//            
-//        ])
-//    }
-    
     @objc private func goToAddNewCategory(_ sender: UIButton) {
         sender.showAnimation {
             let addNewCategory = AddNewCategoryViewController()
@@ -124,12 +101,12 @@ extension CategoryViewController: UITableViewDelegate {
 
 extension CategoryViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        trackerRepo.getNumberOfCategories()
+        return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
-        cell.textLabel?.text = trackerRepo.categories[indexPath.row].title.rawValue
+        cell.textLabel?.text = "Полезные привычки"
         cell.selectionStyle = .none
         cell.backgroundColor = .ypBackground
         return cell
@@ -137,7 +114,7 @@ extension CategoryViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
-        delegate?.categoryScreen(self, didSelectedCategory: trackerRepo.categories[indexPath.row])
+        delegate?.categoryScreen(self, didSelectedCategory: TrackerCategory(title: "Полезные привычки", trackers: []))
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             self.dismiss(animated: true)
         }

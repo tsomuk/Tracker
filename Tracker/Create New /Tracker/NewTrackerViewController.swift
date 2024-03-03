@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol CreateTracker {
+    func create(_ tracker: Tracker, _ category: String)
+}
+
 final class NewTrackerViewController: UIViewController {
     
     // MARK: -  Properties & Constants
@@ -14,6 +18,7 @@ final class NewTrackerViewController: UIViewController {
     private let trackerRepo = TrackerRepo.shared
     private var enteredEventName = ""
     weak var delegate: DismissProtocol?
+    var createDelegate: CreateTracker?
     
     private let tableList = ["Категория", "Расписание"]
     private var selectedCategory: TrackerCategory?
@@ -175,9 +180,10 @@ final class NewTrackerViewController: UIViewController {
                                  emoji: selectedEmoji.emoji ?? "⚠️",
                                  schedule: selectedSchedule)
         
-        trackerRepo.createNewTracker(tracker: newTracker)
+        
         dismiss(animated: true)
         self.delegate?.dismissView()
+        self.createDelegate?.create(newTracker, selectedCategory?.title ?? "")
     }
 }
 
@@ -196,7 +202,7 @@ extension NewTrackerViewController : UITableViewDelegate, UITableViewDataSource 
         let item = "\(tableList[indexPath.row])"
         cell.textLabel?.text = item
         if item == "Категория" {
-            cell.detailTextLabel?.text = selectedCategory?.title.rawValue
+            cell.detailTextLabel?.text = selectedCategory?.title
             cell.detailTextLabel?.textColor = .ypGray
         }
         if item == "Расписание" {
