@@ -47,7 +47,7 @@ final class TrackerViewController: UIViewController {
             let resultCategory = TrackerCategory(title: category.title, trackers: resultTrackers)
             resultCategories.append(resultCategory)
         }
-        return resultCategories.filter({$0.trackers.isEmpty}).count == 0 ? [] : resultCategories
+        return resultCategories
     }
     
     
@@ -178,10 +178,10 @@ final class TrackerViewController: UIViewController {
     private func reloadHolders() {
         
         let allTrackersEmpty = categories.filter({!$0.trackers.isEmpty}).count == 0
-        let visibleTrackersEmpty = visibleCategories.isEmpty
+        let visibleTrackersEmpty = visibleCategories.filter({!$0.trackers.isEmpty}).count == 0
         
         stackViewEmptyHolder.isHidden = !allTrackersEmpty
-        collectionView.isHidden = allTrackersEmpty && visibleTrackersEmpty
+        collectionView.isHidden = visibleTrackersEmpty
         stackViewFilteredHolder.isHidden = allTrackersEmpty ? true : !visibleTrackersEmpty
     }
     
