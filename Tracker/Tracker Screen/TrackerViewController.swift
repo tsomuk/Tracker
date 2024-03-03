@@ -18,6 +18,9 @@ final class TrackerViewController: UIViewController {
     
     private let trackerRepo = TrackerRepo.shared
     
+    private let trackerStore = TrackerStore()
+    private let trackerCategoryStore = TrackerCategoryStore()
+    
     private var completedTrackers: [TrackerRecord] = []
     
     private let labelEmptyHolder = TrackerTextLabel(text: "Что будем отслеживать?", fontSize: 12, fontWeight: .medium)
