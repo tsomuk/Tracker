@@ -7,28 +7,28 @@
 
 import UIKit
 
-enum Weekday: String {
-    case monday = "Пн"
-    case tuesday = "Вт"
-    case wednesday = "Ср"
-    case thursday = "Чт"
-    case friday = "Пт"
-    case saturday = "Cб"
-    case sunday = "Вск"
-}
+//enum Weekday: String {
+//    case monday = "Пн"
+//    case tuesday = "Вт"
+//    case wednesday = "Ср"
+//    case thursday = "Чт"
+//    case friday = "Пт"
+//    case saturday = "Cб"
+//    case sunday = "Вск"
+//}
 
 protocol SelectedScheduleDelegate: AnyObject {
-    func selectScheduleScreen(_ screen: ScheduleViewController, didSelectedDays schedule: [Weekday])
+    func selectScheduleScreen(_ screen: ScheduleViewController, didSelectedDays schedule: [Int])
 }
 
 final class ScheduleViewController: UIViewController {
     
     weak var delegate: SelectedScheduleDelegate?
     
-    private let daysOfWeek : [Weekday] = [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
+    private let daysOfWeek : [Int] = [1,2,3,4,5,6,7]
     private let daysOfWeekUI = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
     
-    private var selectedDays : [Weekday] = []
+    private var selectedDays : [Int] = []
     
     private lazy var button: UIButton = {
         let button = TrackerBigButton(title: "Готово")
@@ -99,11 +99,11 @@ extension ScheduleViewController : UITableViewDelegate, UITableViewDataSource {
 }
 
 extension ScheduleViewController: WeekDaySender {
-    func weekDayAppend(_ weekDay: Weekday) {
+    func weekDayAppend(_ weekDay: Int) {
         selectedDays.append(weekDay)
     }
     
-    func weekDayRemove(_ weekDay: Weekday) {
+    func weekDayRemove(_ weekDay: Int) {
         if let index = selectedDays.firstIndex(of: weekDay) {
             selectedDays.remove(at: index)
         }

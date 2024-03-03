@@ -160,13 +160,7 @@ final class NewEventViewController: UIViewController {
                                      title: self.enteredTrackerName,
                                      color: selectedColor.color ?? .ypBlack,
                                      emoji: selectedEmoji.emoji ?? "",
-                                     schedule: [Weekday.monday,
-                                                Weekday.tuesday,
-                                                Weekday.wednesday,
-                                                Weekday.thursday,
-                                                Weekday.friday,
-                                                Weekday.saturday,
-                                                Weekday.sunday])
+                                     schedule: [1,2,3,4,5,6,7])
             
             self.trackerRepo.createNewTracker(tracker: newTracker)
             self.dismiss(animated: true)

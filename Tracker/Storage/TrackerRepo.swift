@@ -21,32 +21,12 @@ final class TrackerRepo {
     var categories : [TrackerCategory] = [TrackerCategory(title: .usefull, trackers: [])]
     
     func appendTrackerInVisibleTrackers(weekday: Int) {
-        var weekDayCase: Weekday = .monday
-        
-        switch weekday {
-        case 1:
-            weekDayCase = .sunday
-        case 2:
-            weekDayCase = .monday
-        case 3:
-            weekDayCase = .tuesday
-        case 4:
-            weekDayCase = .wednesday
-        case 5:
-            weekDayCase = .thursday
-        case 6:
-            weekDayCase = .friday
-        case 7:
-            weekDayCase = .saturday
-        default:
-            break
-        }
-        
+              
         var trackers = [Tracker]()
         
         for tracker in categories.first!.trackers {
             for day in tracker.schedule {
-                if day == weekDayCase {
+                if day == weekday {
                     trackers.append(tracker)
                 }
             }

@@ -17,7 +17,7 @@ final class NewTrackerViewController: UIViewController {
     
     private let tableList = ["Категория", "Расписание"]
     private var selectedCategory: TrackerCategory?
-    private var selectedSchedule: [Weekday] = []
+    private var selectedSchedule: [Int] = []
     private var selectedColor: (color: UIColor?, item: IndexPath?)
     private var selectedEmoji: (emoji: String?, item: IndexPath?)
     
@@ -202,7 +202,7 @@ extension NewTrackerViewController : UITableViewDelegate, UITableViewDataSource 
         if item == "Расписание" {
             var text : [String] = []
             for day in selectedSchedule {
-                text.append(day.rawValue)
+                text.append(day.getShortDay())
             }
             cell.detailTextLabel?.text = text.joined(separator: ", ")
             cell.detailTextLabel?.textColor = .ypGray
@@ -277,7 +277,7 @@ extension NewTrackerViewController: CategoryViewControllerDelegate {
 }
 
 extension NewTrackerViewController: SelectedScheduleDelegate {
-    func selectScheduleScreen(_ screen: ScheduleViewController, didSelectedDays schedule: [Weekday]) {
+    func selectScheduleScreen(_ screen: ScheduleViewController, didSelectedDays schedule: [Int]) {
         selectedSchedule = schedule
         checkCreateButtonValidation()
         tableView.reloadData()

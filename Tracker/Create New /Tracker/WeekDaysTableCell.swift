@@ -8,13 +8,13 @@
 import UIKit
 
 protocol WeekDaySender: AnyObject {
-    func weekDayAppend(_ weekDay: Weekday)
-    func weekDayRemove(_ weekDay: Weekday)
+    func weekDayAppend(_ weekDay: Int)
+    func weekDayRemove(_ weekDay: Int)
 }
 
 final class WeekDaysTableCell: UITableViewCell {
     
-    var weekDay: Weekday?
+    var weekDay: Int?
     weak var delegate: WeekDaySender?
     
     private lazy var weekDaytitle: UILabel = {
@@ -41,7 +41,7 @@ final class WeekDaysTableCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configureCell(_ weekDayUI: String, _ weekDay: Weekday) {
+    func configureCell(_ weekDayUI: String, _ weekDay: Int) {
         backgroundColor = .ypBackground
         weekDaytitle.text = weekDayUI
         self.weekDay = weekDay
