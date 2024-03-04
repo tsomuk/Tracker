@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol CreateTracker {
+protocol CreateTrackerProtocol: AnyObject {
     func create(_ tracker: Tracker, _ category: String)
 }
 
@@ -17,7 +17,7 @@ final class NewTrackerViewController: UIViewController {
     
     private var enteredEventName = ""
     weak var delegate: DismissProtocol?
-    var createDelegate: CreateTracker?
+    weak var createDelegate: CreateTrackerProtocol?
     
     private let tableList = ["Категория", "Расписание"]
     private var selectedCategory: TrackerCategory?

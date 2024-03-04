@@ -14,7 +14,7 @@ protocol DismissProtocol: AnyObject {
 final class AddNewTrackerViewController: UIViewController {
     
     weak var delegate: ReloadCollectionProtocol?
-    var createDelegate: CreateTracker?
+    weak var createDelegate: CreateTrackerProtocol?
     
     private lazy var newHabitButton: UIButton = {
         let newHabitButton = TrackerBigButton(title: "Привычка")
@@ -56,10 +56,10 @@ final class AddNewTrackerViewController: UIViewController {
     
     @objc private func makeNewHabit(sender: UIButton) {
         sender.showAnimation {
-            let newHabitViewController = NewTrackerViewController()
-            newHabitViewController.delegate = self
-            newHabitViewController.createDelegate = self.createDelegate
-            let navController = UINavigationController(rootViewController: newHabitViewController)
+            let newTrackerViewController = NewTrackerViewController()
+            newTrackerViewController.delegate = self
+            newTrackerViewController.createDelegate = self.createDelegate
+            let navController = UINavigationController(rootViewController: newTrackerViewController)
             self.present(navController, animated: true)
         }
     }
@@ -68,6 +68,7 @@ final class AddNewTrackerViewController: UIViewController {
         sender.showAnimation {
             let newEventViewController = NewEventViewController()
             newEventViewController.delegate = self
+            newEventViewController.createDelegate = self.createDelegate
             let navController = UINavigationController(rootViewController: newEventViewController)
             self.present(navController, animated: true)
         }

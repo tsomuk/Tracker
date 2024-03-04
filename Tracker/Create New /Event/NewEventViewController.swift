@@ -9,7 +9,10 @@ import UIKit
 
 final class NewEventViewController: UIViewController {
     
+    // MARK: -  Properties & Constants
+    
     weak var delegate: DismissProtocol?
+    var createDelegate: CreateTrackerProtocol?
     
     private let tableList = ["Категория"]
     private let emojiList = ["🙂","😻","🌺","🐶","❤️","😱"
@@ -70,7 +73,7 @@ final class NewEventViewController: UIViewController {
         cancelButton.layer.borderWidth = 1
         cancelButton.layer.borderColor = UIColor.ypRed.cgColor
         cancelButton.setTitleColor(.ypRed, for: .normal)
-        cancelButton.addTarget(self, action: #selector(cancel), for: .touchUpInside)
+        cancelButton.addTarget(self, action: #selector(cancelButtonAction), for: .touchUpInside)
         return cancelButton
     }()
     
@@ -78,15 +81,9 @@ final class NewEventViewController: UIViewController {
         let createButton = TrackerSmallButton(title: "Создать", backgroundColor: .ypGray)
         createButton.isEnabled = false
         createButton.setTitleColor(.ypBlack, for: .normal)
-        createButton.addTarget(self, action: #selector(create), for: .touchUpInside)
+        createButton.addTarget(self, action: #selector(createButtonAction), for: .touchUpInside)
         return createButton
     }()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupAppearance()
-        textField.delegate = self
-    }
     
     private lazy var buttonsStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [cancelButton,createButton])
@@ -103,6 +100,15 @@ final class NewEventViewController: UIViewController {
         tableView.dataSource = self
         return tableView
     }()
+    
+    // MARK: -  LifeCycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupAppearance()
+        textField.delegate = self
+    }
+    
+    // MARK: -  Private methods
     
     func setupAppearance() {
         view.backgroundColor = .ypWhite
@@ -147,13 +153,13 @@ final class NewEventViewController: UIViewController {
         }
     }
     
-    @objc private func cancel(_ sender: UIButton) {
+    @objc private func cancelButtonAction(_ sender: UIButton) {
         sender.showAnimation {
             self.dismiss(animated: true)
         }
     }
     
-    @objc private func create(_ sender: UIButton) {
+    @objc private func createButtonAction(_ sender: UIButton) {
         sender.showAnimation { [self] in
             let newTracker = Tracker(id: UUID(),
                                      title: self.enteredTrackerName,
@@ -163,9 +169,12 @@ final class NewEventViewController: UIViewController {
             
             self.dismiss(animated: true)
             self.delegate?.dismissView()
+            self.createDelegate?.create(newTracker, selectedCategory?.title ?? "")
         }
     }
 }
+
+// MARK: -  UITableView Extension
 
 extension NewEventViewController : UITableViewDelegate, UITableViewDataSource {
     
@@ -194,6 +203,8 @@ extension NewEventViewController : UITableViewDelegate, UITableViewDataSource {
         }
     }
 }
+
+// MARK: -  UITextFieldDelegate
 
 extension NewEventViewController: UITextFieldDelegate {
     
@@ -230,6 +241,8 @@ extension NewEventViewController: UITextFieldDelegate {
         }
     }
 }
+
+// MARK: -  CategoryViewControllerDelegate
 
 extension NewEventViewController: CategoryViewControllerDelegate {
     func categoryScreen(_ screen: CategoryViewController, didSelectedCategory category: TrackerCategory) {

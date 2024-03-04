@@ -310,7 +310,7 @@ extension TrackerViewController: TrackerDoneDelegate{
     }
 }
 
-extension TrackerViewController: CreateTracker {
+extension TrackerViewController: CreateTrackerProtocol {
     
     func create(_ tracker: Tracker, _ category: String) {
         if trackerCategoryStore.fetchAllCategories().filter({$0.title == category}).count == 0 {
