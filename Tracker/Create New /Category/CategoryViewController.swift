@@ -13,7 +13,6 @@ protocol CategoryViewControllerDelegate: AnyObject {
 
 final class CategoryViewController: UIViewController {
     
-    var trackerRepo = TrackerRepo.shared
     weak var delegate: CategoryViewControllerDelegate?
     
     private let label = TrackerTextLabel(text: "Привычки и события можно \nобъединить по смыслу", fontSize: 12, fontWeight: .medium)

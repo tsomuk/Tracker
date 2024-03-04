@@ -15,7 +15,6 @@ final class NewTrackerViewController: UIViewController {
     
     // MARK: -  Properties & Constants
     
-    private let trackerRepo = TrackerRepo.shared
     private var enteredEventName = ""
     weak var delegate: DismissProtocol?
     var createDelegate: CreateTracker?

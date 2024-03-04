@@ -9,7 +9,6 @@ import UIKit
 
 final class NewEventViewController: UIViewController {
     
-    let trackerRepo = TrackerRepo.shared
     weak var delegate: DismissProtocol?
     
     private let tableList = ["Категория"]
@@ -162,7 +161,6 @@ final class NewEventViewController: UIViewController {
                                      emoji: selectedEmoji.emoji ?? "",
                                      schedule: [1, 2, 3, 4, 5, 6, 7])
             
-            self.trackerRepo.createNewTracker(tracker: newTracker)
             self.dismiss(animated: true)
             self.delegate?.dismissView()
         }

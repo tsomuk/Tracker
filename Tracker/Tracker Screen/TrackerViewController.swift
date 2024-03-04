@@ -15,7 +15,6 @@ final class TrackerViewController: UIViewController {
     
     // MARK: -  Properties & Constants
     
-    private let trackerRepo = TrackerRepo.shared
     
     private let trackerStore = TrackerStore()
     private let trackerCategoryStore = TrackerCategoryStore()
