@@ -12,8 +12,9 @@ final class NewEventViewController: UIViewController {
     // MARK: -  Properties & Constants
     
     weak var delegate: DismissProtocol?
-    var createDelegate: CreateTrackerProtocol?
+    weak var createDelegate: CreateTrackerProtocol?
     
+    private var enteredEventName = ""
     private let tableList = ["Категория"]
     private let emojiList = ["🙂","😻","🌺","🐶","❤️","😱"
                             ,"😇","😡","🥶","🤔","🍺","🍔",
@@ -24,7 +25,7 @@ final class NewEventViewController: UIViewController {
         .ypColor7, .ypColor8, .ypColor9, .ypColor10, .ypColor11, .ypColor12,
         .ypColor13, .ypColor14, .ypColor15, .ypColor16, .ypColor17, .ypColor18]
     
-    private var enteredTrackerName = ""
+   
     private var selectedCategory : TrackerCategory?
     private var selectedColor: (color: UIColor?, item: IndexPath?)
     private var selectedEmoji: (emoji: String?, item: IndexPath?)
@@ -140,8 +141,10 @@ final class NewEventViewController: UIViewController {
     
     func checkCreateButtonValidation() {
         if selectedCategory != nil &&
-            enteredTrackerName.count > 0 &&
-            enteredTrackerName.count <= 38
+            selectedColor.color != nil &&
+            selectedEmoji.emoji != nil &&
+            enteredEventName.count > 0 &&
+            enteredEventName.count <= 38
         {
             createButton.isEnabled = true
             createButton.backgroundColor = .ypBlack
@@ -162,14 +165,14 @@ final class NewEventViewController: UIViewController {
     @objc private func createButtonAction(_ sender: UIButton) {
         sender.showAnimation { [self] in
             let newTracker = Tracker(id: UUID(),
-                                     title: self.enteredTrackerName,
+                                     title: self.enteredEventName,
                                      color: selectedColor.color ?? .ypBlack,
                                      emoji: selectedEmoji.emoji ?? "",
                                      schedule: [1, 2, 3, 4, 5, 6, 7])
             
             self.dismiss(animated: true)
             self.delegate?.dismissView()
-            self.createDelegate?.create(newTracker, selectedCategory?.title ?? "")
+            self.createDelegate?.createTrackerOrEvent(newTracker, selectedCategory?.title ?? "")
         }
     }
 }
@@ -211,7 +214,7 @@ extension NewEventViewController: UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         guard let text = textField.text else { return false }
-        enteredTrackerName = text
+        enteredEventName = text
         checkCreateButtonValidation()
         if text.count >= 38 {
             limitLabel.isHidden = false

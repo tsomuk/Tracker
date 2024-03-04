@@ -8,14 +8,14 @@
 import UIKit
 
 protocol CreateTrackerProtocol: AnyObject {
-    func create(_ tracker: Tracker, _ category: String)
+    func createTrackerOrEvent(_ tracker: Tracker, _ category: String)
 }
 
 final class NewTrackerViewController: UIViewController {
     
     // MARK: -  Properties & Constants
     
-    private var enteredEventName = ""
+    private var enteredTrackerName = ""
     weak var delegate: DismissProtocol?
     weak var createDelegate: CreateTrackerProtocol?
     
@@ -148,9 +148,10 @@ final class NewTrackerViewController: UIViewController {
     func checkCreateButtonValidation() {
         if selectedCategory != nil &&
             selectedColor.color != nil &&
+            selectedSchedule.count > 0 &&
             selectedEmoji.emoji != nil &&
-            enteredEventName.count > 0 &&
-            enteredEventName.count <= 38
+            enteredTrackerName.count > 0 &&
+            enteredTrackerName.count <= 38
         {
             createButton.isEnabled = true
             createButton.backgroundColor = .ypBlack
@@ -163,9 +164,6 @@ final class NewTrackerViewController: UIViewController {
             
     }
     
-    
-    
-    
     @objc private func cancel(_ sender: UIButton) {
         sender.showAnimation {
             self.dismiss(animated: true)
@@ -174,7 +172,7 @@ final class NewTrackerViewController: UIViewController {
     
     @objc private func create(_ sender: UIButton) {
         let newTracker = Tracker(id: UUID(),
-                                 title: enteredEventName,
+                                 title: enteredTrackerName,
                                  color: selectedColor.color ?? .cyan,
                                  emoji: selectedEmoji.emoji ?? "⚠️",
                                  schedule: selectedSchedule)
@@ -182,7 +180,7 @@ final class NewTrackerViewController: UIViewController {
         
         dismiss(animated: true)
         self.delegate?.dismissView()
-        self.createDelegate?.create(newTracker, selectedCategory?.title ?? "")
+        self.createDelegate?.createTrackerOrEvent(newTracker, selectedCategory?.title ?? "")
     }
 }
 
@@ -241,7 +239,7 @@ extension NewTrackerViewController : UITableViewDelegate, UITableViewDataSource 
 extension NewTrackerViewController: UITextFieldDelegate {
  func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         guard let text = textField.text else { return false }
-        enteredEventName = text
+        enteredTrackerName = text
         checkCreateButtonValidation()
         if text.count >= 38 {
             limitLabel.isHidden = false

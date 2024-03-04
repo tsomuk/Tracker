@@ -312,7 +312,7 @@ extension TrackerViewController: TrackerDoneDelegate{
 
 extension TrackerViewController: CreateTrackerProtocol {
     
-    func create(_ tracker: Tracker, _ category: String) {
+    func createTrackerOrEvent(_ tracker: Tracker, _ category: String) {
         if trackerCategoryStore.fetchAllCategories().filter({$0.title == category}).count == 0 {
             let newCategory = TrackerCategory(title: category, trackers: [])
             trackerCategoryStore.createCategory(newCategory)
