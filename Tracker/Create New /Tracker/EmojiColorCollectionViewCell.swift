@@ -9,7 +9,6 @@ import UIKit
 
 final class EmojiColorCollectionViewCell: UICollectionViewCell {
     
-    
     lazy var emojiView: UILabel = {
         let emojiView = UILabel()
         emojiView.translatesAutoresizingMaskIntoConstraints = false

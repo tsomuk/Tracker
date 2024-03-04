@@ -72,8 +72,7 @@ final class NewTrackerViewController: UIViewController {
         createButton.addTarget(self, action: #selector(create), for: .touchUpInside)
         return createButton
     }()
-    
-    
+
     private lazy var tableView: UITableView = {
         let tableView = TrackerTable()
         tableView.delegate = self
@@ -161,7 +160,6 @@ final class NewTrackerViewController: UIViewController {
             createButton.backgroundColor = .ypGray
             createButton.setTitleColor(.ypBlack, for: .normal)
         }
-            
     }
     
     @objc private func cancel(_ sender: UIButton) {
@@ -176,7 +174,6 @@ final class NewTrackerViewController: UIViewController {
                                  color: selectedColor.color ?? .cyan,
                                  emoji: selectedEmoji.emoji ?? "⚠️",
                                  schedule: selectedSchedule)
-        
         
         dismiss(animated: true)
         self.delegate?.dismissView()
@@ -210,7 +207,6 @@ extension NewTrackerViewController : UITableViewDelegate, UITableViewDataSource 
             cell.detailTextLabel?.text = text.joined(separator: ", ")
             cell.detailTextLabel?.textColor = .ypGray
         }
-        
         return cell
     }
     
@@ -255,7 +251,6 @@ extension NewTrackerViewController: UITextFieldDelegate {
         guard let text = textField.text, !text.isEmpty else {
             return false
         }
-
         return text.count > 38 ? false : true
     }
 

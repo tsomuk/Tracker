@@ -15,7 +15,6 @@ final class TrackerViewController: UIViewController {
     
     // MARK: -  Properties & Constants
     
-    
     private let trackerStore = TrackerStore()
     private let trackerCategoryStore = TrackerCategoryStore()
     
@@ -113,7 +112,6 @@ final class TrackerViewController: UIViewController {
         return image
     }()
     
-    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -148,7 +146,6 @@ final class TrackerViewController: UIViewController {
         let datePickerItem = UIBarButtonItem(customView: datePicker)
         navigationItem.rightBarButtonItem = datePickerItem
     }
-    
     
     private func setupAppearance() {
         view.backgroundColor = .ypWhite

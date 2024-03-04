@@ -29,7 +29,6 @@ final class WeekDaysTableCell: UITableViewCell {
         onOffSwitch.translatesAutoresizingMaskIntoConstraints = false
         onOffSwitch.addTarget(self, action: #selector(onOffAction), for: .valueChanged)
         return onOffSwitch
-        
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

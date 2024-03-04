@@ -7,16 +7,6 @@
 
 import UIKit
 
-//enum Weekday: String {
-//    case monday = "Пн"
-//    case tuesday = "Вт"
-//    case wednesday = "Ср"
-//    case thursday = "Чт"
-//    case friday = "Пт"
-//    case saturday = "Cб"
-//    case sunday = "Вск"
-//}
-
 protocol SelectedScheduleDelegate: AnyObject {
     func selectScheduleScreen(_ screen: ScheduleViewController, didSelectedDays schedule: [Int])
 }
@@ -109,4 +99,3 @@ extension ScheduleViewController: WeekDaySender {
         }
     }
 }
-
