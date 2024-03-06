@@ -10,6 +10,7 @@
 		110C30362B6903D1003B8AD9 /* TrackerTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110C30352B6903D1003B8AD9 /* TrackerTable.swift */; };
 		1113F96D2B98DDB10009778C /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1113F96B2B98DDB10009778C /* OnboardingViewController.swift */; };
 		1113F96E2B98DDB10009778C /* OnboardingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1113F96C2B98DDB10009778C /* OnboardingPageViewController.swift */; };
+		1113F9702B98E0070009778C /* UserDefaults + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1113F96F2B98E0070009778C /* UserDefaults + Extension.swift */; };
 		11323F662B58F8ED0078EDC1 /* AddNewCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11323F652B58F8ED0078EDC1 /* AddNewCategoryViewController.swift */; };
 		11380F552B8A62590002F7D3 /* EmojiColorCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11380F542B8A62590002F7D3 /* EmojiColorCollectionViewCell.swift */; };
 		11380F572B8A626F0002F7D3 /* EmojiColorCollectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11380F562B8A626F0002F7D3 /* EmojiColorCollectionHeader.swift */; };
@@ -50,6 +51,7 @@
 		110C30352B6903D1003B8AD9 /* TrackerTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerTable.swift; sourceTree = "<group>"; };
 		1113F96B2B98DDB10009778C /* OnboardingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		1113F96C2B98DDB10009778C /* OnboardingPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingPageViewController.swift; sourceTree = "<group>"; };
+		1113F96F2B98E0070009778C /* UserDefaults + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults + Extension.swift"; sourceTree = "<group>"; };
 		11323F652B58F8ED0078EDC1 /* AddNewCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewCategoryViewController.swift; sourceTree = "<group>"; };
 		11380F542B8A62590002F7D3 /* EmojiColorCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiColorCollectionViewCell.swift; sourceTree = "<group>"; };
 		11380F562B8A626F0002F7D3 /* EmojiColorCollectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiColorCollectionHeader.swift; sourceTree = "<group>"; };
@@ -252,6 +254,7 @@
 				115AADD32B6C50900044FD34 /* ButtonAnimation.swift */,
 				11F3C7632B867F4800F77FF3 /* AddSubviewsHelper.swift */,
 				11918E7E2B9507A900769A75 /* Int+Extension.swift */,
+				1113F96F2B98E0070009778C /* UserDefaults + Extension.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -326,6 +329,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1113F9702B98E0070009778C /* UserDefaults + Extension.swift in Sources */,
 				110C30362B6903D1003B8AD9 /* TrackerTable.swift in Sources */,
 				11B104F22B55625C0058904F /* AddNewTrackerViewController.swift in Sources */,
 				11D1C7EA2B8BC8790085928B /* TrackerSmallButton.swift in Sources */,

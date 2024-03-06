@@ -7,10 +7,8 @@
 
 import UIKit
 
-class OnboardingViewController: UIViewController {
-    
-    
-    
+final class OnboardingViewController: UIViewController {
+
     private lazy var backgroundImage: UIImageView = {
         let backgroundImage = UIImageView()
         backgroundImage.translatesAutoresizingMaskIntoConstraints = false
@@ -77,11 +75,9 @@ extension OnboardingViewController {
 }
 
 extension OnboardingViewController {
-    
      @objc private func goToApp() {
-         let trackerVC = TabBarViewController()
-         trackerVC.modalPresentationStyle = .fullScreen
-         present(trackerVC, animated: true)
+         let tabBarViewController = TabBarViewController()
+         tabBarViewController.modalPresentationStyle = .fullScreen
+         present(tabBarViewController, animated: true)
     }
-    
 }

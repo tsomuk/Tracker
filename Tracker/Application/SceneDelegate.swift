@@ -25,18 +25,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func showOnboardingOrApp() -> UIViewController {
         var rootViewController = UIViewController()
-        if UserDefaults.standard.value(forKey: "isFirstEnter") == nil { // Проверка существует ли запись о запуске приложения в UserDefaults
-                print("Первый вход")
-                let isFirstEnter = false
-                UserDefaults.standard.set(isFirstEnter, forKey: "isFirstEnter")
+        if UserDefaults.isFirstLaunch() {
                 rootViewController = OnboardingPageViewController(transitionStyle: .pageCurl, navigationOrientation: .horizontal)
         } else {
-            print("Повторный вход")
             rootViewController = TabBarViewController()
         }
         return rootViewController
     }
-
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
         // This occurs shortly after the scene enters the background, or when its session is discarded.
