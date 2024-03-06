@@ -7,14 +7,8 @@
 
 import UIKit
 
-extension UICollectionViewCell {
-    func addSubviewsInCell(_ views: UIView...) {
-        views.forEach({addSubview($0)})
-    }
-}
-
 extension UIView {
-    func addSubviewsinView(_ views: UIView...) {
+    func addSubviews(_ views: UIView...) {
         views.forEach({addSubview($0)})
     }
 }

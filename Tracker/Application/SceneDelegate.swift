@@ -17,9 +17,24 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         let window = UIWindow(windowScene: windowScene)
-        window.rootViewController = TabBarViewController()
+        window.rootViewController = showOnboardingOrApp()
+
         self.window = window
         window.makeKeyAndVisible()
+    }
+    
+    func showOnboardingOrApp() -> UIViewController {
+        var rootViewController = UIViewController()
+        if UserDefaults.standard.value(forKey: "isFirstEnter") == nil { // Проверка существует ли запись о запуске приложения в UserDefaults
+                print("Первый вход")
+                let isFirstEnter = false
+                UserDefaults.standard.set(isFirstEnter, forKey: "isFirstEnter")
+                rootViewController = OnboardingPageViewController(transitionStyle: .pageCurl, navigationOrientation: .horizontal)
+        } else {
+            print("Повторный вход")
+            rootViewController = TabBarViewController()
+        }
+        return rootViewController
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
