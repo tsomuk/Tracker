@@ -216,8 +216,10 @@ extension NewTrackerViewController : UITableViewDelegate, UITableViewDataSource 
         let selectedItem = tableList[indexPath.row]
         
         if selectedItem == "Категория" {
+            let vm = ViewModel()
             let categoryViewController = CategoryViewController()
-            categoryViewController.delegate = self
+            categoryViewController.viewModel = vm
+            vm.delegate = self
             let navigatonVC = UINavigationController(rootViewController: categoryViewController)
             present(navigatonVC, animated: true)
         }
@@ -267,7 +269,7 @@ extension NewTrackerViewController: UITextFieldDelegate {
 // MARK: -  CategoryViewControllerDelegate & SelectedScheduleDelegate
 
 extension NewTrackerViewController: CategoryViewControllerDelegate {
-    func categoryScreen(_ screen: CategoryViewController, didSelectedCategory category: TrackerCategory) {
+    func categoryScreen(didSelectedCategory category: TrackerCategory) {
         selectedCategory = category
         checkCreateButtonValidation()
         tableView.reloadData()

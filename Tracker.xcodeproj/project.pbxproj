@@ -11,6 +11,7 @@
 		1113F96D2B98DDB10009778C /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1113F96B2B98DDB10009778C /* OnboardingViewController.swift */; };
 		1113F96E2B98DDB10009778C /* OnboardingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1113F96C2B98DDB10009778C /* OnboardingPageViewController.swift */; };
 		1113F9702B98E0070009778C /* UserDefaults + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1113F96F2B98E0070009778C /* UserDefaults + Extension.swift */; };
+		1113F9722B98E3A40009778C /* CategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1113F9712B98E3A40009778C /* CategoryViewModel.swift */; };
 		11323F662B58F8ED0078EDC1 /* AddNewCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11323F652B58F8ED0078EDC1 /* AddNewCategoryViewController.swift */; };
 		11380F552B8A62590002F7D3 /* EmojiColorCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11380F542B8A62590002F7D3 /* EmojiColorCollectionViewCell.swift */; };
 		11380F572B8A626F0002F7D3 /* EmojiColorCollectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11380F562B8A626F0002F7D3 /* EmojiColorCollectionHeader.swift */; };
@@ -52,6 +53,7 @@
 		1113F96B2B98DDB10009778C /* OnboardingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		1113F96C2B98DDB10009778C /* OnboardingPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingPageViewController.swift; sourceTree = "<group>"; };
 		1113F96F2B98E0070009778C /* UserDefaults + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults + Extension.swift"; sourceTree = "<group>"; };
+		1113F9712B98E3A40009778C /* CategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewModel.swift; sourceTree = "<group>"; };
 		11323F652B58F8ED0078EDC1 /* AddNewCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewCategoryViewController.swift; sourceTree = "<group>"; };
 		11380F542B8A62590002F7D3 /* EmojiColorCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiColorCollectionViewCell.swift; sourceTree = "<group>"; };
 		11380F562B8A626F0002F7D3 /* EmojiColorCollectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiColorCollectionHeader.swift; sourceTree = "<group>"; };
@@ -171,6 +173,7 @@
 			children = (
 				11B105292B58568A0058904F /* CategoryViewController.swift */,
 				11323F652B58F8ED0078EDC1 /* AddNewCategoryViewController.swift */,
+				1113F9712B98E3A40009778C /* CategoryViewModel.swift */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -355,6 +358,7 @@
 				11ABAA2A2B4A9855003F02BF /* AppDelegate.swift in Sources */,
 				11380F572B8A626F0002F7D3 /* EmojiColorCollectionHeader.swift in Sources */,
 				11ABAA452B4AAB70003F02BF /* StatisticViewController.swift in Sources */,
+				1113F9722B98E3A40009778C /* CategoryViewModel.swift in Sources */,
 				11B105182B567C800058904F /* NewTrackerViewController.swift in Sources */,
 				11B1052A2B58568A0058904F /* CategoryViewController.swift in Sources */,
 				11918E792B9504CE00769A75 /* TrackerCategoryStore.swift in Sources */,

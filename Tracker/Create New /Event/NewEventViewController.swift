@@ -199,8 +199,10 @@ extension NewEventViewController : UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
         let selectedItem = tableList[indexPath.row]
         if selectedItem == "Категория" {
+            let vm = ViewModel()
             let categoryViewController = CategoryViewController()
-            categoryViewController.delegate = self
+            categoryViewController.viewModel = vm
+            vm.delegate = self
             let navigatonVC = UINavigationController(rootViewController: categoryViewController)
             present(navigatonVC, animated: true)
         }
@@ -248,7 +250,7 @@ extension NewEventViewController: UITextFieldDelegate {
 // MARK: -  CategoryViewControllerDelegate
 
 extension NewEventViewController: CategoryViewControllerDelegate {
-    func categoryScreen(_ screen: CategoryViewController, didSelectedCategory category: TrackerCategory) {
+    func categoryScreen(didSelectedCategory category: TrackerCategory) {
         selectedCategory = category
         tableView.reloadData()
         checkCreateButtonValidation()
