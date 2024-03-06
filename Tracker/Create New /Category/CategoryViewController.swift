@@ -42,6 +42,7 @@ final class CategoryViewController: UIViewController {
         let tableView = TrackerTable()
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.backgroundColor = .clear
         return tableView
     }()
    
@@ -49,7 +50,6 @@ final class CategoryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       
         setupAppearance()
         mainScreenContent()
     }
@@ -75,13 +75,14 @@ final class CategoryViewController: UIViewController {
         view.addSubview(button)
         view.addSubview(holderStackView)
         view.addSubview(tableView)
-        let tableHeight = CGFloat(75 * (viewModel?.categories.count ?? 0))
+
         
         NSLayoutConstraint.activate([
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
-            tableView.heightAnchor.constraint(equalToConstant: 300),
+            tableView.bottomAnchor.constraint(equalTo: button.topAnchor),
+            
             
             holderStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             holderStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
