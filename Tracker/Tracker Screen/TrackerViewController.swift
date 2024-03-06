@@ -45,7 +45,7 @@ final class TrackerViewController: UIViewController {
             let resultCategory = TrackerCategory(title: category.title, trackers: resultTrackers)
             resultCategories.append(resultCategory)
         }
-        return resultCategories
+        return resultCategories.filter({!$0.trackers.isEmpty})
     }
     
     
