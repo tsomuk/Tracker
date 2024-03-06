@@ -32,21 +32,21 @@ extension Int {
     func getShortDay() -> String {
         switch self {
         case 1:
-            return "Пн"
-        case 2:
-            return "Вт"
-        case 3:
-            return "Ср"
-        case 4:
-            return "Чт"
-        case 5:
-            return "Пт"
-        case 6:
-            return "Сб"
-        case 7:
             return "Вс"
+        case 2:
+            return "Пн"
+        case 3:
+            return "Вт"
+        case 4:
+            return "Ср"
+        case 5:
+            return "Чт"
+        case 6:
+            return "Пт"
+        case 7:
+            return "Сб"
         default:
-            return ""
+            return  ""
         }
     }
 }

@@ -17,7 +17,7 @@ final class TrackerViewController: UIViewController {
     
     private let trackerStore = TrackerStore()
     private let trackerCategoryStore = TrackerCategoryStore()
-    
+    private let trackerRecordStore = TrackerRecordStore()
     private var completedTrackers: [TrackerRecord] = []
     
     private let labelEmptyHolder = TrackerTextLabel(text: "Что будем отслеживать?", fontSize: 12, fontWeight: .medium)
@@ -232,7 +232,7 @@ extension TrackerViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? TrackerCollectionViewCell else { return UICollectionViewCell() }
         let tracker = visibleCategories[indexPath.section].trackers[indexPath.item]
-        cell.delegate = self
+//        cell.delegate = self
         let isCompletedToday = checkIsTrackerCompletedToday(id: tracker.id)
         let completedDays = completedTrackers.filter { $0.id == tracker.id }.count
         cell.configureCell(tracker: tracker,
@@ -307,6 +307,10 @@ extension TrackerViewController: TrackerDoneDelegate{
     }
 }
 
+
+
+// MARK: - CreateTrackerProtocol
+
 extension TrackerViewController: CreateTrackerProtocol {
     
     func createTrackerOrEvent(_ tracker: Tracker, _ category: String) {
@@ -320,6 +324,8 @@ extension TrackerViewController: CreateTrackerProtocol {
         collectionView.reloadData()
     }
 }
+
+// MARK: - CategoryStore
 
 extension TrackerViewController {
     private func fetchCategory() {
@@ -340,3 +346,42 @@ extension TrackerViewController: TrackerCategoryStoreDelegate {
         collectionView.reloadData()
     }
 }
+
+
+// MARK: - Delegates
+
+//extension TrackerViewController: TrackerDoneDelegate{
+//    func completeTracker(id: UUID, indexPath: IndexPath) {
+//        let trackerRecord = TrackerRecord(id: id, date: datePicker.date)
+//        createRecord(record: trackerRecord)
+//        collectionView.reloadItems(at: [indexPath])
+//    }
+//    
+//    func uncompleteTracker(id: UUID, indexPath: IndexPath) {
+//        deleteRecord.removeAll { trackerRecord in
+//            let isSameDay = Calendar.current.isDate(trackerRecord.date, inSameDayAs: datePicker.date)
+//            return trackerRecord.id == id && isSameDay
+//        }
+//        collectionView.reloadItems(at: [indexPath])
+//    }
+//}
+//
+//// MARK: - RecordStore
+//
+//extension TrackerViewController {
+//    private func fetchRecord()  {
+//            completedTrackers = trackerRecordStore.fetchRecords()
+//            print(completedTrackers)
+//    }
+//    
+//    private func createRecord(record: TrackerRecord)  {
+//             trackerRecordStore.addNewRecord(from: record)
+//             fetchRecord()
+//    }
+//    
+//    private func deleteRecord(record: TrackerRecord)  {
+//        let record = completedTrackers[index]
+//             trackerRecordStore.deleteTrackerRecord(trackerRecord: record)
+//             fetchRecord()
+//    }
+//}
