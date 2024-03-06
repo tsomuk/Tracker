@@ -10,17 +10,25 @@ import UIKit
 final class AddNewCategoryViewController: UIViewController {
     
     private var textField = TrackerTextField(placeHolder: "Введите название трекера")
-    private var button = TrackerBigButton(title: "Готово")
+    
+    private lazy var button: UIButton = {
+        let button = TrackerBigButton(title: "Готово")
+        button.addTarget(self, action: #selector(addNewCaterory), for: .touchUpInside)
+        return button
+    }()
+    
+    private var enteredCategoryName = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupAppearance()
+        textField.delegate = self
     }
     
     private func setupAppearance() {
         view.backgroundColor = .ypWhite
         
-        title = "Новая НЕ РЕАЛИЗОВАНА категория "
+        title = "Новая категория "
         navigationItem.hidesBackButton = true
         
         view.addSubview(button)
@@ -41,7 +49,38 @@ final class AddNewCategoryViewController: UIViewController {
     }
     
     @objc private func addNewCaterory() {
-        print("Add new category")
+        print(enteredCategoryName)
         navigationController?.popViewController(animated: true)
+    }
+}
+
+
+
+
+// MARK: -  UITextFieldDelegate
+
+extension AddNewCategoryViewController: UITextFieldDelegate {
+    
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard let text = textField.text else { return false }
+        enteredCategoryName = text
+        return true
+    }
+    
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        if textField.text != "" {
+            return true
+        } else {
+            textField.placeholder = "Название не может быть пустым"
+            return false
+        }
     }
 }
