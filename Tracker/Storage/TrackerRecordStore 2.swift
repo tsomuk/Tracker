@@ -29,8 +29,6 @@ final class TrackerRecordStore {
         try! context.save()
     }
     
-    
-    
 //    func deleteTrackerRecord(trackerRecord: TrackerRecord) {
 //        let fetchRequest = NSFetchRequest<TrackerRecordCoreData>(entityName: "TrackerRecordCoreData")
 //        fetchRequest.predicate = NSPredicate(format: "id == %@", trackerRecord.id as CVarArg)
