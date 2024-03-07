@@ -123,6 +123,7 @@ extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
     
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
         viewModel?.didSelectModelAtIndex(indexPath) {
