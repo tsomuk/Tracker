@@ -8,13 +8,12 @@
 import UIKit
 
 protocol CategoryViewControllerDelegate: AnyObject {
-    func categoryScreen(_ screen: CategoryViewController, didSelectedCategory category: TrackerCategory)
+    func categoryScreen(didSelectedCategory category: TrackerCategory)
 }
 
 final class CategoryViewController: UIViewController {
     
-    weak var delegate: CategoryViewControllerDelegate?
-    
+    var viewModel: CategoryViewModel?
     private let label = TrackerTextLabel(text: "Привычки и события можно \nобъединить по смыслу", fontSize: 12, fontWeight: .medium)
     
     private lazy var button: UIButton = {
@@ -43,8 +42,11 @@ final class CategoryViewController: UIViewController {
         let tableView = TrackerTable()
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.backgroundColor = .clear
         return tableView
     }()
+   
+    // MARK: - LifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,9 +54,22 @@ final class CategoryViewController: UIViewController {
         mainScreenContent()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel?.fetchCategory {
+            self.tableView.reloadData()
+        }
+    }
+    
+    // MARK: - Private methods
+    
     private func mainScreenContent() {
             tableView.isHidden = false
-            holderStackView.isHidden = true
+        if let categoryNumber = viewModel?.categories.count {
+            if categoryNumber > 0 {
+                holderStackView.isHidden = true
+            }
+        } else { return }
     }
     
     private func setupAppearance() {
@@ -64,13 +79,13 @@ final class CategoryViewController: UIViewController {
         view.addSubview(button)
         view.addSubview(holderStackView)
         view.addSubview(tableView)
+
         
         NSLayoutConstraint.activate([
-            
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
-            tableView.heightAnchor.constraint(equalToConstant: CGFloat(75)),
+            tableView.bottomAnchor.constraint(equalTo: button.topAnchor),
             
             holderStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             holderStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
@@ -94,18 +109,15 @@ final class CategoryViewController: UIViewController {
     }
 }
 
-extension CategoryViewController: UITableViewDelegate {
-    
-}
-
-extension CategoryViewController: UITableViewDataSource {
+extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        mainScreenContent()
+        return viewModel?.categories.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
-        cell.textLabel?.text = "Полезные привычки"
+        cell.textLabel?.text = viewModel?.categories[indexPath.row].title ?? ""
         cell.selectionStyle = .none
         cell.backgroundColor = .ypBackground
         return cell
@@ -113,13 +125,8 @@ extension CategoryViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
-        delegate?.categoryScreen(self, didSelectedCategory: TrackerCategory(title: "Полезные привычки", trackers: []))
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+        viewModel?.didSelectModelAtIndex(indexPath) {
             self.dismiss(animated: true)
         }
-        
-    }
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        tableView.cellForRow(at: indexPath)?.accessoryType = .none
     }
 }

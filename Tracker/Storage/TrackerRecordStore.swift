@@ -29,29 +29,31 @@ final class TrackerRecordStore {
         try! context.save()
     }
     
-//    func deleteTrackerRecord(trackerRecord: TrackerRecord) {
-//        let fetchRequest = NSFetchRequest<TrackerRecordCoreData>(entityName: "TrackerRecordCoreData")
-//        fetchRequest.predicate = NSPredicate(format: "id == %@", trackerRecord.id as CVarArg)
-//            let records = context.fetch(fetchRequest)
-//            if let recordToDelete = records.first {
-//                context.delete(recordToDelete)
-//                try! context.save()
-//        }
-//    }
-//    
-//    func fetchRecords() -> [TrackerRecord] {
-//        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return [] }
-//        let managedContext = appDelegate.persistentContainer.viewContext
-//        let fetchRequest = NSFetchRequest<TrackerRecordCoreData>(entityName: "TrackerRecordCoreData")
-//            let trackerRecordCoreDataArray = managedContext.fetch(fetchRequest)
-//            let trackerRecords = trackerRecordCoreDataArray.map { trackerRecordCoreData in
-//                return TrackerRecord(
-//                    id: trackerRecordCoreData.id ?? UUID(),
-//                    date: trackerRecordCoreData.date ?? Date()
-//                )
-//            }
-//            return trackerRecords
-//        }
+    
+    
+    func deleteTrackerRecord(trackerRecord: TrackerRecord) {
+        let fetchRequest = NSFetchRequest<TrackerRecordCoreData>(entityName: "TrackerRecordCoreData")
+        fetchRequest.predicate = NSPredicate(format: "id == %@", trackerRecord.id as CVarArg)
+            let records = try! context.fetch(fetchRequest)
+            if let recordToDelete = records.first {
+                context.delete(recordToDelete)
+                try! context.save()
+        }
+    }
+    
+    func fetchRecords() -> [TrackerRecord] {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return [] }
+        let managedContext = appDelegate.persistentContainer.viewContext
+        let fetchRequest = NSFetchRequest<TrackerRecordCoreData>(entityName: "TrackerRecordCoreData")
+            let trackerRecordCoreDataArray = try! managedContext.fetch(fetchRequest)
+            let trackerRecords = trackerRecordCoreDataArray.map { trackerRecordCoreData in
+                return TrackerRecord(
+                    id: trackerRecordCoreData.id ?? UUID(),
+                    date: trackerRecordCoreData.date ?? Date()
+                )
+            }
+            return trackerRecords
+        }
 }
 
 
