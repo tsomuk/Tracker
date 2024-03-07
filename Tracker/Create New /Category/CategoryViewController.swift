@@ -87,7 +87,6 @@ final class CategoryViewController: UIViewController {
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
             tableView.bottomAnchor.constraint(equalTo: button.topAnchor),
             
-            
             holderStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             holderStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             holderStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
@@ -125,12 +124,9 @@ extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        viewModel?.didSelectCell(tableView, indexPath) {
+        tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
+        viewModel?.didSelectModelAtIndex(indexPath) {
             self.dismiss(animated: true)
         }
-    }
-    
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        viewModel?.didDeselectCell(tableView, indexPath)
     }
 }

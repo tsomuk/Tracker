@@ -5,7 +5,8 @@
 //  Created by Nikita Tsomuk on 06/03/2024.
 //
 
-import UIKit
+import Foundation
+//import UIKit
 
 final class CategoryViewModel {
     
@@ -22,15 +23,10 @@ final class CategoryViewModel {
         callBack()
     }
     
-    func didSelectCell(_ tableView: UITableView, _ indexPath: IndexPath, _ callBack: @escaping () -> ()) {
-        tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
+    func didSelectModelAtIndex(_ indexPath: IndexPath, _ callBack: @escaping () -> ()) {
         delegate?.categoryScreen(didSelectedCategory: TrackerCategory(title: categories[indexPath.row].title, trackers: []))
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             callBack()
         }
-    }
-    
-    func didDeselectCell(_ tableView: UITableView, _ indexPath: IndexPath) {
-        tableView.cellForRow(at: indexPath)?.accessoryType = .none
     }
 }
