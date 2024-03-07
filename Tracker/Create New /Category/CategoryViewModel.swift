@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class ViewModel {
+final class CategoryViewModel {
     
     weak var delegate: CategoryViewControllerDelegate?
     

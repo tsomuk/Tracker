@@ -13,7 +13,7 @@ protocol CategoryViewControllerDelegate: AnyObject {
 
 final class CategoryViewController: UIViewController {
     
-    var viewModel: ViewModel?
+    var viewModel: CategoryViewModel?
     private let label = TrackerTextLabel(text: "Привычки и события можно \nобъединить по смыслу", fontSize: 12, fontWeight: .medium)
     
     private lazy var button: UIButton = {
@@ -65,7 +65,11 @@ final class CategoryViewController: UIViewController {
     
     private func mainScreenContent() {
             tableView.isHidden = false
-            holderStackView.isHidden = true
+        if let categoryNumber = viewModel?.categories.count {
+            if categoryNumber > 0 {
+                holderStackView.isHidden = true
+            }
+        } else { return }
     }
     
     private func setupAppearance() {
@@ -108,7 +112,8 @@ final class CategoryViewController: UIViewController {
 
 extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel?.categories.count ?? 0
+        mainScreenContent()
+        return viewModel?.categories.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

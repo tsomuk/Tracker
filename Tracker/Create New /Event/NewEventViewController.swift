@@ -199,10 +199,10 @@ extension NewEventViewController : UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
         let selectedItem = tableList[indexPath.row]
         if selectedItem == "Категория" {
-            let vm = ViewModel()
+            let categoryViewModel = CategoryViewModel()
             let categoryViewController = CategoryViewController()
-            categoryViewController.viewModel = vm
-            vm.delegate = self
+            categoryViewController.viewModel = categoryViewModel
+            categoryViewModel.delegate = self
             let navigatonVC = UINavigationController(rootViewController: categoryViewController)
             present(navigatonVC, animated: true)
         }
