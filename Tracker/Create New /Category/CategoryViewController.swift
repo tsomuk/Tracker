@@ -110,6 +110,7 @@ final class CategoryViewController: UIViewController {
 }
 
 extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         mainScreenContent()
         return viewModel?.categories.count ?? 0

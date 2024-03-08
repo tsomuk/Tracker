@@ -105,6 +105,14 @@ final class TrackerViewController: UIViewController {
         return stackView
     }()
     
+    private lazy var filterButton: UIButton = {
+        filterButton = TrackerSmallButton(title: "Фильтры", backgroundColor: .ypBlue)
+        filterButton.setTitleColor(.white, for: .normal)
+        filterButton.addTarget(self, action: #selector(filterButtonTap), for: .touchUpInside)
+        
+        return filterButton
+    }()
+    
     private lazy var imageFiltered: UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
@@ -149,7 +157,7 @@ final class TrackerViewController: UIViewController {
     
     private func setupAppearance() {
         view.backgroundColor = .ypWhite
-        view.addSubviews(collectionView, stackViewEmptyHolder, stackViewFilteredHolder)
+        view.addSubviews(collectionView, stackViewEmptyHolder, stackViewFilteredHolder, filterButton)
         
         NSLayoutConstraint.activate([
             stackViewEmptyHolder.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
@@ -167,7 +175,12 @@ final class TrackerViewController: UIViewController {
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            
+            filterButton.widthAnchor.constraint(equalToConstant: 115),
+            filterButton.heightAnchor.constraint(equalToConstant: 50),
+            filterButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            filterButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
         ])
     }
     
@@ -178,6 +191,7 @@ final class TrackerViewController: UIViewController {
         
         stackViewEmptyHolder.isHidden = !allTrackersEmpty
         collectionView.isHidden = visibleTrackersEmpty
+        filterButton.isHidden = visibleTrackersEmpty
         stackViewFilteredHolder.isHidden = allTrackersEmpty ? true : !visibleTrackersEmpty
     }
     
@@ -191,6 +205,12 @@ final class TrackerViewController: UIViewController {
     
     @objc private func pickerChanged() {
         mainScreenContent(datePicker.date)
+    }
+    
+    @objc private func filterButtonTap() {
+        let filterViewController = FilterViewController()
+        let filterNavController = UINavigationController(rootViewController: filterViewController)
+        present(filterNavController, animated: true)
     }
     
     private func showTrackersInDate(_ date: Date) {
