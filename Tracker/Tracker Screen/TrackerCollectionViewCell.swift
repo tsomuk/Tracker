@@ -84,7 +84,8 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         self.isCompletedToday = isCompletedToday
         titleLabel.text = tracker.title
         emojiLabel.text = tracker.emoji
-        dayCounterLabel.text = "\(completedDays) дней"
+        dayCounterLabel.text = String.localizedStringWithFormat("numberOfDay"~, completedDays)
+//        "\(completedDays) дней"
         
         bodyView.backgroundColor = tracker.color
         plusButton.tintColor = tracker.color

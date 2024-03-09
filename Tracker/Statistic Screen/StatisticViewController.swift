@@ -13,11 +13,11 @@ final class StatisticViewController: UIViewController {
     
     let label1 = CustomStatisticView(title: "34", subtitle: "Лучший период")
     let label2 = CustomStatisticView(title: "2", subtitle: "Идеальные дни")
-    let label3 = CustomStatisticView(title: "6", subtitle: "Трекеров завершено")
+    let label3 = CustomStatisticView(title: "6", subtitle: "doneTrackersCount"~)
     let label4 = CustomStatisticView(title: "3", subtitle: "Среднее значение")
     
     private lazy var stack: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [label1,label2,label3,label4])
+        let stack = UIStackView(arrangedSubviews: [label3])
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .vertical
         stack.spacing = 12

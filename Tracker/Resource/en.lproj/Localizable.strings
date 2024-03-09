@@ -1,0 +1,35 @@
+/* 
+  Localizable.strings
+  Tracker
+
+  Created by Nikita Tsomuk on 09/03/2024.
+  
+*/
+
+//Onboarding
+
+"onboardScreen1" = "Track only what you want";
+"onboardScreen2" = "Even if it's not liters of water and yoga";
+"onboardTitle" = "This is technology!";
+
+//Main Screen
+"trakerTitle" = "Trackers";
+"statisticTitle" = "Statistic";
+"filterButton" = "Filters";
+"statisticsPlugLabel" = "Nothing to analize";
+"searchTextFieldPlaceholder" = "Search";
+
+//Holders
+"trackersHolderLabel" = "What we will track?";
+"trackersSearchLabel" = "Nothing found";
+
+//Filters
+"filterTitle" = "Filters";
+"allTrackers" = "All trackers";
+"todayTrackers" = "Today trackers";
+"doneTrackers" = "Completed";
+"unDoneTrackers" = "Uncompleted";
+
+// Statistic
+
+"doneTrackersCount" = "Completed trackers";

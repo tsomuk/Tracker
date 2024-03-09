@@ -33,12 +33,12 @@ extension OnboardingPageViewController {
         
         let page1 = OnboardingViewController(
             image: .onboarding1,
-            buttonText: "Вот это технологии!",
-            labelText: "Отслеживайте только то, что хотите")
+            buttonText: "onboardTitle"~,
+            labelText: "onboardScreen1"~)
         let page2 = OnboardingViewController(
             image: .onboarding2,
-            buttonText: "Вот это технологии!",
-            labelText: "Даже если это не литры воды и йога")
+            buttonText: "onboardTitle"~,
+            labelText: "onboardScreen2"~)
             
         pages.append(page1)
         pages.append(page2)

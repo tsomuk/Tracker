@@ -11,7 +11,7 @@ class FilterViewController: UIViewController {
     
     // MARK: - Private varibles
     
-    private let tableList = ["Все трекеры", "Трекеры на сегодня", "Завершенные", "Не завершенные"]
+    private let tableList = ["allTrackers"~, "todayTrackers"~, "doneTrackers"~, "unDoneTrackers"~]
     
     // MARK: - Lifecycle
     

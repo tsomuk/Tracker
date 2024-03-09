@@ -20,8 +20,8 @@ final class TrackerViewController: UIViewController {
     private let trackerRecordStore = TrackerRecordStore()
     private var completedTrackers: [TrackerRecord] = []
     
-    private let labelEmptyHolder = TrackerTextLabel(text: "Что будем отслеживать?", fontSize: 12, fontWeight: .medium)
-    private let labelFilterHolder = TrackerTextLabel(text: "Ничего не найдено", fontSize: 12, fontWeight: .medium)
+    private let labelEmptyHolder = TrackerTextLabel(text: "trackersHolderLabel"~, fontSize: 12, fontWeight: .medium)
+    private let labelFilterHolder = TrackerTextLabel(text: "trackersSearchLabel"~, fontSize: 12, fontWeight: .medium)
     
     let currentDate = Calendar.current
     
@@ -53,10 +53,9 @@ final class TrackerViewController: UIViewController {
     private lazy var datePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
-        datePicker.locale = Locale(identifier: "ru_RU")
         datePicker.preferredDatePickerStyle = .compact
         datePicker.translatesAutoresizingMaskIntoConstraints = false
-        datePicker.widthAnchor.constraint(equalToConstant: 120).isActive = true
+        datePicker.widthAnchor.constraint(equalToConstant: 110).isActive = true
         datePicker.addTarget(self, action: #selector(pickerChanged), for: .valueChanged)
         return datePicker
     }()
@@ -106,7 +105,7 @@ final class TrackerViewController: UIViewController {
     }()
     
     private lazy var filterButton: UIButton = {
-        filterButton = TrackerSmallButton(title: "Фильтры", backgroundColor: .ypBlue)
+        filterButton = TrackerSmallButton(title: "filterButton"~, backgroundColor: .ypBlue)
         filterButton.setTitleColor(.white, for: .normal)
         filterButton.addTarget(self, action: #selector(filterButtonTap), for: .touchUpInside)
         
@@ -147,7 +146,7 @@ final class TrackerViewController: UIViewController {
         // Search Controller
         let searchController = UISearchController()
         navigationItem.searchController = searchController
-        searchController.searchBar.placeholder = "Поиск"
+        searchController.searchBar.placeholder = "searchTextFieldPlaceholder"~
         
         // Data picker
         view.addSubview(datePicker)
