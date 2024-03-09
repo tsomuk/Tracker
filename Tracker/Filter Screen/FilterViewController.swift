@@ -28,11 +28,9 @@ class FilterViewController: UIViewController {
         return tableView
     }()
     
-    
     // MARK: - Private methods
-    
     private func setupAppearance() {
-        title = "Фильтры"
+        title = "filterTitle"~
         view.backgroundColor = .ypWhite
         view.addSubview(tableView)
         
@@ -72,7 +70,4 @@ extension FilterViewController: UITableViewDataSource {
         cell.backgroundColor = .ypBackground
         return cell
     }
-    
-    
-    
 }

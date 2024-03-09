@@ -1,4 +1,4 @@
-/* 
+/*
   Localizable.strings
   Tracker
 
@@ -19,8 +19,19 @@
 "statisticsPlugLabel" = "Nothing to analize";
 "searchTextFieldPlaceholder" = "Search";
 
+//Context menu
+"pin" = "Pin";
+"unin" = "Unpin";
+"edit" = "Edit";
+"delete" = "Delete";
+
+//Action Sheet
+"actionSheetTitle" = "Are you sure you want to delete this tracker?";
+"deleteButton" = "Delete";
+"cancelButton" = "Cancel";
+
 //Holders
-"trackersHolderLabel" = "What we will track?";
+"trackersHolderLabel" = "What will we track?";
 "trackersSearchLabel" = "Nothing found";
 
 //Filters
@@ -31,5 +42,4 @@
 "unDoneTrackers" = "Uncompleted";
 
 // Statistic
-
 "doneTrackersCount" = "Completed trackers";

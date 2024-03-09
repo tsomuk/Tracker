@@ -259,7 +259,7 @@ extension TrackerViewController: UICollectionViewDataSource {
         let isCompletedToday = checkIsTrackerCompletedToday(id: tracker.id)
         let completedDays = completedTrackers.filter { $0.id == tracker.id }.count
         cell.configureCell(tracker: tracker,
-                           isCompletedToday: isCompletedToday, 
+                           isCompletedToday: isCompletedToday,
                            completedDays: completedDays,
                            indexPath: indexPath
         )
@@ -304,6 +304,67 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
         let headerSize = CGSize(width: view.frame.width, height: 30)
         return headerSize
     }
+    
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemsAt indexPaths: [IndexPath], point: CGPoint) -> UIContextMenuConfiguration? {
+        guard indexPaths.count > 0 else {
+            return nil
+        }
+        
+        let indexPath = indexPaths[0]
+        
+        let config = UIContextMenuConfiguration(actionProvider:  { _ in
+            
+            
+            let pin = UIAction(title: "pin"~,
+                               image: UIImage.init(systemName: "pin")) { _ in
+                self.pinTracker(indexPath: indexPath)
+                
+            }
+            
+            let edit = UIAction(title: "edit"~,
+                                image: UIImage.init(systemName: "pencil")) { _ in
+                self.editTracker(indexPath: indexPath)
+                
+            }
+            
+            let delete = UIAction(title: "delete"~,
+                                  image: UIImage.init(systemName: "trash"),
+                                  attributes: .destructive) { _ in
+                self.deleteTracker(indexPath: indexPath)
+                
+            }
+            
+            return UIMenu(options: UIMenu.Options.displayInline, children: [pin, edit, delete]
+            )
+            
+        })
+        return config
+    }
+    
+    private func pinTracker(indexPath: IndexPath) {
+        print("Закрепить")
+    }
+    
+    private func editTracker(indexPath: IndexPath) {
+        print("Редактировать")
+    }
+    
+    private func deleteTracker(indexPath: IndexPath) {
+        let actionSheet = UIAlertController(title: "actionSheetTitle"~, message: nil, preferredStyle: .actionSheet)
+        
+ let action1 = UIAlertAction(title: "deleteButton"~, style: .destructive) { _ in
+            print("Удалить")
+        }
+        
+        let action2 = UIAlertAction(title: "cancelButton"~, style: .cancel) { _ in
+            print("Отмена")
+        }
+        
+        actionSheet.addAction(action1)
+        actionSheet.addAction(action2)
+        self.present(actionSheet, animated: true, completion: nil)
+    }
+  
 }
 
 extension TrackerViewController: ReloadCollectionProtocol {
@@ -350,7 +411,6 @@ extension TrackerViewController: TrackerCategoryStoreDelegate {
         collectionView.reloadData()
     }
 }
-
 
 // MARK: - Delegates
 
