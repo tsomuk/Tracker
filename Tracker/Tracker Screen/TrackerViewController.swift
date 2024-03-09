@@ -207,10 +207,13 @@ final class TrackerViewController: UIViewController {
         mainScreenContent(datePicker.date)
     }
     
-    @objc private func filterButtonTap() {
-        let filterViewController = FilterViewController()
-        let filterNavController = UINavigationController(rootViewController: filterViewController)
-        present(filterNavController, animated: true)
+    @objc private func filterButtonTap(_ sender: UIButton) {
+        sender.showAnimation {
+            let filterViewController = FilterViewController()
+            let filterNavController = UINavigationController(rootViewController: filterViewController)
+            self.present(filterNavController, animated: true)
+        }
+        
     }
     
     private func showTrackersInDate(_ date: Date) {

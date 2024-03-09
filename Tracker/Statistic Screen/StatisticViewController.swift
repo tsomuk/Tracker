@@ -44,11 +44,7 @@ final class StatisticViewController: UIViewController {
             stack.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20),
             stack.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20),
             stack.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            
-            label1.heightAnchor.constraint(equalToConstant: 90),
-            label2.heightAnchor.constraint(equalToConstant: 90),
-            label3.heightAnchor.constraint(equalToConstant: 90),
-            label4.heightAnchor.constraint(equalToConstant: 90)
+
         ])
     }
     
