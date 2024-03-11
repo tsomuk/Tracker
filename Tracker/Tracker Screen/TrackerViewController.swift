@@ -26,6 +26,7 @@ final class TrackerViewController: UIViewController  {
     let currentDate = Calendar.current
     
     var isSearch = false
+    var filterState: FilterCase = .all
     var tempCategories = [TrackerCategory]()
     
     var weekDay = 0
@@ -214,6 +215,8 @@ final class TrackerViewController: UIViewController  {
     @objc private func filterButtonTap(_ sender: UIButton) {
         sender.showAnimation {
             let filterViewController = FilterViewController()
+            filterViewController.filterState = self.filterState
+            filterViewController.filterDelegate = self
             let filterNavController = UINavigationController(rootViewController: filterViewController)
             self.present(filterNavController, animated: true)
         }
@@ -240,9 +243,9 @@ extension TrackerViewController: UISearchResultsUpdating, UISearchControllerDele
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchText = searchController.searchBar.text, searchText.count > 1 else { return }
         isSearch = true
-                
+        
         var searchResult = [TrackerCategory]()
-
+        
         for categoryIndex in 0..<self.visibleCategories.count {
             var trackers = [Tracker]()
             
@@ -276,6 +279,76 @@ extension TrackerViewController: UISearchResultsUpdating, UISearchControllerDele
     }
     
 }
+
+// MARK: - FilterDelegate
+
+extension TrackerViewController: FilterDelegate {
+    func setFilter(_ filterState: FilterCase) {
+        self.filterState = filterState
+        
+        switch filterState {
+        case .all:
+            isSearch = false
+        case .today:
+            isSearch = false
+            datePicker.date = Date()
+        case .complete:
+            isSearch = true
+            var searchResult = [TrackerCategory]()
+            for categoryIndex in 0..<self.visibleCategories.count {
+                var trackers = [Tracker]()
+                
+                for trackerIndex in 0..<self.visibleCategories[categoryIndex].trackers.count {
+                    if checkIsTrackerCompletedToday(id: self.visibleCategories[categoryIndex].trackers[trackerIndex].id) {
+                        if let index = searchResult.firstIndex(where: {$0.title == self.visibleCategories[categoryIndex].title}) {
+                            trackers.append(self.visibleCategories[categoryIndex].trackers[trackerIndex])
+                            for tracker in searchResult[index].trackers {
+                                trackers.append(tracker)
+                            }
+                            
+                            let newCategory = TrackerCategory(title: searchResult[index].title, trackers: trackers)
+                            searchResult[index] = newCategory
+                            
+                        } else {
+                            let newCategory = TrackerCategory(title: self.visibleCategories[categoryIndex].title, trackers: [self.visibleCategories[categoryIndex].trackers[trackerIndex]])
+                            searchResult.append(newCategory)
+                        }
+                    }
+                }
+            }
+            self.tempCategories = searchResult
+            
+        case .uncomplete:
+            isSearch = true
+            
+            var searchResult = [TrackerCategory]()
+            
+            for categoryIndex in 0..<self.visibleCategories.count {
+                var trackers = [Tracker]()
+                
+                for trackerIndex in 0..<self.visibleCategories[categoryIndex].trackers.count {
+                    if !checkIsTrackerCompletedToday(id: self.visibleCategories[categoryIndex].trackers[trackerIndex].id) {
+                        if let index = searchResult.firstIndex(where: {$0.title == self.visibleCategories[categoryIndex].title}) {
+                            trackers.append(self.visibleCategories[categoryIndex].trackers[trackerIndex])
+                            for tracker in searchResult[index].trackers {
+                                trackers.append(tracker)
+                            }
+                            let newCategory = TrackerCategory(title: searchResult[index].title, trackers: trackers)
+                            searchResult[index] = newCategory
+                        } else {
+                            let newCategory = TrackerCategory(title: self.visibleCategories[categoryIndex].title, trackers: [self.visibleCategories[categoryIndex].trackers[trackerIndex]])
+                            searchResult.append(newCategory)
+                        }
+                    }
+                }
+            }
+            self.tempCategories = searchResult
+        }
+        reloadCollection()
+    }
+}
+
+
 
 // MARK: - Collection View extensions
 
@@ -389,7 +462,7 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
             }
             
             return UIMenu(options: UIMenu.Options.displayInline, children: [pin, edit, delete])
-            })
+        })
         
         return config
     }
@@ -405,7 +478,7 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
     private func deleteTracker(indexPath: IndexPath) {
         let actionSheet = UIAlertController(title: "actionSheetTitle"~, message: nil, preferredStyle: .actionSheet)
         
- let action1 = UIAlertAction(title: "deleteButton"~, style: .destructive) { _ in
+        let action1 = UIAlertAction(title: "deleteButton"~, style: .destructive) { _ in
             print("Удалить")
         }
         

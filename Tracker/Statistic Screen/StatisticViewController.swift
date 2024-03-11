@@ -11,19 +11,6 @@ final class StatisticViewController: UIViewController {
     
     private let statisticData : [String] = ["22"]
     
-//    let label1 = CustomStatisticView(title: "34", subtitle: "Лучший период")
-//    let label2 = CustomStatisticView(title: "2", subtitle: "Идеальные дни")
-    let label3 = CustomStatisticView(title: "6", subtitle: "doneTrackersCount"~)
-//    let label4 = CustomStatisticView(title: "3", subtitle: "Среднее значение")
-    
-    private lazy var stack: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [label3])
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.axis = .vertical
-        stack.spacing = 12
-        return stack
-    }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupAppearance()
@@ -39,18 +26,15 @@ final class StatisticViewController: UIViewController {
     }
     
     private func addStatisticView() {
-        view.addSubview(stack)
-        NSLayoutConstraint.activate([
-            stack.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20),
-            stack.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20),
-            stack.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+        let label3 = CustomStatisticView(title: "6", subtitle: "doneTrackersCount"~)
+        label3.frame = CGRect(x: 16, y: self.view.frame.midY - 45, width: self.view.frame.width - 32, height: 90)
+        view.addSubview(label3)
+        label3.setupView()
 
-        ])
     }
     
     private func setupAppearance() {
         view.backgroundColor = .ypWhite
-        label3.layer.addGradienBorder(colors: [.green,.blue,.red])
     }
     
     private lazy var image: UIImageView = {

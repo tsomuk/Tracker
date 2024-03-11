@@ -7,11 +7,31 @@
 
 import UIKit
 
+enum FilterCase {
+    case all
+    case today
+    case complete
+    case uncomplete
+}
+
+protocol FilterDelegate {
+    func setFilter(_ filterState: FilterCase)
+}
+
 class FilterViewController: UIViewController {
     
     // MARK: - Private varibles
     
     private let tableList = ["allTrackers"~, "todayTrackers"~, "doneTrackers"~, "unDoneTrackers"~]
+    
+    var filterDelegate: FilterDelegate?
+    
+    var filterState: FilterCase = .all {
+        didSet {
+            tableView.reloadData()
+        }
+    }
+    
     
     // MARK: - Lifecycle
     
@@ -52,7 +72,8 @@ extension FilterViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            print(self.tableList[indexPath.row])
+            let state: FilterCase = indexPath.row == 0 ? .all : (indexPath.row == 1 ? .today : (indexPath.row == 2 ? .complete : .uncomplete))
+            self.filterDelegate?.setFilter(state)
             self.dismiss(animated: true)
         }
     }
