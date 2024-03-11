@@ -39,10 +39,10 @@ final class CustomStatisticView: UIView {
     
     func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
-        layer.cornerRadius = 15
-        layer.borderWidth = 1
-        layer.borderColor = UIColor.magenta.cgColor
-        layer.addGradienBorder(colors: [.green, .red])
+//        layer.cornerRadius = 15
+//        layer.borderWidth = 1
+//        layer.borderColor = UIColor.magenta.cgColor
+//        layer.addGradienBorder(colors: [.green, .red])
         addSubview(titleLabel)
         addSubview(subLabel)
         

@@ -109,7 +109,8 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     }
     
     func setupAppearance() {
-        addSubviews(bodyView,emojiView,emojiLabel,titleLabel,dayCounterLabel,plusButton)
+        bodyView.addSubviews(emojiView,emojiLabel,titleLabel)
+        addSubviews(bodyView,dayCounterLabel,plusButton)
         NSLayoutConstraint.activate([
             
             bodyView.heightAnchor.constraint(equalToConstant: 90),

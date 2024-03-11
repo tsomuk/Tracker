@@ -11,7 +11,7 @@ protocol ReloadCollectionProtocol: AnyObject {
     func reloadCollection()
 }
 
-final class TrackerViewController: UIViewController {
+final class TrackerViewController: UIViewController  {
     
     // MARK: -  Properties & Constants
     
@@ -24,6 +24,9 @@ final class TrackerViewController: UIViewController {
     private let labelFilterHolder = TrackerTextLabel(text: "trackersSearchLabel"~, fontSize: 12, fontWeight: .medium)
     
     let currentDate = Calendar.current
+    
+    var isSearch = false
+    var tempCategories = [TrackerCategory]()
     
     var weekDay = 0
     var trackers = [Tracker]()
@@ -147,6 +150,8 @@ final class TrackerViewController: UIViewController {
         let searchController = UISearchController()
         navigationItem.searchController = searchController
         searchController.searchBar.placeholder = "searchTextFieldPlaceholder"~
+        searchController.searchResultsUpdater = self
+        searchController.delegate = self
         
         // Data picker
         view.addSubview(datePicker)
@@ -229,24 +234,67 @@ final class TrackerViewController: UIViewController {
     }
 }
 
+// MARK: - UISearchControllerDelegate
+
+extension TrackerViewController: UISearchResultsUpdating, UISearchControllerDelegate {
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let searchText = searchController.searchBar.text, searchText.count > 1 else { return }
+        isSearch = true
+                
+        var searchResult = [TrackerCategory]()
+
+        for categoryIndex in 0..<self.visibleCategories.count {
+            var trackers = [Tracker]()
+            
+            for trackerIndex in 0..<self.visibleCategories[categoryIndex].trackers.count {
+                if self.visibleCategories[categoryIndex].trackers[trackerIndex].title.contains(searchText) {
+                    if let index = searchResult.firstIndex(where: {$0.title == self.visibleCategories[categoryIndex].title}) {
+                        
+                        trackers.append(self.visibleCategories[categoryIndex].trackers[trackerIndex])
+                        
+                        for tracker in searchResult[index].trackers {
+                            trackers.append(tracker)
+                        }
+                        
+                        let newCategory = TrackerCategory(title: searchResult[index].title, trackers: trackers)
+                        searchResult[index] = newCategory
+                        
+                    } else {
+                        let newCategory = TrackerCategory(title: self.visibleCategories[categoryIndex].title, trackers: [self.visibleCategories[categoryIndex].trackers[trackerIndex]])
+                        searchResult.append(newCategory)
+                    }
+                }
+            }
+        }
+        self.tempCategories = searchResult
+        collectionView.reloadData()
+    }
+    
+    func willDismissSearchController(_ searchController: UISearchController) {
+        isSearch = false
+        collectionView.reloadData()
+    }
+    
+}
+
 // MARK: - Collection View extensions
 
 extension TrackerViewController: UICollectionViewDataSource {
     
     // Numbers of section
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        visibleCategories.count
+        isSearch ? tempCategories.count : visibleCategories.count
     }
     
     // Numbers of items in section
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        visibleCategories[section].trackers.count
+        isSearch ? tempCategories[section].trackers.count : visibleCategories[section].trackers.count
     }
     
     // Header
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as? TrackerCollectionHeader else { return UICollectionReusableView() }
-        let title = visibleCategories[indexPath.section].title
+        let title = isSearch ? tempCategories[indexPath.section].title : visibleCategories[indexPath.section].title
         view.configureTitle(title)
         return view
     }
@@ -254,7 +302,7 @@ extension TrackerViewController: UICollectionViewDataSource {
     // Configuration cell
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? TrackerCollectionViewCell else { return UICollectionViewCell() }
-        let tracker = visibleCategories[indexPath.section].trackers[indexPath.item]
+        let tracker = isSearch ? tempCategories[indexPath.section].trackers[indexPath.item] : visibleCategories[indexPath.section].trackers[indexPath.item]
         cell.delegate = self
         let isCompletedToday = checkIsTrackerCompletedToday(id: tracker.id)
         let completedDays = completedTrackers.filter { $0.id == tracker.id }.count
@@ -304,6 +352,16 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
         let headerSize = CGSize(width: view.frame.width, height: 30)
         return headerSize
     }
+    // MARK: - Context menu
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfiguration configuration: UIContextMenuConfiguration, highlightPreviewForItemAt indexPath: IndexPath) -> UITargetedPreview? {
+        guard let cell = collectionView.cellForItem(at: indexPath) as? TrackerCollectionViewCell else {
+            return nil
+        }
+        let parameters = UIPreviewParameters()
+        let previewView = UITargetedPreview(view: cell.bodyView, parameters: parameters)
+        return previewView
+    }
+    
     
     func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemsAt indexPaths: [IndexPath], point: CGPoint) -> UIContextMenuConfiguration? {
         guard indexPaths.count > 0 else {
@@ -314,30 +372,25 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
         
         let config = UIContextMenuConfiguration(actionProvider:  { _ in
             
-            
             let pin = UIAction(title: "pin"~,
                                image: UIImage.init(systemName: "pin")) { _ in
                 self.pinTracker(indexPath: indexPath)
-                
             }
             
             let edit = UIAction(title: "edit"~,
                                 image: UIImage.init(systemName: "pencil")) { _ in
                 self.editTracker(indexPath: indexPath)
-                
             }
             
             let delete = UIAction(title: "delete"~,
                                   image: UIImage.init(systemName: "trash"),
                                   attributes: .destructive) { _ in
                 self.deleteTracker(indexPath: indexPath)
-                
             }
             
-            return UIMenu(options: UIMenu.Options.displayInline, children: [pin, edit, delete]
-            )
-            
-        })
+            return UIMenu(options: UIMenu.Options.displayInline, children: [pin, edit, delete])
+            })
+        
         return config
     }
     
@@ -364,7 +417,6 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
         actionSheet.addAction(action2)
         self.present(actionSheet, animated: true, completion: nil)
     }
-  
 }
 
 extension TrackerViewController: ReloadCollectionProtocol {

@@ -11,10 +11,10 @@ final class StatisticViewController: UIViewController {
     
     private let statisticData : [String] = ["22"]
     
-    let label1 = CustomStatisticView(title: "34", subtitle: "Лучший период")
-    let label2 = CustomStatisticView(title: "2", subtitle: "Идеальные дни")
+//    let label1 = CustomStatisticView(title: "34", subtitle: "Лучший период")
+//    let label2 = CustomStatisticView(title: "2", subtitle: "Идеальные дни")
     let label3 = CustomStatisticView(title: "6", subtitle: "doneTrackersCount"~)
-    let label4 = CustomStatisticView(title: "3", subtitle: "Среднее значение")
+//    let label4 = CustomStatisticView(title: "3", subtitle: "Среднее значение")
     
     private lazy var stack: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [label3])
@@ -50,6 +50,7 @@ final class StatisticViewController: UIViewController {
     
     private func setupAppearance() {
         view.backgroundColor = .ypWhite
+        label3.layer.addGradienBorder(colors: [.green,.blue,.red])
     }
     
     private lazy var image: UIImageView = {
