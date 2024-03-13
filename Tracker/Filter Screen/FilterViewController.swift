@@ -7,6 +7,12 @@
 
 import UIKit
 
+struct FilterCell {
+    let title: String
+    let state: FilterCase
+    let isSelected: Bool
+}
+
 enum FilterCase {
     case all
     case today
@@ -22,7 +28,7 @@ class FilterViewController: UIViewController {
     
     // MARK: - Private varibles
     
-    private let tableList = ["allTrackers"~, "todayTrackers"~, "doneTrackers"~, "unDoneTrackers"~]
+    private let tableList: [FilterCase: String] = [.all: "allTrackers"~, .today: "todayTrackers"~, .complete: "doneTrackers"~, .uncomplete: "unDoneTrackers"~]
     
     var filterDelegate: FilterDelegate?
     
@@ -31,7 +37,6 @@ class FilterViewController: UIViewController {
             tableView.reloadData()
         }
     }
-    
     
     // MARK: - Lifecycle
     
@@ -86,8 +91,9 @@ extension FilterViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
-        cell.textLabel?.text = tableList[indexPath.row]
+        cell.textLabel?.text = Array(tableList)[indexPath.row].value
         cell.selectionStyle = .none
+        cell.accessoryType = Array(tableList)[indexPath.row].key == filterState ? .checkmark : .none
         cell.backgroundColor = .ypBackground
         return cell
     }

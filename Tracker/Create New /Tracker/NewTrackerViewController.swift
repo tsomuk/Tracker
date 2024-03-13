@@ -8,7 +8,7 @@
 import UIKit
 
 protocol CreateTrackerProtocol: AnyObject {
-    func createTrackerOrEvent(_ tracker: Tracker, _ category: String)
+    func createTrackerOrEvent(_ tracker: Tracker, _ category: String, isEdit: Bool)
 }
 
 final class NewTrackerViewController: UIViewController {
@@ -168,16 +168,40 @@ final class NewTrackerViewController: UIViewController {
         }
     }
     
+    var isEdit = false
+    
+    var tracker: Tracker? = nil
+    
     @objc private func create(_ sender: UIButton) {
-        let newTracker = Tracker(id: UUID(),
+        let newTracker = Tracker(id: isEdit ? tracker!.id : UUID(),
                                  title: enteredTrackerName,
                                  color: selectedColor.color ?? .cyan,
                                  emoji: selectedEmoji.emoji ?? "⚠️",
-                                 schedule: selectedSchedule)
+                                 schedule: selectedSchedule,
+                                 trackerCategory: selectedCategory?.title ?? "")
         
         dismiss(animated: true)
         self.delegate?.dismissView()
-        self.createDelegate?.createTrackerOrEvent(newTracker, selectedCategory?.title ?? "")
+        self.createDelegate?.createTrackerOrEvent(newTracker, selectedCategory?.title ?? "", isEdit: isEdit)
+    }
+    
+    func setTrackerData(tracker: Tracker) {
+        isEdit = true
+        self.tracker = tracker
+        textField.text = tracker.title
+        selectedCategory = TrackerCategory(title: tracker.trackerCategory, trackers: [])
+        selectedSchedule = tracker.schedule
+        if let index = emojiList.firstIndex(where: {$0 == tracker.emoji}) {
+            selectedEmoji = (emoji: tracker.emoji, item: IndexPath(item: index, section: 0))
+        }
+        
+        if let index = colorList.firstIndex(where: {$0 == tracker.color}) {
+            selectedColor = (color: tracker.color, item: IndexPath(item: index, section: 1))
+        }
+        
+        checkCreateButtonValidation()
+        tableView.reloadData()
+        emojiColorCollectionView.reloadData()
     }
 }
 
