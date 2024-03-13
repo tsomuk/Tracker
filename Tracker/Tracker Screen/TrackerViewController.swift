@@ -16,6 +16,7 @@ final class TrackerViewController: UIViewController  {
     // MARK: -  Properties & Constants
     
     private let trackerStore = TrackerStore()
+    private let analyticsService = AnalyticsService()
     private let trackerCategoryStore = TrackerCategoryStore()
     private let trackerRecordStore = TrackerRecordStore()
     private var completedTrackers: [TrackerRecord] = []
@@ -136,10 +137,13 @@ final class TrackerViewController: UIViewController  {
         setupAppearance()
         mainScreenContent(Date())
         trackerCategoryStore.delegate = self
-        
-        
-        
+        analyticsService.report(event: "open", params: ["screen": "Main"])
     }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+            super.viewDidDisappear(true)
+            analyticsService.report(event: "close", params: ["screen": "Main"])
+        }
     
     // MARK: - Private methods
     
@@ -209,6 +213,7 @@ final class TrackerViewController: UIViewController  {
     }
     
     @objc private func plusButtonTapped() {
+        analyticsService.report(event: "click", params: ["screen": "Main", "item": "add_track"])
         let addNewTrackerViewController = AddNewTrackerViewController()
         addNewTrackerViewController.delegate = self
         addNewTrackerViewController.createDelegate = self
@@ -221,6 +226,7 @@ final class TrackerViewController: UIViewController  {
     }
     
     @objc private func filterButtonTap(_ sender: UIButton) {
+        analyticsService.report(event: "click", params: ["screen": "Main", "item": "filter"])
         sender.showAnimation {
             let filterViewController = FilterViewController()
             filterViewController.filterState = self.filterState
@@ -460,6 +466,8 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
         return headerSize
     }
     
+    // MARK: - Context Menu
+    
     func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemsAt indexPaths: [IndexPath], point: CGPoint) -> UIContextMenuConfiguration? {
         guard indexPaths.count > 0 else {
             return nil
@@ -513,7 +521,7 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
     }
     
     private func editTracker(indexPath: IndexPath) {
-        print("Редактировать")
+        analyticsService.report(event: "click", params: ["screen": "Main", "item": "edit"])
         let vc = NewTrackerViewController()
         vc.createDelegate = self
         vc.setTrackerData(tracker: self.visibleCategories[indexPath.section].trackers[indexPath.row])
@@ -521,6 +529,7 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
     }
     
     private func deleteTracker(indexPath: IndexPath) {
+        analyticsService.report(event: "click", params: ["screen": "Main", "item": "delete"])
         let actionSheet = UIAlertController(title: "actionSheetTitle"~, message: nil, preferredStyle: .actionSheet)
         
         let action1 = UIAlertAction(title: "deleteButton"~, style: .destructive) { _ in
