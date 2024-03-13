@@ -141,9 +141,9 @@ final class TrackerViewController: UIViewController  {
     }
     
     override func viewDidDisappear(_ animated: Bool) {
-            super.viewDidDisappear(true)
-            analyticsService.report(event: "close", params: ["screen": "Main"])
-        }
+        super.viewDidDisappear(true)
+        analyticsService.report(event: "close", params: ["screen": "Main"])
+    }
     
     // MARK: - Private methods
     
@@ -257,9 +257,9 @@ extension TrackerViewController: UISearchResultsUpdating, UISearchControllerDele
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchText = searchController.searchBar.text, searchText.count > 3 else { return }
         isSearch = true
-                
+        
         var searchResult = [TrackerCategory]()
-
+        
         for categoryIndex in 0..<self.visibleCategories.count {
             var trackers = [Tracker]()
             
@@ -294,6 +294,8 @@ extension TrackerViewController: UISearchResultsUpdating, UISearchControllerDele
     
 }
 
+// MARK: - Filters
+
 extension TrackerViewController: FilterDelegate {
     func setFilter(_ filterState: FilterCase) {
         self.filterState = filterState
@@ -307,32 +309,18 @@ extension TrackerViewController: FilterDelegate {
         case .complete:
             isSearch = true
             
-            
-            
-            
-            
             var searchResult = [TrackerCategory]()
-
             for categoryIndex in 0..<self.visibleCategories.count {
                 var trackers = [Tracker]()
-                
                 for trackerIndex in 0..<self.visibleCategories[categoryIndex].trackers.count {
-                    
-                    
                     if checkIsTrackerCompletedToday(id: self.visibleCategories[categoryIndex].trackers[trackerIndex].id) {
-                        
-                        
                         if let index = searchResult.firstIndex(where: {$0.title == self.visibleCategories[categoryIndex].title}) {
-                            
                             trackers.append(self.visibleCategories[categoryIndex].trackers[trackerIndex])
-                            
                             for tracker in searchResult[index].trackers {
                                 trackers.append(tracker)
                             }
-                            
                             let newCategory = TrackerCategory(title: searchResult[index].title, trackers: trackers)
                             searchResult[index] = newCategory
-                            
                         } else {
                             let newCategory = TrackerCategory(title: self.visibleCategories[categoryIndex].title, trackers: [self.visibleCategories[categoryIndex].trackers[trackerIndex]])
                             searchResult.append(newCategory)
@@ -341,42 +329,20 @@ extension TrackerViewController: FilterDelegate {
                 }
             }
             self.tempCategories = searchResult
-            
-            
-            
-            
-            
-            
-            
-            
-            
         case .uncomplete:
             isSearch = true
-            
-            
-            
             var searchResult = [TrackerCategory]()
-
             for categoryIndex in 0..<self.visibleCategories.count {
                 var trackers = [Tracker]()
-                
                 for trackerIndex in 0..<self.visibleCategories[categoryIndex].trackers.count {
-                    
-                    
                     if !checkIsTrackerCompletedToday(id: self.visibleCategories[categoryIndex].trackers[trackerIndex].id) {
-                        
-                        
                         if let index = searchResult.firstIndex(where: {$0.title == self.visibleCategories[categoryIndex].title}) {
-                            
                             trackers.append(self.visibleCategories[categoryIndex].trackers[trackerIndex])
-                            
                             for tracker in searchResult[index].trackers {
                                 trackers.append(tracker)
                             }
-                            
                             let newCategory = TrackerCategory(title: searchResult[index].title, trackers: trackers)
                             searchResult[index] = newCategory
-                            
                         } else {
                             let newCategory = TrackerCategory(title: self.visibleCategories[categoryIndex].title, trackers: [self.visibleCategories[categoryIndex].trackers[trackerIndex]])
                             searchResult.append(newCategory)
@@ -494,16 +460,12 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
             }
             
             return UIMenu(options: UIMenu.Options.displayInline, children: [pin, edit, delete])
-            })
+        })
         
         return config
     }
     
     private func pinTracker(indexPath: IndexPath) {
-        print("Закрепить")
-        
-//        guard let index = trackers.firstIndex(where: {$0.id == self.visibleCategories[indexPath.section].trackers[indexPath.row].id}) else {return}
-        
         if self.visibleCategories[indexPath.section].title == "Закрепленные" {
             trackerCategoryStore.deleteTrackerFromCategory(tracker: self.visibleCategories[indexPath.section].trackers[indexPath.row], with: "Закрепленные")
             trackerCategoryStore.addTrackerToCategory(tracker: self.visibleCategories[indexPath.section].trackers[indexPath.row], with: self.visibleCategories[indexPath.section].trackers[indexPath.row].trackerCategory)
@@ -517,7 +479,6 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
         }
         fetchCategory()
         collectionView.reloadData()
-        
     }
     
     private func editTracker(indexPath: IndexPath) {
@@ -539,7 +500,6 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
         }
         
         let action2 = UIAlertAction(title: "cancelButton"~, style: .cancel) { _ in
-            print("Отмена")
         }
         
         actionSheet.addAction(action1)
@@ -599,7 +559,6 @@ extension TrackerViewController {
         trackerCategoryStore.createCategoryAndTracker(tracker: tracker, with: titleCategory)
     }
 }
-
 
 extension TrackerViewController: TrackerCategoryStoreDelegate {
     func didUpdateData(in store: TrackerCategoryStore) {
