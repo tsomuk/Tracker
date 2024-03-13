@@ -46,6 +46,11 @@ final class CustomStatisticView: UIView {
         return title
     }()
     
+    func configValue(value: Int) {
+        titleLabel.text = String(value)
+    }
+    
+    
     func setupView() {
         layer.cornerRadius = 15
         addGradienBorder(colors: [.red, .green, .blue])

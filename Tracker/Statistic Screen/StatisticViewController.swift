@@ -9,33 +9,20 @@ import UIKit
 
 final class StatisticViewController: UIViewController {
     
-    private let statisticData : [String] = ["22"]
+    // MARK: - Private variables
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupAppearance()
-        mainScreenContent()
-    }
+//    private let trackerStore = TrackerStore()
+    private let trackerRecordStore = TrackerRecordStore()
+    private var trackers: [Tracker] = []
+    var completedTrackers: [TrackerRecord] = []
     
-    private func mainScreenContent() {
-        if statisticData.isEmpty {
-            addHolderView()
-        } else {
-            addStatisticView()
-        }
-    }
     
-    private func addStatisticView() {
-        let label3 = CustomStatisticView(title: "6", subtitle: "doneTrackersCount"~)
-        label3.frame = CGRect(x: 16, y: self.view.frame.midY - 45, width: self.view.frame.width - 32, height: 90)
-        view.addSubview(label3)
-        label3.setupView()
-
-    }
     
-    private func setupAppearance() {
-        view.backgroundColor = .ypWhite
-    }
+    private let label = TrackerTextLabel(text: "Анализировать пока нечего", fontSize: 12, fontWeight: .medium)
+    private let statView = CustomStatisticView(title: "0", subtitle: "doneTrackersCount"~)
+    
+    
+    
     
     private lazy var image: UIImageView = {
         let image = UIImageView()
@@ -44,9 +31,7 @@ final class StatisticViewController: UIViewController {
         return image
     }()
     
-    private let label = TrackerTextLabel(text: "Анализировать пока нечего", fontSize: 12, fontWeight: .medium)
-    
-    private lazy var stackView: UIStackView = {
+    private lazy var emptyHolderStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [image,label])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
@@ -55,13 +40,50 @@ final class StatisticViewController: UIViewController {
         return stackView
     }()
     
-    private func addHolderView() {
-        view.addSubview(stackView)
+    // MARK: - Life cycle
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+     print("viewWillAppear")
+        updateStat()
+        mainScreenContent()
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        print("viewDidLoad")
+        setupAppearance()
+    }
+    
+    // MARK: - Private methods
+    private func mainScreenContent() {
+        statView.configValue(value: calcStatData())
+        emptyHolderStackView.isHidden = completedTrackers.count != 0
+        statView.isHidden = completedTrackers.count == 0
+    }
+    
+    private func updateStat() {
+//        trackers = try! trackerStore.fetchTracker()
+        completedTrackers = trackerRecordStore.fetchRecords()
+        statView.configValue(value: calcStatData())
+    }
+
+    private func setupAppearance() {
+        view.backgroundColor = .ypWhite
+        view.addSubviews(emptyHolderStackView, statView)
+        statView.frame = CGRect(x: 16, y: self.view.frame.midY - 45, width: self.view.frame.width - 32, height: 90)
+        statView.setupView()
+        
         NSLayoutConstraint.activate([
-            stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            emptyHolderStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emptyHolderStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             image.heightAnchor.constraint(equalToConstant: 80),
             image.widthAnchor.constraint(equalToConstant: 80)
         ])
     }
+    
+    private func calcStatData() -> Int {
+        completedTrackers.count
+    }
+    
 }
