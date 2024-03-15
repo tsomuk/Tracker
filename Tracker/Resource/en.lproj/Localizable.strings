@@ -21,7 +21,7 @@
 
 //Context menu
 "pin" = "Pin";
-"unin" = "Unpin";
+"unpin" = "Unpin";
 "edit" = "Edit";
 "delete" = "Delete";
 

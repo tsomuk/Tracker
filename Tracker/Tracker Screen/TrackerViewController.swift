@@ -439,6 +439,17 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
     
     // MARK: - Context Menu
     
+    // Context menu for cell body only
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfiguration configuration: UIContextMenuConfiguration, highlightPreviewForItemAt indexPath: IndexPath) -> UITargetedPreview? {
+        guard let cell = collectionView.cellForItem(at: indexPath) as? TrackerCollectionViewCell else {
+            return nil
+        }
+        let parameters = UIPreviewParameters()
+            let previewView = UITargetedPreview(view: cell.bodyView, parameters: parameters)
+        return previewView
+    }
+    
+    // Context menu configuratiuon
     func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemsAt indexPaths: [IndexPath], point: CGPoint) -> UIContextMenuConfiguration? {
         guard indexPaths.count > 0 else {
             return nil
@@ -453,6 +464,11 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
                 self.pinTracker(indexPath: indexPath)
             }
             
+            let unpin = UIAction(title: "unpin"~,
+                                 image: UIImage.init(systemName: "pin.slash")) { _ in
+                self.pinTracker(indexPath: indexPath)
+            }
+            
             let edit = UIAction(title: "edit"~,
                                 image: UIImage.init(systemName: "pencil")) { _ in
                 self.editTracker(indexPath: indexPath)
@@ -464,12 +480,16 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
                 self.deleteTracker(indexPath: indexPath)
             }
             
-            return UIMenu(options: UIMenu.Options.displayInline, children: [pin, edit, delete])
+            if self.visibleCategories[indexPath.section].title == "Закрепленные" {
+                return UIMenu(options: UIMenu.Options.displayInline, children: [unpin, edit, delete])
+            } else {
+                return UIMenu(options: UIMenu.Options.displayInline, children: [pin, edit, delete])
+            }
         })
-        
         return config
     }
     
+    // Context menu logic
     private func pinTracker(indexPath: IndexPath) {
         if self.visibleCategories[indexPath.section].title == "Закрепленные" {
             trackerCategoryStore.deleteTrackerFromCategory(tracker: self.visibleCategories[indexPath.section].trackers[indexPath.row], with: "Закрепленные")
@@ -498,17 +518,15 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
         analyticsService.report(event: "click", params: ["screen": "Main", "item": "delete"])
         let actionSheet = UIAlertController(title: "actionSheetTitle"~, message: nil, preferredStyle: .actionSheet)
         
-        let action1 = UIAlertAction(title: "deleteButton"~, style: .destructive) { _ in
+        let deleteAction = UIAlertAction(title: "deleteButton"~, style: .destructive) { _ in
             self.trackerStore.deleteTracker(tracker: self.visibleCategories[indexPath.section].trackers[indexPath.row])
             self.fetchCategory()
             self.collectionView.reloadData()
         }
-        
-        let action2 = UIAlertAction(title: "cancelButton"~, style: .cancel) { _ in
+        let cancelAction = UIAlertAction(title: "cancelButton"~, style: .cancel) { _ in
         }
-        
-        actionSheet.addAction(action1)
-        actionSheet.addAction(action2)
+        actionSheet.addAction(deleteAction)
+        actionSheet.addAction(cancelAction)
         self.present(actionSheet, animated: true, completion: nil)
     }
 }
@@ -518,7 +536,6 @@ extension TrackerViewController: ReloadCollectionProtocol {
         mainScreenContent(datePicker.date)
     }
 }
-
 
 // MARK: - CreateTrackerProtocol
 
