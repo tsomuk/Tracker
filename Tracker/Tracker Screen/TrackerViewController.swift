@@ -131,13 +131,18 @@ final class TrackerViewController: UIViewController  {
     
     // MARK: - Lifecycle
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        analyticsService.report(event: "open", params: ["screen": "Main"])
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavBar()
         setupAppearance()
         mainScreenContent(Date())
         trackerCategoryStore.delegate = self
-        analyticsService.report(event: "open", params: ["screen": "Main"])
     }
     
     override func viewDidDisappear(_ animated: Bool) {

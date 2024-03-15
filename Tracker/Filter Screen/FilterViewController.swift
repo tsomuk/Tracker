@@ -43,7 +43,6 @@ class FilterViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupAppearance()
-        
     }
     
     private lazy var tableView: UITableView = {
@@ -68,7 +67,6 @@ class FilterViewController: UIViewController {
             
         ])
     }
-    
 }
 
 // MARK: - UITableViewDelegate & UITableViewDataSource
