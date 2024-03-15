@@ -29,8 +29,6 @@ final class TrackerRecordStore {
         try! context.save()
     }
     
-    
-    
     func deleteTrackerRecord(trackerRecord: TrackerRecord) {
         let fetchRequest = NSFetchRequest<TrackerRecordCoreData>(entityName: "TrackerRecordCoreData")
         fetchRequest.predicate = NSPredicate(format: "id == %@", trackerRecord.id as CVarArg)
@@ -41,6 +39,20 @@ final class TrackerRecordStore {
         }
     }
     
+    func deleteAllRecordFor(tracker: Tracker) {
+        let fetchRequest = NSFetchRequest<TrackerRecordCoreData>(entityName: "TrackerRecordCoreData")
+        fetchRequest.predicate = NSPredicate(format: "id == %@", tracker.id as CVarArg)
+        do {
+            let records = try context.fetch(fetchRequest)
+            for recordToDelete in records {
+                context.delete(recordToDelete)
+            }
+            try context.save()
+        } catch {
+            print("Error deleting records: \(error.localizedDescription)")
+        }
+    }
+
     func fetchRecords() -> [TrackerRecord] {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return [] }
         let managedContext = appDelegate.persistentContainer.viewContext

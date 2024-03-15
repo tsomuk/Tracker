@@ -519,9 +519,12 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
         let actionSheet = UIAlertController(title: "actionSheetTitle"~, message: nil, preferredStyle: .actionSheet)
         
         let deleteAction = UIAlertAction(title: "deleteButton"~, style: .destructive) { _ in
-            self.trackerStore.deleteTracker(tracker: self.visibleCategories[indexPath.section].trackers[indexPath.row])
+            let trackerForDelete = self.visibleCategories[indexPath.section].trackers[indexPath.row]
+            self.trackerStore.deleteTracker(tracker: trackerForDelete)
+            self.trackerRecordStore.deleteAllRecordFor(tracker: trackerForDelete)
             self.fetchCategory()
             self.collectionView.reloadData()
+            self.reloadHolders()
         }
         let cancelAction = UIAlertAction(title: "cancelButton"~, style: .cancel) { _ in
         }
