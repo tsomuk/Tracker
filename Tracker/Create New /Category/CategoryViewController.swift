@@ -110,6 +110,7 @@ final class CategoryViewController: UIViewController {
 }
 
 extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         mainScreenContent()
         return viewModel?.categories.count ?? 0
@@ -122,6 +123,7 @@ extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
         cell.backgroundColor = .ypBackground
         return cell
     }
+    
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark

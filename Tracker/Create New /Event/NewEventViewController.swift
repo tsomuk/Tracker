@@ -168,11 +168,12 @@ final class NewEventViewController: UIViewController {
                                      title: self.enteredEventName,
                                      color: selectedColor.color ?? .ypBlack,
                                      emoji: selectedEmoji.emoji ?? "",
-                                     schedule: [1, 2, 3, 4, 5, 6, 7])
+                                     schedule: [1, 2, 3, 4, 5, 6, 7],
+                                     trackerCategory: selectedCategory?.title ?? "")
             
             self.dismiss(animated: true)
             self.delegate?.dismissView()
-            self.createDelegate?.createTrackerOrEvent(newTracker, selectedCategory?.title ?? "")
+            self.createDelegate?.createTrackerOrEvent(newTracker, selectedCategory?.title ?? "", isEdit: false)
         }
     }
 }

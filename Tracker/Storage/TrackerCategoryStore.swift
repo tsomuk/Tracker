@@ -61,6 +61,27 @@ extension TrackerCategoryStore {
         try! context.save()
     }
     
+    func addTrackerToCategory(tracker: Tracker, with titleCategory: String) {
+        let trackers = trackerStore.fetchTracker2()
+        guard let existingCategory = fetchCategory(with: titleCategory) else { return }
+        var existingTrackers = existingCategory.trackers?.allObjects as? [TrackerCoreData] ?? []
+        if let index = trackers.firstIndex(where: {$0.id == tracker.id}) {
+            existingTrackers.append(trackers[index])
+        }
+        existingCategory.trackers = NSSet(array: existingTrackers)
+        try! context.save()
+    }
+    
+    func deleteTrackerFromCategory(tracker: Tracker, with titleCategory: String) {
+        guard let existingCategory = fetchCategory(with: titleCategory) else { return }
+        var existingTrackers = existingCategory.trackers?.allObjects as? [TrackerCoreData] ?? []
+        if let index = existingTrackers.firstIndex(where: {$0.id == tracker.id}) {
+            existingTrackers.remove(at: index)
+        }
+        existingCategory.trackers = NSSet(array: existingTrackers)
+        try! context.save()
+    }
+    
     private func fetchCategory(with title: String) -> TrackerCategoryCoreData? {
         return fetchAllCategories().filter({$0.title == title}).first ?? nil
     }

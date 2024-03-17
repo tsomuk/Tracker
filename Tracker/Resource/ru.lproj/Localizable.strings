@@ -1,0 +1,47 @@
+/*
+  Localizable.strings
+  Tracker
+
+  Created by Nikita Tsomuk on 09/03/2024.
+  
+*/
+
+//Onboarding
+"onboardScreen1" = "Отслеживайте только то, что хотите";
+"onboardScreen2" = "Даже если это не литры воды и йога";
+"onboardTitle" = "Вот это технологии!";
+
+//Main Screen
+"trakerTitle" = "Трекеры";
+"statisticTitle" = "Статистика";
+"filterButton" = "Фильтры";
+"statisticsPlugLabel" = "Анализировать пока нечего";
+"searchTextFieldPlaceholder" = "Поиск";
+
+//Context menu
+"pin" = "Закрепить";
+"unpin" = "Открепить";
+"edit" = "Редактировать";
+"delete" = "Удалить";
+
+//Action Sheet
+"actionSheetTitle" = "Уверены что хотите удалить трекер?";
+"deleteButton" = "Удалить";
+"cancelButton" = "Отменить";
+
+
+//Holders
+"trackersHolderLabel" = "Что будем отслеживать?";
+"trackersSearchLabel" = "Ничего не найдено";
+
+//Filters
+
+"filterTitle" = "Фильтры";
+"allTrackers" = "Все трекеры";
+"todayTrackers" = "Трекеры на сегодня";
+"doneTrackers" = "Завершенные";
+"unDoneTrackers" = "Не завершенные";
+
+// Statistic
+
+"doneTrackersCount" = "Трекеров завершено";

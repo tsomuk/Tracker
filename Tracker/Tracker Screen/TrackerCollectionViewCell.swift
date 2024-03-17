@@ -84,8 +84,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         self.isCompletedToday = isCompletedToday
         titleLabel.text = tracker.title
         emojiLabel.text = tracker.emoji
-        dayCounterLabel.text = "\(completedDays) дней"
-        
+        dayCounterLabel.text = String.localizedStringWithFormat("numberOfDay"~, completedDays)
         bodyView.backgroundColor = tracker.color
         plusButton.tintColor = tracker.color
         
@@ -108,7 +107,8 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     }
     
     func setupAppearance() {
-        addSubviews(bodyView,emojiView,emojiLabel,titleLabel,dayCounterLabel,plusButton)
+        bodyView.addSubviews(emojiView,emojiLabel,titleLabel)
+        addSubviews(bodyView,dayCounterLabel,plusButton)
         NSLayoutConstraint.activate([
             
             bodyView.heightAnchor.constraint(equalToConstant: 90),

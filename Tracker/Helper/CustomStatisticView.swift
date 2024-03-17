@@ -21,6 +21,15 @@ final class CustomStatisticView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private lazy var containerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .ypWhite
+        view.layer.cornerRadius = 15
+        view.clipsToBounds = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     private lazy var titleLabel: UILabel = {
         let title = UILabel()
         title.translatesAutoresizingMaskIntoConstraints = false
@@ -37,21 +46,48 @@ final class CustomStatisticView: UIView {
         return title
     }()
     
+    func configValue(value: Int) {
+        titleLabel.text = String(value)
+    }
+    
+    
     func setupView() {
-        translatesAutoresizingMaskIntoConstraints = false
         layer.cornerRadius = 15
-        layer.masksToBounds = true
-        layer.borderWidth = 1
-        layer.borderColor = UIColor.magenta.cgColor
-        addSubview(titleLabel)
-        addSubview(subLabel)
+        addGradienBorder(colors: [.red, .green, .blue])
+        containerView.addSubviews(titleLabel, subLabel)
+        clipsToBounds = true
+        addSubview(containerView)
         
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 12),
-            titleLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 12),
+            containerView.leftAnchor.constraint(equalTo: leftAnchor, constant: 1),
+            containerView.rightAnchor.constraint(equalTo: rightAnchor, constant: -1),
+            containerView.topAnchor.constraint(equalTo: topAnchor, constant: 1),
+            containerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -1),
             
-            subLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12),
-            subLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 12)
+            titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 12),
+            titleLabel.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 12),
+            
+            subLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -12),
+            subLabel.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 12),
         ])
+    }
+}
+
+extension UIView {
+    func addGradienBorder(colors: [UIColor], width: CGFloat = 2) {
+        let gradient = CAGradientLayer()
+        gradient.frame = bounds
+        gradient.colors = colors.map { $0.cgColor }
+        gradient.startPoint = CGPoint(x: 0, y: 0.5)
+        gradient.endPoint = CGPoint(x: 1, y: 0.5)
+        
+        let shape = CAShapeLayer()
+        shape.lineWidth = width
+        shape.path = UIBezierPath(roundedRect: bounds, cornerRadius: 16).cgPath
+        shape.strokeColor = UIColor.black.cgColor
+        shape.fillColor = UIColor.clear.cgColor
+        gradient.mask = shape
+        
+        layer.addSublayer(gradient)
     }
 }
