@@ -15,6 +15,7 @@
 		11323F662B58F8ED0078EDC1 /* AddNewCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11323F652B58F8ED0078EDC1 /* AddNewCategoryViewController.swift */; };
 		11380F552B8A62590002F7D3 /* EmojiColorCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11380F542B8A62590002F7D3 /* EmojiColorCollectionViewCell.swift */; };
 		11380F572B8A626F0002F7D3 /* EmojiColorCollectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11380F562B8A626F0002F7D3 /* EmojiColorCollectionHeader.swift */; };
+		113EE65A2BFB941600464324 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 113EE6592BFB941600464324 /* README.md */; };
 		115AADD22B6C4CD30044FD34 /* CustomStatisticView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115AADD12B6C4CD30044FD34 /* CustomStatisticView.swift */; };
 		115AADD42B6C50900044FD34 /* ButtonAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115AADD32B6C50900044FD34 /* ButtonAnimation.swift */; };
 		11613CC22B9B3FDA00FB2138 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11613CC12B9B3FDA00FB2138 /* FilterViewController.swift */; };
@@ -77,6 +78,7 @@
 		11323F652B58F8ED0078EDC1 /* AddNewCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewCategoryViewController.swift; sourceTree = "<group>"; };
 		11380F542B8A62590002F7D3 /* EmojiColorCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiColorCollectionViewCell.swift; sourceTree = "<group>"; };
 		11380F562B8A626F0002F7D3 /* EmojiColorCollectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiColorCollectionHeader.swift; sourceTree = "<group>"; };
+		113EE6592BFB941600464324 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		115AADD12B6C4CD30044FD34 /* CustomStatisticView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomStatisticView.swift; sourceTree = "<group>"; };
 		115AADD32B6C50900044FD34 /* ButtonAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonAnimation.swift; sourceTree = "<group>"; };
 		11613CC12B9B3FDA00FB2138 /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
@@ -252,6 +254,7 @@
 		11ABAA1D2B4A9855003F02BF = {
 			isa = PBXGroup;
 			children = (
+				113EE6592BFB941600464324 /* README.md */,
 				11ABAA282B4A9855003F02BF /* Tracker */,
 				11CF5E0D2BA01A98003C54A6 /* TrackerTests */,
 				11ABAA272B4A9855003F02BF /* Products */,
@@ -462,6 +465,7 @@
 			files = (
 				11ABAA392B4A9857003F02BF /* LaunchScreen.storyboard in Resources */,
 				11613CCE2B9C904D00FB2138 /* Localizable.stringsdict in Resources */,
+				113EE65A2BFB941600464324 /* README.md in Resources */,
 				11613CC62B9C8BEB00FB2138 /* Localizable.strings in Resources */,
 				11ABAA362B4A9857003F02BF /* Assets.xcassets in Resources */,
 			);
@@ -766,6 +770,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -798,6 +803,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
